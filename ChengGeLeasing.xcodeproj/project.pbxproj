@@ -406,6 +406,10 @@
 		F7DB1F9B20620A17008FC53D /* CGUpgradeVersionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F7DB1F9A20620A17008FC53D /* CGUpgradeVersionVC.m */; };
 		F7DB1F9E20622BC6008FC53D /* JXTool.m in Sources */ = {isa = PBXBuildFile; fileRef = F7DB1F9D20622BC6008FC53D /* JXTool.m */; };
 		F7DB1FA420623298008FC53D /* CGVersionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F7DB1FA320623298008FC53D /* CGVersionCell.m */; };
+		F7DB1FA72062446C008FC53D /* CGVersionHeaderV.m in Sources */ = {isa = PBXBuildFile; fileRef = F7DB1FA62062446C008FC53D /* CGVersionHeaderV.m */; };
+		F7DB1FAA20624D16008FC53D /* CGLevelUpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F7DB1FA920624D16008FC53D /* CGLevelUpVC.m */; };
+		F7DB1FAE2062520E008FC53D /* CGLevelUpCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F7DB1FAC2062520E008FC53D /* CGLevelUpCell.m */; };
+		F7DB1FAF2062520E008FC53D /* CGLevelUpCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7DB1FAD2062520E008FC53D /* CGLevelUpCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1181,6 +1185,13 @@
 		F7DB1F9D20622BC6008FC53D /* JXTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXTool.m; sourceTree = "<group>"; };
 		F7DB1FA220623298008FC53D /* CGVersionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGVersionCell.h; sourceTree = "<group>"; };
 		F7DB1FA320623298008FC53D /* CGVersionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGVersionCell.m; sourceTree = "<group>"; };
+		F7DB1FA52062446C008FC53D /* CGVersionHeaderV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGVersionHeaderV.h; sourceTree = "<group>"; };
+		F7DB1FA62062446C008FC53D /* CGVersionHeaderV.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGVersionHeaderV.m; sourceTree = "<group>"; };
+		F7DB1FA820624D16008FC53D /* CGLevelUpVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGLevelUpVC.h; sourceTree = "<group>"; };
+		F7DB1FA920624D16008FC53D /* CGLevelUpVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGLevelUpVC.m; sourceTree = "<group>"; };
+		F7DB1FAB2062520E008FC53D /* CGLevelUpCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGLevelUpCell.h; sourceTree = "<group>"; };
+		F7DB1FAC2062520E008FC53D /* CGLevelUpCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGLevelUpCell.m; sourceTree = "<group>"; };
+		F7DB1FAD2062520E008FC53D /* CGLevelUpCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CGLevelUpCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3345,6 +3356,11 @@
 			children = (
 				F7DB1FA220623298008FC53D /* CGVersionCell.h */,
 				F7DB1FA320623298008FC53D /* CGVersionCell.m */,
+				F7DB1FA52062446C008FC53D /* CGVersionHeaderV.h */,
+				F7DB1FA62062446C008FC53D /* CGVersionHeaderV.m */,
+				F7DB1FAB2062520E008FC53D /* CGLevelUpCell.h */,
+				F7DB1FAC2062520E008FC53D /* CGLevelUpCell.m */,
+				F7DB1FAD2062520E008FC53D /* CGLevelUpCell.xib */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -3354,6 +3370,8 @@
 			children = (
 				F7DB1F9920620A17008FC53D /* CGUpgradeVersionVC.h */,
 				F7DB1F9A20620A17008FC53D /* CGUpgradeVersionVC.m */,
+				F7DB1FA820624D16008FC53D /* CGLevelUpVC.h */,
+				F7DB1FA920624D16008FC53D /* CGLevelUpVC.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -3476,6 +3494,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7DB1FAF2062520E008FC53D /* CGLevelUpCell.xib in Resources */,
 				F4281B191FDA5AE000A38C96 /* ZLPhotoLib.bundle in Resources */,
 				F466C9F11FDA4EB700C2710C /* LaunchScreen.storyboard in Resources */,
 				F4281B071FDA5AE000A38C96 /* icon_chose_arrow_nor@2x.png in Resources */,
@@ -3702,6 +3721,7 @@
 				F4B605F22019C35F0060688B /* CGFloorSheetView.m in Sources */,
 				F4281B221FDA5AE000A38C96 /* ZLNavigationController.m in Sources */,
 				F4EBDCE61FF0AF5D00B59067 /* CGMTableView.m in Sources */,
+				F7DB1FAA20624D16008FC53D /* CGLevelUpVC.m in Sources */,
 				F470FF6E1FDE76F20045C0D7 /* SWCellScrollView.m in Sources */,
 				F4281B0F1FDA5AE000A38C96 /* ZLCamera.m in Sources */,
 				F4281B281FDA5AE000A38C96 /* ZLPhotoPickerGroupTableViewCell.m in Sources */,
@@ -3855,6 +3875,7 @@
 				F43AED711FEA8DA90037C120 /* CGOperatingDynamicDetailsCell.m in Sources */,
 				F4281B1C1FDA5AE000A38C96 /* ZLPhotoPickerDatas.m in Sources */,
 				F43AED5B1FEA8DA90037C120 /* CGHasSignedModel.m in Sources */,
+				F7DB1FA72062446C008FC53D /* CGVersionHeaderV.m in Sources */,
 				F43AED601FEA8DA90037C120 /* CGLeaseReportGroupViewController.m in Sources */,
 				252615751FEB490F0050F122 /* CGUnitSelectionViewController.m in Sources */,
 				F43AED5C1FEA8DA90037C120 /* CGHasSignedViewController.m in Sources */,
@@ -3892,6 +3913,7 @@
 				F4F453C6202C6DC300F4A417 /* YWFilePreviewView.m in Sources */,
 				F48CCBE61FF3A56E003C500C /* UPHTTPBodyPart.m in Sources */,
 				F43AED991FEA95CD0037C120 /* CGLinkmanCell.m in Sources */,
+				F7DB1FAE2062520E008FC53D /* CGLevelUpCell.m in Sources */,
 				F44932761FE7580F003ECCAB /* JHRingChart.m in Sources */,
 				F4EBB52B1FEA630500DB88AC /* CGContractAddViewController.m in Sources */,
 				F43AED931FEA91570037C120 /* CGUpcomingCell.m in Sources */,

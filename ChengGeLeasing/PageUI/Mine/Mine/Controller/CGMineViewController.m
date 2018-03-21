@@ -94,7 +94,7 @@ static NSString *const cellTitleText5 = @"设置";
     
     //区块二
     NSMutableArray *titleArr2 = [NSMutableArray array];
-    [titleArr2 addObject:@[@"mine_icon_setting",cellTitleText4,@"0"]];
+    [titleArr2 addObject:@[@"VIPaccout",cellTitleText4,@"0"]];
     [titleDic setObject:titleArr2 forKey:@"1"];
     
     //区块三
