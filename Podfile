@@ -1,0 +1,18 @@
+platform :ios, '8.0'
+target 'ChengGeLeasing' do
+    pod 'AFNetworking', '~> 3.1.0'
+    pod 'SDWebImage', '~> 3.8.1'
+    pod 'MBProgressHUD', '~> 1.1.0'
+    pod 'MJExtension', '~> 3.0.13'
+    pod 'MJRefresh', '~> 3.1.12'
+    pod 'RegexKitLite', '~> 4.0'
+    pod 'SDCycleScrollView', '~> 1.65'
+    pod 'KLCPopup', '~> 1.0'
+    pod 'XHToast', '~> 1.4.0'
+    pod 'FDFullscreenPopGesture', '~> 1.1'
+    pod 'XHLaunchAd', '~> 3.9.1'
+    pod 'RDVTabBarController', '~> 1.1.9'
+    pod 'UIImage-Helpers', '~> 0.0.3'
+    pod 'zhPopupController', '~> 1.0.2'
+    pod 'Masonry'
+end

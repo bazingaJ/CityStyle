@@ -1,0 +1,82 @@
+//
+//  ChengGeLeasing-prefix.pch
+//  ChengGeLeasing
+//
+//  Created by 相约在冬季 on 2017/12/8.
+//  Copyright © 2017年 印特. All rights reserved.
+//
+
+#ifndef ChengGeLeasing_prefix_pch
+#define ChengGeLeasing_prefix_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
+#import <AdSupport/AdSupport.h>
+#import "AFNetworking.h"
+#import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
+#import "KLCPopup.h"
+#import "MJRefresh.h"
+#import "MJExtension.h"
+
+
+#import "AppDelegate.h"
+#import "AppDelegate+Extension.h"
+
+#import "BaseNavigationController.h"
+#import "BaseViewController.h"
+#import "BaseTableViewController.h"
+#import "UIView+Extension.h"
+#import "UIView+Touch.h"
+#import "HttpRequestEx.h"
+#import "HelperManager.h"
+#import "MBProgressHUD+Extension.h"
+#import "RegexKitLite.h"
+#import "NSString+Extension.h"
+#import "JPUSHService.h"
+#import "CGURLManager.h"
+#import "CGLimitTextView.h"
+#import "UIImage+FirstImage.h"
+#import "CGWKWebViewController.h"
+#import "UIView+Empty.h"
+
+//友盟相关
+#import <UMSocialCore/UMSocialCore.h>
+#import "UMSocialWechatHandler.h"
+#import "UMSocialSinaHandler.h"
+#import "CGUMSocialSheetEx.h"
+
+/**
+ *  自定义宏
+ */
+#import "Theme.h"
+#import "CommonDefine.h"
+
+// ============JX======\\
+
+#import <Masonry.h>
+#import "JXTool.h"
+
+//上传图片
+#define pictureHW (SCREEN_WIDTH - 4*10)/3
+#define MaxImageCount 9
+
+//用户登录成功
+#define NOTIFICATION_USER_LOGIN_SUCCESS @"NOTIFICATION_USER_LOGIN_SUCCESS"
+
+//接口返回成功编码
+#define SUCCESS @"10000"
+
+//数据返回失败
+#define MESSAGE_ERROR @"数据返回错误"
+
+//API正式接口
+#define SERVICE_URL @"http://apiv2.chengge.net"
+//API测试接口
+//#define SERVICE_URL @"http://api.chengge.wooxii.com"
+
+#endif /* ChengGeLeasing_prefix_pch */
