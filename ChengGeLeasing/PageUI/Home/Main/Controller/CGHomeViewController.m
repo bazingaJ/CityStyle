@@ -20,6 +20,7 @@
 #import "CGMineMessageViewController.h"
 #import "CGTeamAddViewController.h"
 #import "CGSpotlightView.h"
+#import "CGUpdateView.h"
 
 @interface CGHomeViewController ()<CGVersionPopupViewDelegate,UITableViewDelegate,UITableViewDataSource,CGHomeCellDelegate>
 
@@ -278,6 +279,26 @@
     if(![[HelperManager CreateInstance] isLogin:NO completion:^(NSInteger tIndex) {
         [self getXiangmuList];
     }]) return;
+    
+    CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"创建更多项目\n邀请小伙伴一起合作"];
+    view.clickCallBack = ^(NSInteger tIndex) {
+        [self.popup dismiss:YES];
+        if (tIndex == 0)
+        {
+            return ;
+        }
+        else
+        {
+            [MBProgressHUD showMessage:@"确定删除" toView:self.view];
+        }
+    };
+    self.popup = [KLCPopup popupWithContentView:view
+                                       showType:KLCPopupShowTypeGrowIn
+                                    dismissType:KLCPopupDismissTypeGrowOut
+                                       maskType:KLCPopupMaskTypeDimmed
+                       dismissOnBackgroundTouch:NO
+                          dismissOnContentTouch:NO];
+    [self.popup show];
     
     XTHomeLeftView *leftView = [[XTHomeLeftView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-40, SCREEN_HEIGHT)];
     leftView.didClickItem = ^(XTHomeLeftView *view, CGTeamXiangmuModel *model, NSInteger index) {

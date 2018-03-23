@@ -17,6 +17,7 @@
 #import "CGNetdiscNamePopupView.h"
 #import "YWFilePreviewView.h"
 #import "CGFileOpenViewController.h"
+#import "CGUpdateView.h"
 
 @interface CGNetdiscViewController () <ZLPhotoPickerBrowserViewControllerDelegate>
 
@@ -37,8 +38,28 @@
 
     //获取我的权限
     [self getMyAuth];
-    
+    CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"获取更大网盘空间"];
+    view.clickCallBack = ^(NSInteger tIndex) {
+        [self.popup dismiss:YES];
+        if (tIndex == 0)
+        {
+            return ;
+        }
+        else
+        {
+            [MBProgressHUD showMessage:@"确定删除" toView:self.view];
+        }
+    };
+    self.popup = [KLCPopup popupWithContentView:view
+                                       showType:KLCPopupShowTypeGrowIn
+                                    dismissType:KLCPopupDismissTypeGrowOut
+                                       maskType:KLCPopupMaskTypeDimmed
+                       dismissOnBackgroundTouch:NO
+                          dismissOnContentTouch:NO];
+    [self.popup show];
 }
+
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 70;
@@ -335,8 +356,7 @@
             CGLocalVideoListViewController *videoView = [[CGLocalVideoListViewController alloc] init];
             videoView.callBack = ^(CGLocalVideoModel *model){
                 NSLog(@"选择视图回调成功");
-                
-                CGNetdiscNamePopupView *popupView = [[CGNetdiscNamePopupView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 300, 175) contentStr:@""];
+                CGNetdiscNamePopupView *popupView = [[CGNetdiscNamePopupView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 300, 175) titleStr:@"重命名" placeholderStr:@"请输入文件名称" contentStr:@""];
                 popupView.callBack = ^(NSInteger tIndex, NSString *content) {
                     NSLog(@"编辑、添加业态回调成功:%zd-%@",tIndex,content);
                     [self.popup dismiss:YES];
@@ -391,8 +411,7 @@
 //    } else {
 //        // Fallback on earlier versions
 //    }
-    
-    CGNetdiscNamePopupView *popupView = [[CGNetdiscNamePopupView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 300, 175) contentStr:@""];
+    CGNetdiscNamePopupView *popupView = [[CGNetdiscNamePopupView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 300, 175) titleStr:@"重命名" placeholderStr:@"请输入文件名称" contentStr:@""];
     popupView.callBack = ^(NSInteger tIndex, NSString *content) {
         NSLog(@"编辑、添加业态回调成功:%zd-%@",tIndex,content);
         [self.popup dismiss:YES];

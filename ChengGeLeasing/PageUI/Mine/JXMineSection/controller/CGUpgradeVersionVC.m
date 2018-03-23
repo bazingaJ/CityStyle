@@ -74,7 +74,7 @@ static NSString *const cellItem5 = @"网盘文件数";
     [self.view addSubview:btn];
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(50);
-        make.bottom.mas_equalTo(self.view);
+        make.bottom.mas_equalTo(self.view).offset(-HOME_INDICATOR_HEIGHT);
         make.left.right.mas_equalTo(self.view);
     }];
     

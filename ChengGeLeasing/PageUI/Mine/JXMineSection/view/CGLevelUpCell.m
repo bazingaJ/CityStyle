@@ -17,6 +17,20 @@
     self.countLab.layer.borderWidth = 0.5f;
     
 }
+- (IBAction)minusBtnClick:(UIButton *)sender {
+    if ([self.delegate respondsToSelector:@selector(miunsBtnClickWithButton:)])
+    {
+        [self.delegate miunsBtnClickWithButton:sender];
+    }
+}
+
+- (IBAction)plusBtnClick:(UIButton *)sender {
+    if ([self.delegate respondsToSelector:@selector(plusBtnClickWithButton:)])
+    {
+        [self.delegate plusBtnClickWithButton:sender];
+    }
+}
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

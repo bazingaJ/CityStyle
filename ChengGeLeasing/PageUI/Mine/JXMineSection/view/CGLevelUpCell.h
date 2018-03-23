@@ -8,8 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol JXLevelUpDelegate <NSObject>
+
+// plus button click event
+- (void)plusBtnClickWithButton:(UIButton *)sender;
+
+// miuns button click event
+- (void)miunsBtnClickWithButton:(UIButton *)sender;
+
+
+@end
+
+
 @interface CGLevelUpCell : UITableViewCell
 
+@property (nonatomic, assign) id<JXLevelUpDelegate>delegate;
 
 /**
  cell1

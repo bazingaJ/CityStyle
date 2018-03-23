@@ -10,7 +10,10 @@
 
 @implementation CGNetdiscNamePopupView
 
-- (id)initWithFrame:(CGRect)frame contentStr:(NSString *)contentStr {
+- (instancetype)initWithFrame:(CGRect)frame
+                     titleStr:(NSString *)titleStr
+               placeholderStr:(NSString *)placeholderStr
+                   contentStr:(NSString *)contentStr {
     self = [super initWithFrame:frame];
     if(self) {
         
@@ -18,7 +21,7 @@
         
         //创建“重命名”
         UILabel *lbMsg = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, 50)];
-        [lbMsg setText:@"重命名"];
+        [lbMsg setText:titleStr];
         [lbMsg setTextColor:[UIColor whiteColor]];
         [lbMsg setTextAlignment:NSTextAlignmentCenter];
         [lbMsg setFont:FONT20];
@@ -27,7 +30,7 @@
         
         //创建“输入面板”
         UITextField *tbxContent = [[UITextField alloc] initWithFrame:CGRectMake(15, 65, frame.size.width-30, 30)];
-        [tbxContent setPlaceholder:@"请输入文件名称"];
+        [tbxContent setPlaceholder:placeholderStr];
         [tbxContent setText:contentStr];
         [tbxContent setTextAlignment:NSTextAlignmentLeft];
         [tbxContent setTextColor:COLOR3];
@@ -68,7 +71,7 @@
                 //输入文本验证
                 NSString *contentStr = tbxContent.text;
                 if(i==1 && IsStringEmpty(contentStr)) {
-                    [MBProgressHUD showError:@"请输入业态名称" toView:nil];
+                    [MBProgressHUD showError:@"请输入" toView:nil];
                 }else{
                     if(self.callBack) {
                         self.callBack(i, tbxContent.text);

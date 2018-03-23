@@ -19,6 +19,8 @@
 #import "CGMineTransferViewController.h"
 #import "CGMineAuthViewController.h"
 #import "CGMineHandoverViewController.h"
+#import "CGRentDefineVC.h"
+#import "CGUpdateView.h"
 
 @interface CGMineTeamDetailViewController () {
     NSMutableDictionary *titleDic;
@@ -28,6 +30,7 @@
 }
 
 @property (nonatomic, strong) NSMutableArray *allArr;
+@property (nonatomic, strong) KLCPopup *popup;
 
 @end
 
@@ -43,7 +46,6 @@
 - (void)viewDidLoad {
     [self setBottomH:45];
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
     self.title = @"项目及团队管理";
     
@@ -72,6 +74,7 @@
     [titleArr2 addObject:@[@"区域",@"0"]];
     [titleArr2 addObject:@[@"铺位",@"1"]];
     [titleArr2 addObject:@[@"业态",@"2"]];
+    [titleArr2 addObject:@[@"租金定义",@"3"]];
     [titleDic setValue:titleArr2 forKey:@"2"];
     
     //创建“解散项目”
@@ -89,7 +92,25 @@
     [btnFunc setTag:self.type];
     [btnFunc addTarget:self action:@selector(btnFuncClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnFunc];
-    
+    CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"添加更多项目\n小伙伴一起合作"];
+    view.clickCallBack = ^(NSInteger tIndex) {
+        [self.popup dismiss:YES];
+        if (tIndex == 0)
+        {
+            return ;
+        }
+        else
+        {
+            [MBProgressHUD showMessage:@"确定删除" toView:self.view];
+        }
+    };
+    self.popup = [KLCPopup popupWithContentView:view
+                                       showType:KLCPopupShowTypeGrowIn
+                                    dismissType:KLCPopupDismissTypeGrowOut
+                                       maskType:KLCPopupMaskTypeDimmed
+                       dismissOnBackgroundTouch:NO
+                          dismissOnContentTouch:NO];
+    [self.popup show];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -176,9 +197,9 @@
      
     [lbMsg setText:[NSString stringWithFormat:@"团队成员(%@)",memberNum]];
     }else if(section==1) {
-        [lbMsg setText:@"团队管理"];
-    }else if(section==2) {
         [lbMsg setText:@"项目管理"];
+    }else if(section==2) {
+        [lbMsg setText:@"项目设置"];
     }
     [lbMsg setTextColor:COLOR3];
     [lbMsg setTextAlignment:NSTextAlignmentLeft];
@@ -430,6 +451,12 @@
                         
                         break;
                     }
+                    case 3: {
+                        //租金定义
+                        
+                        
+                        break;
+                    }
                         
                     default:
                         break;
@@ -566,6 +593,14 @@
                     
                     CGMineFormatViewController *formatView = [[CGMineFormatViewController alloc] init];
                     formatView.pro_id = self.pro_id;
+                    [self.navigationController pushViewController:formatView animated:YES];
+                    
+                    break;
+                }
+                case 3: {
+                    //租金定义
+                    
+                    CGRentDefineVC *formatView = [[CGRentDefineVC alloc] init];
                     [self.navigationController pushViewController:formatView animated:YES];
                     
                     break;

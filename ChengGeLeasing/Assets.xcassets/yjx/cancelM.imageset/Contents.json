@@ -6,12 +6,12 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "payfail@2x.png",
+      "filename" : "cancelM@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "payfail@3x.png",
+      "filename" : "cancelM@3x.png",
       "scale" : "3x"
     }
   ],

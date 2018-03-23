@@ -38,22 +38,27 @@
 - (void)viewDidLoad {
     [self setTopH:45];
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
     
     self.title = @"手机通讯录";
     
     //创建“搜索框”
     [self searchView];
     
-    if ([[UIDevice currentDevice].systemVersion floatValue]>=9.0){
+    if ([[UIDevice currentDevice].systemVersion floatValue]>=9.0)
+    {
         
         CNAuthorizationStatus authorizationStatus = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
-        if (authorizationStatus == CNAuthorizationStatusNotDetermined) {
+        if (authorizationStatus == CNAuthorizationStatusNotDetermined)
+        {
             CNContactStore *contactStore = [[CNContactStore alloc] init];
             [contactStore requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
-                if (granted) {
+                if (granted)
+                {
                     
-                } else {
+                }
+                else
+                {
                     NSLog(@"授权失败, error=%@", error);
                 }
             }];
@@ -175,7 +180,8 @@
 - (void)getDataList:(BOOL)isMore {
     
     CNAuthorizationStatus authorizationStatus = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
-    if (authorizationStatus == CNAuthorizationStatusAuthorized) {
+    if (authorizationStatus == CNAuthorizationStatusAuthorized)
+    {
         NSLog(@"没有授权...");
     }
     
@@ -191,7 +197,8 @@
         
         NSString *givenName = contact.givenName;
         NSString *familyName = contact.familyName;
-        NSLog(@"givenName=%@, familyName=%@", givenName, familyName);
+        NSArray *telName = contact.phoneNumbers;
+        NSLog(@"givenName=%@, familyName=%@, telephone=%@", givenName, familyName,telName);
         
         NSString *nameStr = [NSString stringWithFormat:@"%@%@",contact.familyName,contact.givenName];
         

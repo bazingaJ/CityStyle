@@ -27,7 +27,10 @@ static NSString *const alertPhotoText = @"remind";
 static NSString *const agreePhotoText = @"agree_blank";
 static NSString *const agredPhotoText = @"agree";
 
-@interface CGLevelUpVC ()
+static const NSInteger minNumberCount = 5;
+static const NSInteger minMonthCount = 12;
+
+@interface CGLevelUpVC ()<JXLevelUpDelegate>
 @property (nonatomic, strong) NSArray *originArr;
 @end
 
@@ -137,8 +140,10 @@ static NSString *const agredPhotoText = @"agree";
             {
                 cell2 = [[[NSBundle mainBundle] loadNibNamed:@"CGLevelUpCell" owner:nil options:nil]objectAtIndex:1];
             }
+            cell2.delegate = self;
             cell2.itemLab2.text = self.originArr[0][indexPath.row];
             cell2.countLab.text = @[@"",@"5",@"12",@""][indexPath.row];
+            cell2.detailLab2.text = @[@"",@"个",@"月",@""][indexPath.row];
             return cell2;
         }
     }
@@ -159,6 +164,7 @@ static NSString *const agredPhotoText = @"agree";
             {
                 cell3 = [[[NSBundle mainBundle] loadNibNamed:@"CGLevelUpCell" owner:nil options:nil]objectAtIndex:2];
             }
+            cell3.delegate = self;
             cell3.payTitleLab.text = self.originArr[1][indexPath.row];
             if (indexPath.row == 2)
             {
@@ -178,7 +184,7 @@ static NSString *const agredPhotoText = @"agree";
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     
-    return 50.f;
+    return 40.f;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -191,15 +197,15 @@ static NSString *const agredPhotoText = @"agree";
     if (section == 0)
     {
         UIView *view = [UIView new];
-        view.frame = CGRectMake(0, 0, SCREEN_WIDTH, 50);
+        view.frame = CGRectMake(0, 0, SCREEN_WIDTH, 40);
         
         UIImageView *alertImage = [[UIImageView alloc] init];
-        alertImage.frame = CGRectMake(15, 17.5, 15, 15);
+        alertImage.frame = CGRectMake(15, (40 - 15) * 0.5, 15, 15);
         alertImage.image = [UIImage imageNamed:alertPhotoText];
         [view addSubview:alertImage];
         
         UILabel *detailLab = [[UILabel alloc] init];
-        detailLab.frame = CGRectMake(40, 15, SCREEN_WIDTH - 40, 20);
+        detailLab.frame = CGRectMake(40, (40 - 20) * 0.5, SCREEN_WIDTH - 40, 20);
         detailLab.text = detailText;
         detailLab.font = FONT11;
         detailLab.textColor = COLOR3;
@@ -209,30 +215,104 @@ static NSString *const agredPhotoText = @"agree";
     else
     {
         UIView *view = [UIView new];
-        view.frame = CGRectMake(0, 0, SCREEN_WIDTH, 50);
+        view.frame = CGRectMake(0, 0, SCREEN_WIDTH, 40);
         
-        UIImageView *alertImage = [[UIImageView alloc] init];
-        alertImage.frame = CGRectMake(15, 17.5, 15, 15);
-        alertImage.image = [UIImage imageNamed:agreePhotoText];
-        [view addSubview:alertImage];
+        UIButton *alertBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        alertBtn.frame =CGRectMake(15, (40 - 15) * 0.5, 15, 15);
+        [alertBtn setImage:[UIImage imageNamed:agreePhotoText] forState:UIControlStateNormal];
+        [alertBtn setImage:[UIImage imageNamed:agredPhotoText] forState:UIControlStateSelected];
+        [alertBtn addTarget:self action:@selector(alertBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        alertBtn.selected = NO;
+        [view addSubview:alertBtn];
         
         UILabel *detailLab = [[UILabel alloc] init];
-        detailLab.frame = CGRectMake(40, 15, 110, 20);
+        detailLab.frame = CGRectMake(40, (40 - 20) * 0.5, 110, 20);
         detailLab.text = readText;
         detailLab.font = FONT11;
         detailLab.textColor = COLOR6;
         [view addSubview:detailLab];
         
         UIButton *agreementBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        agreementBtn.frame = CGRectMake(123, 10, 100, 30);
+        agreementBtn.frame = CGRectMake(123, (40 - 30) * 0.5, 100, 30);
         [agreementBtn setTitle:agreementText forState:UIControlStateNormal];
         [agreementBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
         agreementBtn.titleLabel.font = FONT11;
+        [agreementBtn addTarget:self action:@selector(agreeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:agreementBtn];
         
         return view;
     }
     
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 1 && indexPath.row == 1)
+    {
+        NSIndexPath *indexPath2 = [NSIndexPath indexPathForRow:2 inSection:1];
+        CGLevelUpCell *cell1 = [self.tableView cellForRowAtIndexPath:indexPath];
+        CGLevelUpCell *cell2 = [self.tableView cellForRowAtIndexPath:indexPath2];
+        cell1.selectBtn.hidden = NO;
+        cell2.selectBtn.hidden = YES;
+    }
+    else if (indexPath.section == 1 && indexPath.row == 2)
+    {
+        NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:1 inSection:1];
+        CGLevelUpCell *cell1 = [self.tableView cellForRowAtIndexPath:indexPath1];
+        CGLevelUpCell *cell2 = [self.tableView cellForRowAtIndexPath:indexPath];
+        cell1.selectBtn.hidden = YES;
+        cell2.selectBtn.hidden = NO;
+    }
+}
+
+// plus button click event method
+- (void)plusBtnClickWithButton:(UIButton *)sender
+{
+    
+    CGLevelUpCell *cell2 = (CGLevelUpCell *)sender.superview.superview;
+    NSString *numberText = cell2.countLab.text;
+    cell2.countLab.text = @([numberText integerValue] + 1).stringValue;
+}
+
+// miuns button click event method
+- (void)miunsBtnClickWithButton:(UIButton *)sender
+{
+    
+    CGLevelUpCell *cell2 = (CGLevelUpCell *)sender.superview.superview;
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell2];
+    // distinguish which one is number or month
+    if (indexPath.row == 1)//------number
+    {
+        NSString *numberText = cell2.countLab.text;
+        // less minMonthCount can not miuns
+        if ([numberText integerValue] > minNumberCount)
+        {
+            cell2.countLab.text = @([numberText integerValue] - 1).stringValue;
+        }
+        
+    }
+    else//-----month
+    {
+        NSString *numberText = cell2.countLab.text;
+        // less minMonthCount can not miuns
+        if ([numberText integerValue] > minMonthCount)
+        {
+            cell2.countLab.text = @([numberText integerValue] - 1).stringValue;
+        }
+    }
+    
+}
+
+- (void)alertBtnClick:(UIButton *)button
+{
+    
+    button.selected = !button.selected;
+}
+
+- (void)agreeBtnClick:(UIButton *)button
+{
+    
+    [MBProgressHUD showMessage:@"暂无服务协议" toView:self.view];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -196,8 +196,8 @@ static HelperManager *_createInstance;
 {
 //    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 //    NSString *level = [userDefaults objectForKey:@"level"];
-//    return NO;
-    return YES;
+    return NO;
+//    return YES;
 }
 /**
  *  获取项目ID

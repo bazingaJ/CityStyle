@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface CGMineTeamViewController : BaseViewController
-
+@property (nonatomic, strong) KLCPopup *popup;
 @end

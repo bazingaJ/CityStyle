@@ -10,6 +10,7 @@
 #import "RCSegmentView.h"
 #import "CGMineTeamListViewController.h"
 #import "CGMineTeamCustomerFormatViewController.h"
+#import "CGUpdateView.h"
 
 @interface CGMineTeamViewController ()
 
@@ -71,7 +72,25 @@
         
     };
     [self.view addSubview:segmentView];
-    
+    CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"创建更多项目\n邀请小伙伴一起合作"];
+    view.clickCallBack = ^(NSInteger tIndex) {
+        [self.popup dismiss:YES];
+        if (tIndex == 0)
+        {
+            return ;
+        }
+        else
+        {
+            [MBProgressHUD showMessage:@"确定删除" toView:self.view];
+        }
+    };
+    self.popup = [KLCPopup popupWithContentView:view
+                                       showType:KLCPopupShowTypeGrowIn
+                                    dismissType:KLCPopupDismissTypeGrowOut
+                                       maskType:KLCPopupMaskTypeDimmed
+                       dismissOnBackgroundTouch:NO
+                          dismissOnContentTouch:NO];
+    [self.popup show];
 }
 
 - (void)didReceiveMemoryWarning {

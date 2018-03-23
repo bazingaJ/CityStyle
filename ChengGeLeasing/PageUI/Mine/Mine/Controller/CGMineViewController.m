@@ -15,6 +15,7 @@
 #import "CGMineInfoViewController.h"
 #import "CGUserModel.h"
 #import "CGSpotlightView.h"
+#import "CGEntManagerVC.h"
 
 /**
  Word
@@ -92,15 +93,27 @@ static NSString *const cellTitleText5 = @"设置";
     [titleArr1 addObject:@[@"mine_icon_message",cellTitleText3,@"1"]];
     [titleDic setObject:titleArr1 forKey:@"0"];
     
-    //区块二
-    NSMutableArray *titleArr2 = [NSMutableArray array];
-    [titleArr2 addObject:@[@"VIPaccout",cellTitleText4,@"0"]];
-    [titleDic setObject:titleArr2 forKey:@"1"];
+    if (![HelperManager CreateInstance].isFree)
+    {
+        //区块二
+        NSMutableArray *titleArr2 = [NSMutableArray array];
+        [titleArr2 addObject:@[@"VIPaccout",cellTitleText4,@"0"]];
+        [titleDic setObject:titleArr2 forKey:@"1"];
+        
+        //区块三
+        NSMutableArray *titleArr3 = [NSMutableArray array];
+        [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
+        [titleDic setObject:titleArr3 forKey:@"2"];
+    }
+    else
+    {
+        //区块三
+        NSMutableArray *titleArr3 = [NSMutableArray array];
+        [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
+        [titleDic setObject:titleArr3 forKey:@"1"];
+    }
     
-    //区块三
-    NSMutableArray *titleArr3 = [NSMutableArray array];
-    [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
-    [titleDic setObject:titleArr3 forKey:@"2"];
+    
     
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"mine"])
     {
@@ -201,7 +214,8 @@ static NSString *const cellTitleText5 = @"设置";
         else
         {
             // VIP企业账户管理
-            
+            CGEntManagerVC *vc = [CGEntManagerVC new];
+            [self.navigationController pushViewController:vc animated:YES];
         }
     }
     else

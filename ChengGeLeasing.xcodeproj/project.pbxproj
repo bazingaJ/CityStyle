@@ -396,6 +396,23 @@
 		F4F453C5202C6DC300F4A417 /* YWFilePreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4F453C2202C6DC200F4A417 /* YWFilePreviewView.xib */; };
 		F4F453C6202C6DC300F4A417 /* YWFilePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F453C4202C6DC300F4A417 /* YWFilePreviewView.m */; };
 		F4F453CC202D473100F4A417 /* CGFileOpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F453CB202D473100F4A417 /* CGFileOpenViewController.m */; };
+		F797193A20637987004085F8 /* CGMemberModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F797193920637987004085F8 /* CGMemberModel.m */; };
+		F797193E20637AE7004085F8 /* CGMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F797193C20637AE7004085F8 /* CGMemberCell.m */; };
+		F797193F20637AE7004085F8 /* CGMemberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F797193D20637AE7004085F8 /* CGMemberCell.xib */; };
+		F797194220638D7B004085F8 /* CGMemberRemoveV.m in Sources */ = {isa = PBXBuildFile; fileRef = F797194120638D7B004085F8 /* CGMemberRemoveV.m */; };
+		F797194520639883004085F8 /* CGPayOrderVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F797194420639883004085F8 /* CGPayOrderVC.m */; };
+		F79719492063AB2D004085F8 /* CGPayOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F79719472063AB2D004085F8 /* CGPayOrderCell.m */; };
+		F797194A2063AB2D004085F8 /* CGPayOrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F79719482063AB2D004085F8 /* CGPayOrderCell.xib */; };
+		F797194D2063C9CB004085F8 /* CGOrderDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F797194C2063C9CB004085F8 /* CGOrderDetailVC.m */; };
+		F79719502063D305004085F8 /* CGRenewPayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F797194F2063D305004085F8 /* CGRenewPayVC.m */; };
+		F79719532063D499004085F8 /* CGBuySeatVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F79719522063D499004085F8 /* CGBuySeatVC.m */; };
+		F79719562063D73B004085F8 /* CGRemoveVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F79719552063D73B004085F8 /* CGRemoveVC.m */; };
+		F79719592064A08D004085F8 /* CGRentDefineVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F79719582064A08D004085F8 /* CGRentDefineVC.m */; };
+		F79719602064A559004085F8 /* CGRentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F797195E2064A559004085F8 /* CGRentCell.m */; };
+		F79719612064A559004085F8 /* CGRentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F797195F2064A559004085F8 /* CGRentCell.xib */; };
+		F79719642064D0B2004085F8 /* CGPaymentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F79719632064D0B2004085F8 /* CGPaymentVC.m */; };
+		F79719672064D2A8004085F8 /* CGPaymentTopV.m in Sources */ = {isa = PBXBuildFile; fileRef = F79719662064D2A8004085F8 /* CGPaymentTopV.m */; };
+		F797196A2064F788004085F8 /* CGUpdateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F79719692064F788004085F8 /* CGUpdateView.m */; };
 		F7DB1F3C205F6212008FC53D /* libSocialWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7DB1F3B205F6212008FC53D /* libSocialWeChat.a */; };
 		F7DB1F3E205F621D008FC53D /* libSocialSina.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7DB1F3D205F621D008FC53D /* libSocialSina.a */; };
 		F7DB1F40205F6227008FC53D /* libSocialUniqueId.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7DB1F3F205F6227008FC53D /* libSocialUniqueId.a */; };
@@ -410,6 +427,8 @@
 		F7DB1FAA20624D16008FC53D /* CGLevelUpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F7DB1FA920624D16008FC53D /* CGLevelUpVC.m */; };
 		F7DB1FAE2062520E008FC53D /* CGLevelUpCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F7DB1FAC2062520E008FC53D /* CGLevelUpCell.m */; };
 		F7DB1FAF2062520E008FC53D /* CGLevelUpCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7DB1FAD2062520E008FC53D /* CGLevelUpCell.xib */; };
+		F7DB1FB220634952008FC53D /* CGEntManagerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F7DB1FB120634952008FC53D /* CGEntManagerVC.m */; };
+		F7DB1FB520635A98008FC53D /* CGMemberInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F7DB1FB420635A98008FC53D /* CGMemberInfoVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1172,6 +1191,37 @@
 		F4F453C4202C6DC300F4A417 /* YWFilePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWFilePreviewView.m; sourceTree = "<group>"; };
 		F4F453CA202D473100F4A417 /* CGFileOpenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGFileOpenViewController.h; sourceTree = "<group>"; };
 		F4F453CB202D473100F4A417 /* CGFileOpenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGFileOpenViewController.m; sourceTree = "<group>"; };
+		F797193820637987004085F8 /* CGMemberModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGMemberModel.h; sourceTree = "<group>"; };
+		F797193920637987004085F8 /* CGMemberModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGMemberModel.m; sourceTree = "<group>"; };
+		F797193B20637AE7004085F8 /* CGMemberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGMemberCell.h; sourceTree = "<group>"; };
+		F797193C20637AE7004085F8 /* CGMemberCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGMemberCell.m; sourceTree = "<group>"; };
+		F797193D20637AE7004085F8 /* CGMemberCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CGMemberCell.xib; sourceTree = "<group>"; };
+		F797194020638D7B004085F8 /* CGMemberRemoveV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGMemberRemoveV.h; sourceTree = "<group>"; };
+		F797194120638D7B004085F8 /* CGMemberRemoveV.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGMemberRemoveV.m; sourceTree = "<group>"; };
+		F797194320639883004085F8 /* CGPayOrderVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGPayOrderVC.h; sourceTree = "<group>"; };
+		F797194420639883004085F8 /* CGPayOrderVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGPayOrderVC.m; sourceTree = "<group>"; };
+		F79719462063AB2D004085F8 /* CGPayOrderCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGPayOrderCell.h; sourceTree = "<group>"; };
+		F79719472063AB2D004085F8 /* CGPayOrderCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGPayOrderCell.m; sourceTree = "<group>"; };
+		F79719482063AB2D004085F8 /* CGPayOrderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CGPayOrderCell.xib; sourceTree = "<group>"; };
+		F797194B2063C9CB004085F8 /* CGOrderDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGOrderDetailVC.h; sourceTree = "<group>"; };
+		F797194C2063C9CB004085F8 /* CGOrderDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGOrderDetailVC.m; sourceTree = "<group>"; };
+		F797194E2063D305004085F8 /* CGRenewPayVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGRenewPayVC.h; sourceTree = "<group>"; };
+		F797194F2063D305004085F8 /* CGRenewPayVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGRenewPayVC.m; sourceTree = "<group>"; };
+		F79719512063D499004085F8 /* CGBuySeatVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGBuySeatVC.h; sourceTree = "<group>"; };
+		F79719522063D499004085F8 /* CGBuySeatVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGBuySeatVC.m; sourceTree = "<group>"; };
+		F79719542063D73B004085F8 /* CGRemoveVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGRemoveVC.h; sourceTree = "<group>"; };
+		F79719552063D73B004085F8 /* CGRemoveVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGRemoveVC.m; sourceTree = "<group>"; };
+		F79719572064A08D004085F8 /* CGRentDefineVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGRentDefineVC.h; sourceTree = "<group>"; };
+		F79719582064A08D004085F8 /* CGRentDefineVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGRentDefineVC.m; sourceTree = "<group>"; };
+		F797195D2064A559004085F8 /* CGRentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGRentCell.h; sourceTree = "<group>"; };
+		F797195E2064A559004085F8 /* CGRentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGRentCell.m; sourceTree = "<group>"; };
+		F797195F2064A559004085F8 /* CGRentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CGRentCell.xib; sourceTree = "<group>"; };
+		F79719622064D0B2004085F8 /* CGPaymentVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGPaymentVC.h; sourceTree = "<group>"; };
+		F79719632064D0B2004085F8 /* CGPaymentVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGPaymentVC.m; sourceTree = "<group>"; };
+		F79719652064D2A8004085F8 /* CGPaymentTopV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGPaymentTopV.h; sourceTree = "<group>"; };
+		F79719662064D2A8004085F8 /* CGPaymentTopV.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGPaymentTopV.m; sourceTree = "<group>"; };
+		F79719682064F788004085F8 /* CGUpdateView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUpdateView.h; sourceTree = "<group>"; };
+		F79719692064F788004085F8 /* CGUpdateView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGUpdateView.m; sourceTree = "<group>"; };
 		F7DB1F3B205F6212008FC53D /* libSocialWeChat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSocialWeChat.a; sourceTree = "<group>"; };
 		F7DB1F3D205F621D008FC53D /* libSocialSina.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSocialSina.a; sourceTree = "<group>"; };
 		F7DB1F3F205F6227008FC53D /* libSocialUniqueId.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSocialUniqueId.a; sourceTree = "<group>"; };
@@ -1192,6 +1242,10 @@
 		F7DB1FAB2062520E008FC53D /* CGLevelUpCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGLevelUpCell.h; sourceTree = "<group>"; };
 		F7DB1FAC2062520E008FC53D /* CGLevelUpCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGLevelUpCell.m; sourceTree = "<group>"; };
 		F7DB1FAD2062520E008FC53D /* CGLevelUpCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CGLevelUpCell.xib; sourceTree = "<group>"; };
+		F7DB1FB020634952008FC53D /* CGEntManagerVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGEntManagerVC.h; sourceTree = "<group>"; };
+		F7DB1FB120634952008FC53D /* CGEntManagerVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGEntManagerVC.m; sourceTree = "<group>"; };
+		F7DB1FB320635A98008FC53D /* CGMemberInfoVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGMemberInfoVC.h; sourceTree = "<group>"; };
+		F7DB1FB420635A98008FC53D /* CGMemberInfoVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGMemberInfoVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2445,6 +2499,8 @@
 				F46CFDAD1FE158BE0076B32E /* CGTeamMemberDeleteViewController.m */,
 				F452C0B3201AD4EA0066C778 /* CGCropImageViewController.h */,
 				F452C0B4201AD4EA0066C778 /* CGCropImageViewController.m */,
+				F79719572064A08D004085F8 /* CGRentDefineVC.h */,
+				F79719582064A08D004085F8 /* CGRentDefineVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2464,6 +2520,9 @@
 				F46CFDB01FE1595A0076B32E /* CGMineTeamMemberDeleteCell.m */,
 				F46CFDC41FE215AA0076B32E /* CGMineSearchBarView.h */,
 				F46CFDC51FE215AA0076B32E /* CGMineSearchBarView.m */,
+				F797195D2064A559004085F8 /* CGRentCell.h */,
+				F797195E2064A559004085F8 /* CGRentCell.m */,
+				F797195F2064A559004085F8 /* CGRentCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -3347,6 +3406,8 @@
 		F7DB1F9F2062325E008FC53D /* model */ = {
 			isa = PBXGroup;
 			children = (
+				F797193820637987004085F8 /* CGMemberModel.h */,
+				F797193920637987004085F8 /* CGMemberModel.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -3361,6 +3422,18 @@
 				F7DB1FAB2062520E008FC53D /* CGLevelUpCell.h */,
 				F7DB1FAC2062520E008FC53D /* CGLevelUpCell.m */,
 				F7DB1FAD2062520E008FC53D /* CGLevelUpCell.xib */,
+				F797193B20637AE7004085F8 /* CGMemberCell.h */,
+				F797193C20637AE7004085F8 /* CGMemberCell.m */,
+				F797193D20637AE7004085F8 /* CGMemberCell.xib */,
+				F797194020638D7B004085F8 /* CGMemberRemoveV.h */,
+				F797194120638D7B004085F8 /* CGMemberRemoveV.m */,
+				F79719462063AB2D004085F8 /* CGPayOrderCell.h */,
+				F79719472063AB2D004085F8 /* CGPayOrderCell.m */,
+				F79719482063AB2D004085F8 /* CGPayOrderCell.xib */,
+				F79719652064D2A8004085F8 /* CGPaymentTopV.h */,
+				F79719662064D2A8004085F8 /* CGPaymentTopV.m */,
+				F79719682064F788004085F8 /* CGUpdateView.h */,
+				F79719692064F788004085F8 /* CGUpdateView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -3372,6 +3445,22 @@
 				F7DB1F9A20620A17008FC53D /* CGUpgradeVersionVC.m */,
 				F7DB1FA820624D16008FC53D /* CGLevelUpVC.h */,
 				F7DB1FA920624D16008FC53D /* CGLevelUpVC.m */,
+				F7DB1FB020634952008FC53D /* CGEntManagerVC.h */,
+				F7DB1FB120634952008FC53D /* CGEntManagerVC.m */,
+				F7DB1FB320635A98008FC53D /* CGMemberInfoVC.h */,
+				F7DB1FB420635A98008FC53D /* CGMemberInfoVC.m */,
+				F797194320639883004085F8 /* CGPayOrderVC.h */,
+				F797194420639883004085F8 /* CGPayOrderVC.m */,
+				F797194B2063C9CB004085F8 /* CGOrderDetailVC.h */,
+				F797194C2063C9CB004085F8 /* CGOrderDetailVC.m */,
+				F797194E2063D305004085F8 /* CGRenewPayVC.h */,
+				F797194F2063D305004085F8 /* CGRenewPayVC.m */,
+				F79719512063D499004085F8 /* CGBuySeatVC.h */,
+				F79719522063D499004085F8 /* CGBuySeatVC.m */,
+				F79719542063D73B004085F8 /* CGRemoveVC.h */,
+				F79719552063D73B004085F8 /* CGRemoveVC.m */,
+				F79719622064D0B2004085F8 /* CGPaymentVC.h */,
+				F79719632064D0B2004085F8 /* CGPaymentVC.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -3494,6 +3583,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F797194A2063AB2D004085F8 /* CGPayOrderCell.xib in Resources */,
 				F7DB1FAF2062520E008FC53D /* CGLevelUpCell.xib in Resources */,
 				F4281B191FDA5AE000A38C96 /* ZLPhotoLib.bundle in Resources */,
 				F466C9F11FDA4EB700C2710C /* LaunchScreen.storyboard in Resources */,
@@ -3507,9 +3597,11 @@
 				F44AB4881FDA6079009A3DE0 /* Hiragino Sans GB W3.otf in Resources */,
 				252615961FEB888B0050F122 /* WSDatePickerView.xib in Resources */,
 				F46CFD471FE0C28E0076B32E /* LTPickerView.xib in Resources */,
+				F797193F20637AE7004085F8 /* CGMemberCell.xib in Resources */,
 				F4281AF81FDA5ADF00A38C96 /* UMSocialSDKPromptResources.bundle in Resources */,
 				F4281B0A1FDA5AE000A38C96 /* icon_chose_arrow_sel@2x.png in Resources */,
 				F4281A461FDA5A3500A38C96 /* ChengGeLeasing.css in Resources */,
+				F79719612064A559004085F8 /* CGRentCell.xib in Resources */,
 				F4281AF51FDA5ADF00A38C96 /* UMSocialSDKResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3613,6 +3705,7 @@
 				F4B117821FECEC9900A6CEE3 /* CGDropDownMenu.m in Sources */,
 				F4281B231FDA5AE000A38C96 /* ZLPhotoPickerViewController.m in Sources */,
 				F48CCBEA1FF3A56E003C500C /* UpSimpleHttpClient.m in Sources */,
+				F79719562063D73B004085F8 /* CGRemoveVC.m in Sources */,
 				F46CFDE21FE239310076B32E /* CGMineTeamAreaCell.m in Sources */,
 				F43AED8C1FEA8DA90037C120 /* CGShopLeaseItemModel.m in Sources */,
 				F470FF791FDE7BB90045C0D7 /* CGMineMessageUpcomingModel.m in Sources */,
@@ -3636,6 +3729,7 @@
 				F4F2AA23201313600094B746 /* CGWorkBriefingCell.m in Sources */,
 				F425A5AD1FDA6F38009CC41B /* BaseNavigationController.m in Sources */,
 				F44AB4961FDA60B2009A3DE0 /* AppDelegate+XHLaunchAd.m in Sources */,
+				F79719642064D0B2004085F8 /* CGPaymentVC.m in Sources */,
 				F49A303B1FE257D30070A11B /* CGMineTransferCell.m in Sources */,
 				F46CFDCF1FE236260076B32E /* CGTeamMemberMobileAddViewController.m in Sources */,
 				F46CFD461FE0C28E0076B32E /* LTPickerView.m in Sources */,
@@ -3662,6 +3756,7 @@
 				F43AED761FEA8DA90037C120 /* CGRegionalDistributionModel.m in Sources */,
 				F470FF821FDE85530045C0D7 /* CGMineUpdatePwdViewController.m in Sources */,
 				F43AED501FEA8DA90037C120 /* CGStatisticsListModel.m in Sources */,
+				F79719602064A559004085F8 /* CGRentCell.m in Sources */,
 				F4281B261FDA5AE000A38C96 /* ZLPhotoPickerFooterCollectionReusableView.m in Sources */,
 				F46CFDB11FE1595A0076B32E /* CGMineTeamMemberDeleteCell.m in Sources */,
 				F4C8A37C1FE7999400C31A59 /* CGMineTeamAreaSelectedViewController.m in Sources */,
@@ -3672,6 +3767,7 @@
 				F4281B001FDA5AE000A38C96 /* MD5Encryption.m in Sources */,
 				F43AED681FEA8DA90037C120 /* CGCustomerFunnelHeadView.m in Sources */,
 				F46CFD841FE121730076B32E /* CGMineTeamXiangmuCell.m in Sources */,
+				F79719492063AB2D004085F8 /* CGPayOrderCell.m in Sources */,
 				F47F25691FE2A93E00486A05 /* CGFindModel.m in Sources */,
 				F44AB4931FDA60B2009A3DE0 /* AppDelegate+Extension.m in Sources */,
 				F4EBB5041FEA196E00DB88AC /* CGLeaseMattersCell.m in Sources */,
@@ -3680,6 +3776,7 @@
 				F43AED4E1FEA8DA90037C120 /* CGHasSignedCustomerListModel.m in Sources */,
 				F48CCBE51FF3A56E003C500C /* UPMultipartBody.m in Sources */,
 				F46CFDB41FE15BCB0076B32E /* CGMineTeamGroupViewController.m in Sources */,
+				F797196A2064F788004085F8 /* CGUpdateView.m in Sources */,
 				F43AED651FEA8DA90037C120 /* CGEmailPopView.m in Sources */,
 				F43AED7C1FEA8DA90037C120 /* CGHomeCell.m in Sources */,
 				F46CFDD21FE237590076B32E /* CGMineTeamAreaViewController.m in Sources */,
@@ -3687,6 +3784,7 @@
 				F43AED4B1FEA8DA90037C120 /* CGNotifyBacklogCell.m in Sources */,
 				F44AB4971FDA60B2009A3DE0 /* AppDelegate+Data.m in Sources */,
 				252615831FEB49900050F122 /* CGSelectAddCustomerModel.m in Sources */,
+				F797194220638D7B004085F8 /* CGMemberRemoveV.m in Sources */,
 				F4F35B9B2015C0330053B98A /* CGCustomerInfoExViewController.m in Sources */,
 				F46CFD4D1FE0E0580076B32E /* CGMineChuBeiCustomerViewController.m in Sources */,
 				F470FF3F1FDE55E50045C0D7 /* CGMineCell.m in Sources */,
@@ -3709,6 +3807,7 @@
 				F48CCBEB1FF3A56E003C500C /* UpApiUtils.m in Sources */,
 				F46CFD871FE1219C0076B32E /* CGTeamXiangmuModel.m in Sources */,
 				F43AED861FEA8DA90037C120 /* CGAddNoteViewController.m in Sources */,
+				F797194D2063C9CB004085F8 /* CGOrderDetailVC.m in Sources */,
 				F4281B661FDA5FE000A38C96 /* CGMineViewController.m in Sources */,
 				F4281B101FDA5AE000A38C96 /* ZLCameraView.m in Sources */,
 				F46CFDAB1FE1568A0076B32E /* CGMineTeamMemberContactCell.m in Sources */,
@@ -3766,6 +3865,7 @@
 				F43AED881FEA8DA90037C120 /* CGShopBusinessMattersIntentModel.m in Sources */,
 				F43AED751FEA8DA90037C120 /* CGRegionalDistributionViewController.m in Sources */,
 				F4ACE1441FE7FFE500451C12 /* CGMineHandoverCell.m in Sources */,
+				F79719592064A08D004085F8 /* CGRentDefineVC.m in Sources */,
 				F43AED611FEA8DA90037C120 /* CGLeaseReportViewController.m in Sources */,
 				F470FF761FDE7BAC0045C0D7 /* CGMineMessageUpcomingCell.m in Sources */,
 				252615801FEB49860050F122 /* CGCustomerSearchView.m in Sources */,
@@ -3773,6 +3873,7 @@
 				F466C9E61FDA4EB700C2710C /* AppDelegate.m in Sources */,
 				F4281B021FDA5AE000A38C96 /* Base64Util.m in Sources */,
 				F46CFD7E1FE11FE10076B32E /* CGMineTeamViewController.m in Sources */,
+				F7DB1FB220634952008FC53D /* CGEntManagerVC.m in Sources */,
 				F48CCBEE1FF3B6DF003C500C /* CGLocalVideoListViewController.m in Sources */,
 				F485B2531FE7D3A200F29196 /* CGMineAuthMemberModel.m in Sources */,
 				F44932791FE758A7003ECCAB /* UIImage+FirstImage.m in Sources */,
@@ -3784,6 +3885,7 @@
 				F4EBB50D1FEA35FD00DB88AC /* CGBusinessMattersModel.m in Sources */,
 				F43AED771FEA8DA90037C120 /* CGHomePos_listModel.m in Sources */,
 				F470FF5D1FDE6BCD0045C0D7 /* CGMineMessageModel.m in Sources */,
+				F79719672064D2A8004085F8 /* CGPaymentTopV.m in Sources */,
 				F470FF721FDE76F20045C0D7 /* NSMutableArray+SWUtilityButtons.m in Sources */,
 				F43AED721FEA8DA90037C120 /* CGHomeViewController+Version.m in Sources */,
 				F47F25751FE360F400486A05 /* CGFindXiangmuSheetView.m in Sources */,
@@ -3819,6 +3921,7 @@
 				F46CFDA51FE155ED0076B32E /* CGTeamMemberContactAddViewController.m in Sources */,
 				F43AED541FEA8DA90037C120 /* CGLeaseIntent_InfoModel.m in Sources */,
 				F43AED8E1FEA8DA90037C120 /* CGShopLeaseItemCell.m in Sources */,
+				F797193A20637987004085F8 /* CGMemberModel.m in Sources */,
 				F43AED8D1FEA8DA90037C120 /* CGUnitBusinessMattersCollectionViewCell.m in Sources */,
 				F4EBB5101FEA360A00DB88AC /* CGBusinessMattersCell.m in Sources */,
 				252615A01FF0D24D0050F122 /* CGSpotlightView.m in Sources */,
@@ -3904,6 +4007,7 @@
 				F48CCBE41FF3A56E003C500C /* UPHTTPClient.m in Sources */,
 				F43AED8B1FEA8DA90037C120 /* CGShopBusinessMattersHistoryListModel.m in Sources */,
 				F4281B5A1FDA5DBC00A38C96 /* CGURLManager.m in Sources */,
+				F7DB1FB520635A98008FC53D /* CGMemberInfoVC.m in Sources */,
 				F4281AFF1FDA5AE000A38C96 /* DESManager.m in Sources */,
 				252615741FEB490F0050F122 /* CGSelectAddCustomerViewController.m in Sources */,
 				2526159C1FEBD6210050F122 /* CGSelectingReminderTimeViewController.m in Sources */,
@@ -3919,13 +4023,17 @@
 				F43AED931FEA91570037C120 /* CGUpcomingCell.m in Sources */,
 				F43AED6F1FEA8DA90037C120 /* CGOperatingDynamicDetailsViewController.m in Sources */,
 				F43AED7F1FEA8DA90037C120 /* CGVersionPopupView.m in Sources */,
+				F797194520639883004085F8 /* CGPayOrderVC.m in Sources */,
+				F79719532063D499004085F8 /* CGBuySeatVC.m in Sources */,
 				F470FF601FDE6BF50045C0D7 /* CGMineMessageCell.m in Sources */,
 				F4B117701FEBE5EF00A6CEE3 /* CGCustomerInfoViewController.m in Sources */,
 				F46CFDC31FE212740076B32E /* CGTeamGroupMemberAddCell.m in Sources */,
 				F4ACE14D1FE807CE00451C12 /* CGMineReceiverViewController.m in Sources */,
 				F49A30421FE259C60070A11B /* CGMineAuthViewController.m in Sources */,
 				F48CCBF11FF3B702003C500C /* CGLocalVideoModel.m in Sources */,
+				F79719502063D305004085F8 /* CGRenewPayVC.m in Sources */,
 				F43AED5D1FEA8DA90037C120 /* CGWorkBriefingViewController.m in Sources */,
+				F797193E20637AE7004085F8 /* CGMemberCell.m in Sources */,
 				F4281B0E1FDA5AE000A38C96 /* ZLCameraImageView.m in Sources */,
 				F44BBBF71FDA99E700B6E2C4 /* XTPopupFullView.m in Sources */,
 			);

@@ -93,11 +93,18 @@ static NSString *const timingPhotoText = @"timing";
         [self.lbMobile setFont:FONT16];
         [self addSubview:self.lbMobile];
         
-        // 创建免费账户标志
-        [self createFreeAccountSignButton];
+        if ([HelperManager CreateInstance].isFree){
+            // 创建免费账户标志
+            [self createFreeAccountSignButton];
+        }
+        else
+        {
+            // 创建企业版账户标志
+            [self createEnterpriesSignButton];
+        }
         
-        // 创建企业版账户标志
-//        [self createEnterpriesSignButton];
+        
+        
     }
     return self;
 }
