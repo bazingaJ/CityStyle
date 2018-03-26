@@ -108,8 +108,17 @@
         [_navRightBtn setImage:[UIImage imageNamed:@"home_icon_right"] forState:UIControlStateNormal];
         [_navRightBtn addTarget:self action:@selector(goToNotifyBacklogBtnClick) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_navRightBtn];
-        self.navigationItem.rightBarButtonItem = leftBarButtonItem;
-     
+        
+        
+        UIButton *cloundBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        cloundBtn.frame =CGRectMake(0, 0, 30, 30);
+        [cloundBtn setImage:[UIImage imageNamed:@"mypan"] forState:UIControlStateNormal];
+        [cloundBtn addTarget:self action:@selector(goTocloundBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cloundBtn];
+        
+        NSArray *barBtnItemArr = @[leftBarButtonItem,rightBarButtonItem];
+        
+        self.navigationItem.rightBarButtonItems = barBtnItemArr;
         //创建"小红点"
         _navMsgNumLab = [[UILabel alloc]initWithFrame:CGRectMake(20, 3, 10, 10)];
         _navMsgNumLab.layer.cornerRadius = 5;
@@ -344,6 +353,17 @@
     CGMineMessageViewController *messageView = [[CGMineMessageViewController alloc] init];
     messageView.segmentIndex = 1;
     [self.navigationController pushViewController:messageView animated:YES];
+}
+
+- (void)goTocloundBtnClick
+{
+    
+    //登录验证
+    if(![[HelperManager CreateInstance] isLogin:NO completion:nil]) return;
+    
+    //网盘
+    CGNetdiscViewController *netdiscView = [[CGNetdiscViewController alloc]init];
+    [self.navigationController pushViewController:netdiscView animated:YES];
 }
 
 #pragma mark -Cell代理方法

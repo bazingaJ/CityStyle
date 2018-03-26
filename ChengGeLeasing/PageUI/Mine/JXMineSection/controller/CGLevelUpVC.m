@@ -48,7 +48,7 @@ static const NSInteger minMonthCount = 12;
 - (void)prepareForData
 {
     self.originArr = @[@[priceText,seatSaleText,timingSaleText,tatolText,wechatDetailText],
-          @[payTypeText,wechatPayText,aliPayText,aliPayDetailText]];
+                       @[payTypeText,wechatPayText,aliPayText,aliPayDetailText]];
 }
 
 - (void)createUI 

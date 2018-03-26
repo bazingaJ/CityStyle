@@ -46,14 +46,14 @@
     //创建“总面积”、“已租面积”
     
     //总面积
-    CGFloat totalArea = 0;
+    CGFloat totalArea = 0.f;
     if(!IsStringEmpty(model.totalArea)) {
         totalArea = [model.totalArea floatValue];
     }
     
     //已租面积
-    NSInteger signArea = 0;
-    if(IsStringEmpty(model.totalSignArea)) {
+    CGFloat signArea = 0.f;
+    if(!IsStringEmpty(model.totalSignArea)) {
         signArea = [model.totalSignArea floatValue];
     }
     
