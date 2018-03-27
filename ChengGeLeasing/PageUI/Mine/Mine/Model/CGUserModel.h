@@ -45,5 +45,17 @@
  *  邮箱
  */
 @property (nonatomic, strong) NSString *email;
+/**
+ *  会员类型
+ */
+@property (nonatomic, strong) NSString *vip_type;
+/**
+ *  到期时间
+ */
+@property (nonatomic, strong) NSString *end_time;
+/**
+ *  是否过期
+ */
+@property (nonatomic, strong) NSString *is_over;
 
 @end

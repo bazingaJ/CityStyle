@@ -16,7 +16,7 @@ const CGFloat JXMineHeaderViewHeight = 230;
  */
 static NSString *const freeAccountSignText = @"免费版";
 static NSString *const paidAccountSignText = @"VIP企业版";
-static NSString *const countingText = @"剩余11天19小时";
+static NSString *const countingText = @"";
 /**
  图片
  */
@@ -30,6 +30,8 @@ static NSString *const timingPhotoText = @"timing";
 @property (nonatomic, strong) UIImageView *imgView;
 @property (nonatomic, strong) UILabel *lbNickName;
 @property (nonatomic, strong) UILabel *lbMobile;
+
+@property (nonatomic, strong) UILabel *timingLab;
 
 @end
 
@@ -93,6 +95,17 @@ static NSString *const timingPhotoText = @"timing";
         [self.lbMobile setFont:FONT16];
         [self addSubview:self.lbMobile];
         
+        [self createAccoutSign];
+        
+        
+    }
+    return self;
+}
+
+- (void)createAccoutSign
+{
+    if ([[HelperManager CreateInstance] isLogin:NO completion:nil])
+    {
         if ([HelperManager CreateInstance].isFree){
             // 创建免费账户标志
             [self createFreeAccountSignButton];
@@ -102,13 +115,8 @@ static NSString *const timingPhotoText = @"timing";
             // 创建企业版账户标志
             [self createEnterpriesSignButton];
         }
-        
-        
-        
     }
-    return self;
 }
-
 #pragma mark - 创建免费版账户识别标志
 - (void)createFreeAccountSignButton
 {
@@ -178,12 +186,12 @@ static NSString *const timingPhotoText = @"timing";
         make.width.height.mas_equalTo(15);
     }];
     
-    UILabel *timingLab = [[UILabel alloc] init];
-    timingLab.font = FONT12;
-    timingLab.text = countingText;
-    timingLab.textColor = WHITE_COLOR;
-    [self addSubview:timingLab];
-    [timingLab mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.timingLab = [[UILabel alloc] init];
+    self.timingLab.font = FONT12;
+    self.timingLab.text = countingText;
+    self.timingLab.textColor = WHITE_COLOR;
+    [self addSubview:self.timingLab];
+    [self.timingLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(timingImageView.mas_right).offset(10);
         make.centerY.mas_equalTo(timingImageView.mas_centerY);
         make.width.mas_equalTo(120);
@@ -202,6 +210,24 @@ static NSString *const timingPhotoText = @"timing";
     
     //设置手机号码
     [self.lbMobile setText:[HelperManager CreateInstance].mobile];
+    // model.is_over 1.正常 2.过期
+    if ([model.is_over isEqualToString:@"1"])
+    {
+        NSDate *enddate = [NSDate dateWithTimeIntervalSince1970:[model.end_time doubleValue]];
+        NSTimeInterval nowInterval = [[NSDate date] timeIntervalSince1970];
+        // 3600 * 24 一天 | 3600 一小时
+        NSTimeInterval betweenInterval = [model.end_time doubleValue] - nowInterval; // 差额共多少时间间隔
+        NSInteger wholehours = betweenInterval / 3600; // 差额共多少小时
+        NSInteger days = wholehours / 24; // 差额共多少天
+        NSInteger hours = wholehours - days * 24;
+        NSLog(@"到期日期是%@还剩余：%ld-%ld",enddate,(long)days,(long)hours);
+        self.timingLab.text = [NSString stringWithFormat:@"剩余%ld天%ld小时",(long)days,(long)hours];
+    }
+    else
+    {
+        self.timingLab.text = @"您的VIP账户已过期请及时续费";
+    }
+    
     
 }
 

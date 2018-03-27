@@ -23,6 +23,7 @@ static const CGFloat bottomHeight = 45.f;
 @property (nonatomic, strong) NSArray *sectionTitlesArr;
 @property (nonatomic, strong) NSArray *titleArr;
 @property (nonatomic, strong) NSArray *placeholderArr;
+@property (nonatomic, strong) NSMutableDictionary *contentDic;
 @end
 
 @implementation CGRentDefineVC
@@ -42,6 +43,17 @@ static const CGFloat bottomHeight = 45.f;
     self.sectionTitlesArr = @[@"低区",@"中区",@"高区"];
     self.titleArr = @[@[@"租金≤"],@[@"租金≤",@"租金≥"],@[@"租金≥"]];
     self.placeholderArr = @[@[@"请输入最低租金"],@[@"请输入最低租金",@"请输入最高租金"],@[@"请输入最低租金"]];
+    
+    self.contentDic = [NSMutableDictionary dictionary];
+    NSIndexPath *index1 = [NSIndexPath indexPathForRow:0 inSection:0];
+    NSIndexPath *index2 = [NSIndexPath indexPathForRow:0 inSection:1];
+    NSIndexPath *index3 = [NSIndexPath indexPathForRow:1 inSection:1];
+    NSIndexPath *index4 = [NSIndexPath indexPathForRow:0 inSection:2];
+    self.contentDic[index1] = @"";
+    self.contentDic[index2] = @"";
+    self.contentDic[index3] = @"";
+    self.contentDic[index4] = @"";
+    
 }
 
 - (void)createUI
@@ -85,7 +97,10 @@ static const CGFloat bottomHeight = 45.f;
         cell = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CGRentCell class]) owner:nil options:nil]objectAtIndex:0];
     }
     cell.titleLab.text = self.titleArr[indexPath.section][indexPath.row];
+    cell.numTF1.text = self.contentDic[indexPath];
     cell.numTF1.placeholder = self.placeholderArr[indexPath.section][indexPath.row];
+    [cell.numTF1 addTarget:self action:@selector(textfieldEditing:) forControlEvents:UIControlEventEditingChanged];
+//    cell.numTF1.tag = indexPath.section *10 + indexPath.row;
     return cell;
     
 }
@@ -123,8 +138,68 @@ static const CGFloat bottomHeight = 45.f;
 
 - (void)bottomContainBtnClick
 {
+    NSIndexPath *index1 = [NSIndexPath indexPathForRow:0 inSection:0];
+    NSIndexPath *index2 = [NSIndexPath indexPathForRow:0 inSection:1];
+    NSIndexPath *index3 = [NSIndexPath indexPathForRow:1 inSection:1];
+    NSIndexPath *index4 = [NSIndexPath indexPathForRow:0 inSection:2];
+    if ([self.contentDic[index1] isEqualToString:@""])
+    {
+        [MBProgressHUD showError:@"请输入低区最低租金" toView:self.view];
+        return;
+    }
+    if ([self.contentDic[index2] isEqualToString:@""])
+    {
+        [MBProgressHUD showError:@"请输入中区最低租金" toView:self.view];
+        return;
+    }
+    if ([self.contentDic[index3] isEqualToString:@""])
+    {
+        [MBProgressHUD showError:@"请输入中区最高租金" toView:self.view];
+        return;
+    }
+    if ([self.contentDic[index4] isEqualToString:@""])
+    {
+        [MBProgressHUD showError:@"请输入高区最低租金" toView:self.view];
+        return;
+    }
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"ucenter"] = @"app";
+    param[@"setRent"] = @"act";
+    param[@"pro_id"] = self.pro_id;
+    param[@"lower_price"] = self.contentDic[index1];
+    param[@"med_lower_price"] = self.contentDic[index2];
+    param[@"med_high_price"] = self.contentDic[index3];
+    param[@"high_price"] = self.contentDic[index4];
+    [MBProgressHUD showMsg:@"" toView:self.view];
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           [MBProgressHUD hideHUDForView:self.view];
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               [self.navigationController popViewControllerAnimated:YES];
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
+}
+
+// call this method when textfield is editing
+- (void)textfieldEditing:(UITextField *)textField
+{
     
-    [MBProgressHUD showMessage:@"确定" toView:self.view];
+    CGRentCell *cell = (CGRentCell *)textField.superview.superview;
+    NSIndexPath *index = [self.tableView indexPathForCell:cell];
+    self.contentDic[index] = textField.text;
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {

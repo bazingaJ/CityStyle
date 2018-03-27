@@ -413,6 +413,9 @@
 		F79719642064D0B2004085F8 /* CGPaymentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F79719632064D0B2004085F8 /* CGPaymentVC.m */; };
 		F79719672064D2A8004085F8 /* CGPaymentTopV.m in Sources */ = {isa = PBXBuildFile; fileRef = F79719662064D2A8004085F8 /* CGPaymentTopV.m */; };
 		F797196A2064F788004085F8 /* CGUpdateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F79719692064F788004085F8 /* CGUpdateView.m */; };
+		F7B36D73206A3E8000EEDF56 /* CGMemberContactVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F7B36D72206A3E8000EEDF56 /* CGMemberContactVC.m */; };
+		F7B36D77206A459300EEDF56 /* CGContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F7B36D75206A459300EEDF56 /* CGContactCell.m */; };
+		F7B36D78206A459300EEDF56 /* CGContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7B36D76206A459300EEDF56 /* CGContactCell.xib */; };
 		F7DB1F3C205F6212008FC53D /* libSocialWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7DB1F3B205F6212008FC53D /* libSocialWeChat.a */; };
 		F7DB1F3E205F621D008FC53D /* libSocialSina.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7DB1F3D205F621D008FC53D /* libSocialSina.a */; };
 		F7DB1F40205F6227008FC53D /* libSocialUniqueId.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7DB1F3F205F6227008FC53D /* libSocialUniqueId.a */; };
@@ -1222,6 +1225,11 @@
 		F79719662064D2A8004085F8 /* CGPaymentTopV.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGPaymentTopV.m; sourceTree = "<group>"; };
 		F79719682064F788004085F8 /* CGUpdateView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGUpdateView.h; sourceTree = "<group>"; };
 		F79719692064F788004085F8 /* CGUpdateView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGUpdateView.m; sourceTree = "<group>"; };
+		F7B36D71206A3E8000EEDF56 /* CGMemberContactVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGMemberContactVC.h; sourceTree = "<group>"; };
+		F7B36D72206A3E8000EEDF56 /* CGMemberContactVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGMemberContactVC.m; sourceTree = "<group>"; };
+		F7B36D74206A459300EEDF56 /* CGContactCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGContactCell.h; sourceTree = "<group>"; };
+		F7B36D75206A459300EEDF56 /* CGContactCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGContactCell.m; sourceTree = "<group>"; };
+		F7B36D76206A459300EEDF56 /* CGContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CGContactCell.xib; sourceTree = "<group>"; };
 		F7DB1F3B205F6212008FC53D /* libSocialWeChat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSocialWeChat.a; sourceTree = "<group>"; };
 		F7DB1F3D205F621D008FC53D /* libSocialSina.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSocialSina.a; sourceTree = "<group>"; };
 		F7DB1F3F205F6227008FC53D /* libSocialUniqueId.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSocialUniqueId.a; sourceTree = "<group>"; };
@@ -3434,6 +3442,9 @@
 				F79719662064D2A8004085F8 /* CGPaymentTopV.m */,
 				F79719682064F788004085F8 /* CGUpdateView.h */,
 				F79719692064F788004085F8 /* CGUpdateView.m */,
+				F7B36D74206A459300EEDF56 /* CGContactCell.h */,
+				F7B36D75206A459300EEDF56 /* CGContactCell.m */,
+				F7B36D76206A459300EEDF56 /* CGContactCell.xib */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -3461,6 +3472,8 @@
 				F79719552063D73B004085F8 /* CGRemoveVC.m */,
 				F79719622064D0B2004085F8 /* CGPaymentVC.h */,
 				F79719632064D0B2004085F8 /* CGPaymentVC.m */,
+				F7B36D71206A3E8000EEDF56 /* CGMemberContactVC.h */,
+				F7B36D72206A3E8000EEDF56 /* CGMemberContactVC.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -3592,6 +3605,7 @@
 				F4281B061FDA5AE000A38C96 /* MBProgressHUD.bundle in Resources */,
 				F4281AF01FDA5ADF00A38C96 /* address.plist in Resources */,
 				F466C9EE1FDA4EB700C2710C /* Assets.xcassets in Resources */,
+				F7B36D78206A459300EEDF56 /* CGContactCell.xib in Resources */,
 				F4281B081FDA5AE000A38C96 /* icon_chose_bottom@2x.png in Resources */,
 				F4AAE76A1FF7915D001E4160 /* sound.caf in Resources */,
 				F44AB4881FDA6079009A3DE0 /* Hiragino Sans GB W3.otf in Resources */,
@@ -3630,10 +3644,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-ChengGeLeasing/Pods-ChengGeLeasing-resources.sh",
+				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3797,6 +3813,7 @@
 				F46CFD961FE131C20076B32E /* CGMineFormatEditPopupView.m in Sources */,
 				F43AED4F1FEA8DA90037C120 /* CGLeaseRank_InfoModel.m in Sources */,
 				F4EBB4B01FE8BA8700DB88AC /* CGCustomerLinkmanModel.m in Sources */,
+				F7B36D77206A459300EEDF56 /* CGContactCell.m in Sources */,
 				F46CFD591FE0E7E20076B32E /* CGSearchBarView.m in Sources */,
 				252615761FEB490F0050F122 /* CGIntentionSelectionViewController.m in Sources */,
 				F43AED631FEA8DA90037C120 /* CGLeaseReportTeamViewController.m in Sources */,
@@ -4034,6 +4051,7 @@
 				F79719502063D305004085F8 /* CGRenewPayVC.m in Sources */,
 				F43AED5D1FEA8DA90037C120 /* CGWorkBriefingViewController.m in Sources */,
 				F797193E20637AE7004085F8 /* CGMemberCell.m in Sources */,
+				F7B36D73206A3E8000EEDF56 /* CGMemberContactVC.m in Sources */,
 				F4281B0E1FDA5AE000A38C96 /* ZLCameraImageView.m in Sources */,
 				F44BBBF71FDA99E700B6E2C4 /* XTPopupFullView.m in Sources */,
 			);

@@ -10,4 +10,6 @@
 
 @interface CGRentDefineVC : BaseTableViewController
 
+@property (nonatomic, strong) NSString *pro_id;
+
 @end

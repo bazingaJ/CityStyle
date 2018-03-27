@@ -41,8 +41,8 @@ static const CGFloat bottomBtnHeight = 45.f;
 {
     
     CGMemberModel *model = [CGMemberModel new];
-    model.member_name = @"王红红";
-    model.member_mobeil = @"13260894473";
+    model.name = @"王红红";
+    model.mobile = @"13260894473";
     [self.dataArr removeAllObjects];
     [self.dataArr addObject:model];
     [self.dataArr addObject:model];

@@ -23,6 +23,10 @@ static NSString *const transforAccountText = @"移交账户";
 
 @interface CGEntManagerVC ()
 @property (nonatomic, strong) KLCPopup *popup;
+// account id
+@property (nonatomic, strong) NSString *accountid;
+// endDate
+@property (nonatomic, strong) NSString *endDateStr;
 @end
 
 @implementation CGEntManagerVC
@@ -32,17 +36,23 @@ static NSString *const transforAccountText = @"移交账户";
     [super viewDidLoad];
     self.title = currentTitle;
     // set origin data
-    [self prepareForData];
+    [self prepareForDataWithDataArr:@[@"",@"",@"",@""]];
 }
 
-- (void)prepareForData
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self getBussiessInfoData];
+}
+
+- (void)prepareForDataWithDataArr:(NSArray *)dataArr
 {
     
     [self.dataArr removeAllObjects];
-    [self.dataArr addObject:@[accountIDText,@"12354445131"]];
-    [self.dataArr addObject:@[accountNameText,@"纯粹建筑"]];
-    [self.dataArr addObject:@[expireTimeText,@"2018.07.18"]];
-    [self.dataArr addObject:@[memberInfoText,@"27/30"]];
+    [self.dataArr addObject:@[accountIDText,dataArr[0]]];
+    [self.dataArr addObject:@[accountNameText,dataArr[1]]];
+    [self.dataArr addObject:@[expireTimeText,dataArr[2]]];
+    [self.dataArr addObject:@[memberInfoText,dataArr[3]]];
     [self.dataArr addObject:@[payOrderText,@""]];
     [self.dataArr addObject:@[transforAccountText,@""]];
 }
@@ -115,6 +125,8 @@ static NSString *const transforAccountText = @"移交账户";
     else if (indexPath.row == 3)
     {
         CGMemberInfoVC *vc = [CGMemberInfoVC new];
+        vc.account_id = self.accountid;
+        vc.endDate = self.endDateStr;
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if (indexPath.row == 4)
@@ -138,9 +150,15 @@ static NSString *const transforAccountText = @"移交账户";
         
         if(tIndex==0) return ;
         
-        //上传
-        [self.dataArr replaceObjectAtIndex:1 withObject:@[accountNameText,content]];
-        [self.tableView reloadData];
+        [self requestEnterpriseNameChanged:content completeBlock:^(BOOL isSuccess, NSDictionary *dict) {
+            if (isSuccess)
+            {
+                //上传
+                [self.dataArr replaceObjectAtIndex:1 withObject:@[accountNameText,content]];
+                [self.tableView reloadData];
+            }
+        }];
+        
     };
     self.popup = [KLCPopup popupWithContentView:popupView
                                        showType:KLCPopupShowTypeGrowIn
@@ -150,6 +168,77 @@ static NSString *const transforAccountText = @"移交账户";
                           dismissOnContentTouch:NO];
     [self.popup show];
 }
+
+#pragma mark - Get Enterprise Info Data
+- (void)getBussiessInfoData
+{
+    
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"getBusinessAccountInfo";
+    [MBProgressHUD showSimple:self.view];
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           [MBProgressHUD hideHUDForView:self.view animated:YES];
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               NSDictionary *dict = [json objectForKey:@"data"];
+                               self.accountid = dict[@"account_id"];
+                               self.endDateStr = dict[@"end_date"];
+                               NSString *numInfo = [NSString stringWithFormat:@"%@/%@",dict[@"group_num"],dict[@"account_num"]];
+                               NSArray *dataArr = @[dict[@"account_id"],dict[@"account_name"],dict[@"end_date"],numInfo];
+                               [self prepareForDataWithDataArr:dataArr];
+                               [self.tableView reloadData];
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           [MBProgressHUD hideHUDForView:self.view animated:YES];
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
+}
+
+#pragma mark - Change Enterprise Name
+- (void)requestEnterpriseNameChanged:(NSString *)accountName completeBlock:(void(^)(BOOL isSuccess,NSDictionary *dict))block
+{
+    
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"editAccountInfo";
+    param[@"account_id"] = self.accountid;
+    param[@"account_name"] = accountName;
+    [MBProgressHUD showSimple:self.view];
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           [MBProgressHUD hideHUDForView:self.view animated:YES];
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               NSDictionary *dict = [json objectForKey:@"data"];
+                               block(YES,dict);
+                           }
+                           else
+                           {
+                               block(NO,nil);
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           [MBProgressHUD hideHUDForView:self.view animated:YES];
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
+    
+    
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

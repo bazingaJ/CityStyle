@@ -83,36 +83,6 @@ static NSString *const cellTitleText5 = @"设置";
     //创建“顶部视图”
     self.tableView.tableHeaderView = [self topView];
     
-    //设置数据源
-    titleDic = [NSMutableDictionary dictionary];
-    
-    //区块一
-    NSMutableArray *titleArr1 = [NSMutableArray array];
-    [titleArr1 addObject:@[@"mine_icon_team",cellTitleText1,@"0"]];
-    [titleArr1 addObject:@[@"mine_icon_customer",cellTitleText2,@"0"]];
-    [titleArr1 addObject:@[@"mine_icon_message",cellTitleText3,@"1"]];
-    [titleDic setObject:titleArr1 forKey:@"0"];
-    
-    if (![HelperManager CreateInstance].isFree)
-    {
-        //区块二
-        NSMutableArray *titleArr2 = [NSMutableArray array];
-        [titleArr2 addObject:@[@"VIPaccout",cellTitleText4,@"0"]];
-        [titleDic setObject:titleArr2 forKey:@"1"];
-        
-        //区块三
-        NSMutableArray *titleArr3 = [NSMutableArray array];
-        [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
-        [titleDic setObject:titleArr3 forKey:@"2"];
-    }
-    else
-    {
-        //区块三
-        NSMutableArray *titleArr3 = [NSMutableArray array];
-        [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
-        [titleDic setObject:titleArr3 forKey:@"1"];
-    }
-    
     
     
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"mine"])
@@ -133,6 +103,49 @@ static NSString *const cellTitleText5 = @"设置";
     //获取用户信息
     [self getUserInfo];
     [self.tableView reloadData];
+}
+
+- (void)createCellContents
+{
+    //设置数据源
+    titleDic = [NSMutableDictionary dictionary];
+    
+    //区块一
+    NSMutableArray *titleArr1 = [NSMutableArray array];
+    [titleArr1 addObject:@[@"mine_icon_team",cellTitleText1,@"0"]];
+    [titleArr1 addObject:@[@"mine_icon_customer",cellTitleText2,@"0"]];
+    [titleArr1 addObject:@[@"mine_icon_message",cellTitleText3,@"1"]];
+    [titleDic setObject:titleArr1 forKey:@"0"];
+    
+    
+    if (![[HelperManager CreateInstance] isLogin:NO completion:nil])
+    {
+        NSMutableArray *titleArr3 = [NSMutableArray array];
+        [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
+        [titleDic setObject:titleArr3 forKey:@"1"];
+    }
+    else
+    {
+        if (![HelperManager CreateInstance].isFree)
+        {
+            //区块二
+            NSMutableArray *titleArr2 = [NSMutableArray array];
+            [titleArr2 addObject:@[@"VIPaccout",cellTitleText4,@"0"]];
+            [titleDic setObject:titleArr2 forKey:@"1"];
+            
+            //区块三
+            NSMutableArray *titleArr3 = [NSMutableArray array];
+            [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
+            [titleDic setObject:titleArr3 forKey:@"2"];
+        }
+        else
+        {
+            //区块三
+            NSMutableArray *titleArr3 = [NSMutableArray array];
+            [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
+            [titleDic setObject:titleArr3 forKey:@"1"];
+        }
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -301,6 +314,10 @@ static NSString *const cellTitleText5 = @"设置";
             NSDictionary *dataDic = [json objectForKey:@"data"];
             userInfo = [CGUserModel mj_objectWithKeyValues:dataDic];
             [_topView setMineTopModel:userInfo];
+            [titleDic removeAllObjects];
+            [self createCellContents];
+            [self.topView createAccoutSign];
+            [self.tableView reloadData];
         }
     } failure:^(NSError *error) {
         NSLog(@"%@",[error description]);

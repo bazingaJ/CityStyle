@@ -38,25 +38,29 @@
 
     //获取我的权限
     [self getMyAuth];
-    CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"获取更大网盘空间"];
-    view.clickCallBack = ^(NSInteger tIndex) {
-        [self.popup dismiss:YES];
-        if (tIndex == 0)
-        {
-            return ;
-        }
-        else
-        {
-            [MBProgressHUD showMessage:@"确定删除" toView:self.view];
-        }
-    };
-    self.popup = [KLCPopup popupWithContentView:view
-                                       showType:KLCPopupShowTypeGrowIn
-                                    dismissType:KLCPopupDismissTypeGrowOut
-                                       maskType:KLCPopupMaskTypeDimmed
-                       dismissOnBackgroundTouch:NO
-                          dismissOnContentTouch:NO];
-    [self.popup show];
+    if ([HelperManager CreateInstance].isFree)
+    {
+        CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"获取更大网盘空间"];
+        view.clickCallBack = ^(NSInteger tIndex) {
+            [self.popup dismiss:YES];
+            if (tIndex == 0)
+            {
+                return ;
+            }
+            else
+            {
+                [MBProgressHUD showMessage:@"确定删除" toView:self.view];
+            }
+        };
+        self.popup = [KLCPopup popupWithContentView:view
+                                           showType:KLCPopupShowTypeGrowIn
+                                        dismissType:KLCPopupDismissTypeGrowOut
+                                           maskType:KLCPopupMaskTypeDimmed
+                           dismissOnBackgroundTouch:NO
+                              dismissOnContentTouch:NO];
+        [self.popup show];
+    }
+    
 }
 
 

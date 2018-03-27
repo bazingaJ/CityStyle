@@ -10,6 +10,9 @@
 #import "CGMemberModel.h"
 #import "CGMemberCell.h"
 #import "CGMemberRemoveV.h"
+#import "CGTeamMemberContactAddViewController.h"
+#import "CGTeamMemberMobileAddViewController.h"
+#import "CGMemberContactVC.h"
 
 static NSString *const currentTitle = @"成员信息";
 
@@ -43,18 +46,22 @@ static NSString *cellIdentifier = @"CGMemberCell1";
     [self prepareForData];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self getMemberListData];
+}
+
 - (void)prepareForData
 {
-    CGMemberModel *model = [CGMemberModel new];
-    model.member_name = @"张卫东";
-    model.member_updateTime = @"2018.03.01";
-    model.member_position = @"管理员";
-    [self.dataArr removeAllObjects];
-    [self.dataArr addObject:model];
-    [self.dataArr addObject:model];
-    [self.dataArr addObject:model];
-    [self.dataArr addObject:model];
-    [self.dataArr addObject:model];
+//    CGMemberModel *model = [CGMemberModel new];
+//    model.name = @"张卫东";
+//    model.add_date = @"升级时间：2018.03.01";
+//    model.type_name = @"管理员";
+//    [self.dataArr removeAllObjects];
+//    [self.dataArr addObject:model];
+//    [self.dataArr addObject:model];
+//    [self.dataArr addObject:model];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -76,9 +83,14 @@ static NSString *cellIdentifier = @"CGMemberCell1";
     {
         cell = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CGMemberCell class]) owner:nil options:nil]objectAtIndex:0];
     }
-    cell.model = self.dataArr[indexPath.row];
-    cell.delegate = self;
-    [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:110];
+    CGMemberModel *model = self.dataArr[indexPath.row];
+    cell.model = model;
+    if (![model.is_owner isEqualToString:@"1"])
+    {
+        cell.delegate = self;
+        [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:110];
+    }
+    
     return cell;
 }
 
@@ -177,7 +189,7 @@ static NSString *cellIdentifier = @"CGMemberCell1";
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     
-    return 40.f;
+    return 30.f;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
@@ -187,22 +199,33 @@ static NSString *cellIdentifier = @"CGMemberCell1";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     
-    UIView *view = [UIView new];
-    view.frame = CGRectMake(0, 0, SCREEN_WIDTH, 40);
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"yyyy-MM-dd"];
+    NSDate *date = [format dateFromString:self.endDate];
+    NSTimeInterval endInterval = [date timeIntervalSince1970];
+    NSTimeInterval nowInterval = [[NSDate date] timeIntervalSince1970];
+    // 到期日期时间戳 - 当前时间戳是否 小于一个月的时间戳
+    if (endInterval - nowInterval <= 3600 * 24 * 30)
+    {
+        UIView *view = [UIView new];
+        view.frame = CGRectMake(0, 0, SCREEN_WIDTH, 30);
+        
+        UIImageView *alertImage = [[UIImageView alloc] init];
+        alertImage.frame = CGRectMake(15, (30 - 15) * 0.5, 15, 15);
+        alertImage.image = [UIImage imageNamed:alertText];
+        [view addSubview:alertImage];
+        
+        UILabel *detailLab = [[UILabel alloc] init];
+        detailLab.frame = CGRectMake(40, (30 - 20) * 0.5, SCREEN_WIDTH - 40, 20);
+        detailLab.text = detailText;
+        detailLab.font = FONT11;
+        detailLab.textColor = COLOR3;
+        [view addSubview:detailLab];
+        
+        return view;
+    }
+    return nil;
     
-    UIImageView *alertImage = [[UIImageView alloc] init];
-    alertImage.frame = CGRectMake(15, (40 - 15) * 0.5, 15, 15);
-    alertImage.image = [UIImage imageNamed:alertText];
-    [view addSubview:alertImage];
-    
-    UILabel *detailLab = [[UILabel alloc] init];
-    detailLab.frame = CGRectMake(40, (40 - 20) * 0.5, SCREEN_WIDTH - 40, 20);
-    detailLab.text = detailText;
-    detailLab.font = FONT11;
-    detailLab.textColor = COLOR3;
-    [view addSubview:detailLab];
-    
-    return view;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
@@ -213,6 +236,67 @@ static NSString *cellIdentifier = @"CGMemberCell1";
 - (void)rightButtonItemClick
 {
     
+    UIAlertController *alertController = [[UIAlertController alloc] init];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"从手机通讯录添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSLog(@"从手机通讯录添加");
+        
+        //通讯录添加成员
+        CGMemberContactVC *bookView = [[CGMemberContactVC alloc] init];
+//        bookView.pro_id = self.pro_id;
+//        bookView.selecteArr = self.allArr;
+        [self.navigationController pushViewController:bookView animated:YES];
+        
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"输入手机号添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSLog(@"输入手机号添加");
+        
+        //手机号码添加
+        CGTeamMemberMobileAddViewController *mobileView = [[CGTeamMemberMobileAddViewController alloc] init];
+//        mobileView.pro_id = self.pro_id;
+//        //把已选的客户带过去
+//        mobileView.selecteArr = self.allArr;
+        [self.navigationController pushViewController:mobileView animated:YES];
+        
+    }]];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+#pragma mark - Get Members List Data
+- (void)getMemberListData
+{
+    
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"getGroupMember";
+    param[@"business_id"] = self.account_id;
+    [MBProgressHUD showSimple:self.view];
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           [MBProgressHUD hideHUDForView:self.view animated:YES];
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               NSArray *dataArr = [json objectForKey:@"data"];
+                               [self.dataArr removeAllObjects];
+                               self.dataArr = [CGMemberModel mj_objectArrayWithKeyValuesArray:dataArr];
+                               [self.tableView reloadData];
+                               //设置空白页面
+                               [self.tableView emptyViewShowWithDataType:EmptyViewTypeMember
+                                                                 isEmpty:self.dataArr.count<=0
+                                                     emptyViewClickBlock:nil];
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           [MBProgressHUD hideHUDForView:self.view animated:YES];
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
 }
 
 - (void)didReceiveMemoryWarning {

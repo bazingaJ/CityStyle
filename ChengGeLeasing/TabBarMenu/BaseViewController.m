@@ -87,6 +87,7 @@
     [userInfo setValue:[userDic objectForKey:@"gender"] forKey:@"gender"];
     [userInfo setValue:[userDic objectForKey:@"gender_name"] forKey:@"gender_name"];
     [userInfo setValue:[userDic objectForKey:@"email"] forKey:@"email"];
+    [userInfo setValue:[userDic objectForKey:@"vip_type"] forKey:@"vip_type"];
     [userDefault setObject:userInfo forKey:@"userInfo"];
     [userDefault synchronize];
 }

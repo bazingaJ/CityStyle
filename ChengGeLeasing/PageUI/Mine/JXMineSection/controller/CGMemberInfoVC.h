@@ -9,5 +9,6 @@
 #import "BaseTableViewController.h"
 
 @interface CGMemberInfoVC : BaseTableViewController
-
+@property (nonatomic, strong) NSString *account_id;
+@property (nonatomic, strong) NSString *endDate;
 @end

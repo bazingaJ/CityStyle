@@ -194,10 +194,10 @@ static HelperManager *_createInstance;
  */
 - (BOOL)isFree
 {
-//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//    NSString *level = [userDefaults objectForKey:@"level"];
-    return NO;
-//    return YES;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *level = [userDefaults objectForKey:@"vip_type"];
+    return [level isEqualToString:@"1"] ? YES : NO ;
+    
 }
 /**
  *  获取项目ID

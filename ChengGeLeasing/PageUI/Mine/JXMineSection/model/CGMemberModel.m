@@ -10,4 +10,9 @@
 
 @implementation CGMemberModel
 
++ (NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{@"member_id":@"id"};
+}
+
 @end

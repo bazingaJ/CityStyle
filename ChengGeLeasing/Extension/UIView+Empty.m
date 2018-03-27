@@ -194,6 +194,12 @@ static char WarningViewKey;
             title = @"暂无数据～";
             break;
         }
+        case EmptyViewTypeMember: {
+            
+            imageName = @"empty_icon_contract";
+            title = @"暂无成员～";
+            break;
+        }
             
         default:
             break;

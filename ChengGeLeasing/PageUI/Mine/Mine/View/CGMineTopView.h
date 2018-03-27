@@ -22,5 +22,5 @@ extern const CGFloat JXMineHeaderViewHeight;
 
 @property (assign) id<CGMineTopViewDelegate> delegate;
 - (void)setMineTopModel:(CGUserModel *)model;
-
+- (void)createAccoutSign;
 @end

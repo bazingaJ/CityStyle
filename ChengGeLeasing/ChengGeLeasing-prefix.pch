@@ -50,6 +50,8 @@
 #import "UMSocialSinaHandler.h"
 #import "CGUMSocialSheetEx.h"
 
+#import <IQKeyboardManager.h>
+
 /**
  *  自定义宏
  */
@@ -75,8 +77,8 @@
 #define MESSAGE_ERROR @"数据返回错误"
 
 //API正式接口
-#define SERVICE_URL @"http://apiv2.chengge.net"
+//#define SERVICE_URL @"http://apiv2.chengge.net"
 //API测试接口
-//#define SERVICE_URL @"http://api.chengge.wooxii.com"
+#define SERVICE_URL @"http://api.chengge.renxixi.com"
 
 #endif /* ChengGeLeasing_prefix_pch */

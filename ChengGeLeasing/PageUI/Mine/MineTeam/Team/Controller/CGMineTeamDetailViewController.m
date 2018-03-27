@@ -92,25 +92,28 @@
     [btnFunc setTag:self.type];
     [btnFunc addTarget:self action:@selector(btnFuncClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnFunc];
-    CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"添加更多项目\n小伙伴一起合作"];
-    view.clickCallBack = ^(NSInteger tIndex) {
-        [self.popup dismiss:YES];
-        if (tIndex == 0)
-        {
-            return ;
-        }
-        else
-        {
-            [MBProgressHUD showMessage:@"确定删除" toView:self.view];
-        }
-    };
-    self.popup = [KLCPopup popupWithContentView:view
-                                       showType:KLCPopupShowTypeGrowIn
-                                    dismissType:KLCPopupDismissTypeGrowOut
-                                       maskType:KLCPopupMaskTypeDimmed
-                       dismissOnBackgroundTouch:NO
-                          dismissOnContentTouch:NO];
-    [self.popup show];
+    if ([HelperManager CreateInstance].isFree)
+    {
+        CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"添加更多项目\n小伙伴一起合作"];
+        view.clickCallBack = ^(NSInteger tIndex) {
+            [self.popup dismiss:YES];
+            if (tIndex == 0)
+            {
+                return ;
+            }
+            else
+            {
+                [MBProgressHUD showMessage:@"确定删除" toView:self.view];
+            }
+        };
+        self.popup = [KLCPopup popupWithContentView:view
+                                           showType:KLCPopupShowTypeGrowIn
+                                        dismissType:KLCPopupDismissTypeGrowOut
+                                           maskType:KLCPopupMaskTypeDimmed
+                           dismissOnBackgroundTouch:NO
+                              dismissOnContentTouch:NO];
+        [self.popup show];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -600,8 +603,9 @@
                 case 3: {
                     //租金定义
                     
-                    CGRentDefineVC *formatView = [[CGRentDefineVC alloc] init];
-                    [self.navigationController pushViewController:formatView animated:YES];
+                    CGRentDefineVC *defineVC = [[CGRentDefineVC alloc] init];
+                    defineVC.pro_id = self.pro_id;
+                    [self.navigationController pushViewController:defineVC animated:YES];
                     
                     break;
                 }

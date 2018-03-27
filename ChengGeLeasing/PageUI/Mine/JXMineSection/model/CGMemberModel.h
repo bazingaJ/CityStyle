@@ -10,9 +10,12 @@
 
 @interface CGMemberModel : NSObject
 
-@property (nonatomic, strong) NSString *member_name;
-@property (nonatomic, strong) NSString *member_updateTime;
-@property (nonatomic, strong) NSString *member_position;
-@property (nonatomic, strong) NSString *member_mobeil;
-
+@property (nonatomic, strong) NSString *member_id;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *add_date;
+@property (nonatomic, strong) NSString *type;
+@property (nonatomic, strong) NSString *type_name;
+@property (nonatomic, strong) NSString *is_owner;
+@property (nonatomic, strong) NSString *mobile;
+@property (nonatomic, strong) NSString *avatar;
 @end

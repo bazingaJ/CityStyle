@@ -141,7 +141,10 @@
                     }
                 }
             }
-            
+            //设置空白页面
+            [self.tableView emptyViewShowWithDataType:EmptyViewTypeCustomer
+                                              isEmpty:self.dataArr.count<=0
+                                  emptyViewClickBlock:nil];
         }
         else
         {

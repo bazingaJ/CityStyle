@@ -16,16 +16,18 @@
 }
 - (void)setModel:(CGMemberModel *)model
 {
-    self.name.text = model.member_name;
-    self.updateTimeLab.text = model.member_updateTime;
-    self.positionLab.text = model.member_position;
+    
+    self.name.text = model.name;
+    self.updateTimeLab.text = [NSString stringWithFormat:@"%@",model.add_date];
+    self.positionLab.text = model.type_name;
 }
 
 - (void)setRemove_model:(CGMemberModel *)remove_model
 {
-//    self.headImg
-    self.memberName.text = remove_model.member_name;
-    self.memberTel.text = remove_model.member_mobeil;
+    
+//    self.headImg sd
+    self.memberName.text = remove_model.name;
+    self.memberTel.text = remove_model.mobile;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -27,7 +27,8 @@ static const CGFloat bottomHeight = 45;
 @interface CGPayOrderVC ()
 @property (nonatomic, strong) UIView *lineView;
 @property (nonatomic, strong) UIButton *bottomBtn;
-
+// current order list type
+@property (nonatomic, strong) NSString *typeStr;
 @end
 
 @implementation CGPayOrderVC
@@ -45,6 +46,8 @@ static const CGFloat bottomHeight = 45;
 {
     [self.dataArr removeAllObjects];
     [self.dataArr addObjectsFromArray:@[@"",@"",@""]];
+    // set current list type 2.续费 3 席位
+    self.typeStr = @"2";
 }
 - (void)createUI
 {
@@ -114,6 +117,7 @@ static const CGFloat bottomHeight = 45;
     {
         cell = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CGPayOrderCell class]) owner:nil options:nil]objectAtIndex:0];
     }
+    
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -147,6 +151,7 @@ static const CGFloat bottomHeight = 45;
     if (self.lineView.frame.origin.x > SCREEN_WIDTH * 0.5 - 100)
     {
         [UIView animateWithDuration:.3f delay:0.01 usingSpringWithDamping:.5f initialSpringVelocity:0.f options:UIViewAnimationOptionCurveEaseOut animations:^{
+            self.typeStr = @"2";
             self.lineView.transform = CGAffineTransformIdentity;
             [self.tableView.mj_header beginRefreshing];
             [self.bottomBtn setTitle:payBtnText forState:UIControlStateNormal];
@@ -163,6 +168,7 @@ static const CGFloat bottomHeight = 45;
     if (self.lineView.frame.origin.x < 100)
     {
         [UIView animateWithDuration:.3f delay:0.01 usingSpringWithDamping:0.5f initialSpringVelocity:0.f options:UIViewAnimationOptionCurveEaseOut animations:^{
+            self.typeStr = @"3";
             self.lineView.transform = CGAffineTransformMakeTranslation(SCREEN_WIDTH * 0.5, 0);
             [self.tableView.mj_header beginRefreshing];
             [self.bottomBtn setTitle:seatBtnText forState:UIControlStateNormal];
@@ -191,10 +197,33 @@ static const CGFloat bottomHeight = 45;
 - (void)getDataList:(BOOL)isMore
 {
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self endDataRefresh];
-    });
-    
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"getVipOrderList";
+    param[@"type"] = self.typeStr;
+    [MBProgressHUD showSimple:self.view];
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           [MBProgressHUD hideHUDForView:self.view animated:YES];
+                           [self endDataRefresh];
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               NSDictionary *dict = [json objectForKey:@"data"];
+                               
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           [MBProgressHUD hideHUDForView:self.view animated:YES];
+                           [self endDataRefresh];
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
     
 }
 
