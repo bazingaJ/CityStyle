@@ -24,6 +24,10 @@ static NSString *const cancelBtnText = @"取消管理员";
 
 static NSString *const cancelPicText = @"cancelM";
 
+static NSString *const setBtnText = @"设为管理员";
+
+static NSString *const setPicText = @"makeM";
+
 static NSString *const removeText = @"移除";
 
 static NSString *const removePicText = @"remove";
@@ -88,22 +92,35 @@ static NSString *cellIdentifier = @"CGMemberCell1";
     if (![model.is_owner isEqualToString:@"1"])
     {
         cell.delegate = self;
-        [cell setRightUtilityButtons:[self rightButtons] WithButtonWidth:110];
+        [cell setRightUtilityButtons:[self rightButtons:model] WithButtonWidth:110];
     }
     
     return cell;
 }
 
-- (NSArray *)rightButtons
+- (NSArray *)rightButtons:(CGMemberModel *)model
 {
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
+    NSString *role = @"";
+    NSString *rolePic= @"";
+    // type 1.管理员 2.普通成员
+    if ([model.type isEqualToString:@"1"])
+    {
+        role = cancelBtnText;
+        rolePic = cancelPicText;
+    }
+    else
+    {
+        role = setBtnText;
+        rolePic = setPicText;
+    }
     //设置已办按钮
     UIButton *btnFunc2 = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnFunc2 setTitle:cancelBtnText forState:UIControlStateNormal];
+    [btnFunc2 setTitle:role forState:UIControlStateNormal];
     [btnFunc2 setTitleColor:COLOR3 forState:UIControlStateNormal];
     [btnFunc2.titleLabel setFont:FONT14];
     [btnFunc2 setBackgroundColor:GRAY_COLOR];
-    [btnFunc2 setImage:[UIImage imageNamed:cancelPicText] forState:UIControlStateNormal];
+    [btnFunc2 setImage:[UIImage imageNamed:rolePic] forState:UIControlStateNormal];
 //    [btnFunc2 setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
     //文字距离上边框的距离增加imageView的高度，距离左边框减少imageView的宽度，距离下边框和右边框距离不变
     [btnFunc2 setTitleEdgeInsets:UIEdgeInsetsMake(45 ,0, 0, 0)];
@@ -140,18 +157,21 @@ static NSString *cellIdentifier = @"CGMemberCell1";
     CGMemberCell *tCell = (CGMemberCell *)cell;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:tCell];
     
-    CGMemberModel *model;
-    if(self.dataArr.count)
-    {
-        model = [self.dataArr objectAtIndex:indexPath.row];
-    }
+    CGMemberModel *model = [self.dataArr objectAtIndex:indexPath.row];
     
     if(!model) return;
     
     switch (index) {
         case 0: {
-            //取消管理员
-            NSLog(@"取消管理员");
+            //设置管理员 取消管理员
+            if ([model.type isEqualToString:@"1"])  //已经是管理员了 所以操作是取消管理员
+            {
+                [self managerOperation:model operType:@"2"];
+            }
+            else //不是管理员了 所以操作是设置为管理员
+            {
+                [self managerOperation:model operType:@"1"];
+            }
             
             break;
         }
@@ -167,7 +187,7 @@ static NSString *cellIdentifier = @"CGMemberCell1";
                 }
                 else
                 {
-                    [MBProgressHUD showMessage:@"确定删除" toView:self.view];
+                    [self removeMenber:model];
                 }
             };
             self.popup = [KLCPopup popupWithContentView:view
@@ -270,18 +290,17 @@ static NSString *cellIdentifier = @"CGMemberCell1";
     param[@"app"] = @"ucenter";
     param[@"act"] = @"getGroupMember";
     param[@"business_id"] = self.account_id;
-    [MBProgressHUD showSimple:self.view];
     [HttpRequestEx postWithURL:SERVICE_URL
                         params:param
                        success:^(id json) {
-                           [MBProgressHUD hideHUDForView:self.view animated:YES];
                            NSString *code = [json objectForKey:@"code"];
                            NSString *msg  = [json objectForKey:@"msg"];
                            if ([code isEqualToString:SUCCESS])
                            {
-                               NSArray *dataArr = [json objectForKey:@"data"];
+                               NSDictionary *dataDic = [json objectForKey:@"data"];
+                               NSArray *arr = dataDic[@"list"];
                                [self.dataArr removeAllObjects];
-                               self.dataArr = [CGMemberModel mj_objectArrayWithKeyValuesArray:dataArr];
+                               self.dataArr = [CGMemberModel mj_objectArrayWithKeyValuesArray:arr];
                                [self.tableView reloadData];
                                //设置空白页面
                                [self.tableView emptyViewShowWithDataType:EmptyViewTypeMember
@@ -294,7 +313,78 @@ static NSString *cellIdentifier = @"CGMemberCell1";
                            }
                        }
                        failure:^(NSError *error) {
-                           [MBProgressHUD hideHUDForView:self.view animated:YES];
+                           
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
+}
+
+#pragma mark - tableview cell operation
+- (void)managerOperation:(CGMemberModel *)model operType:(NSString *)type
+{
+    
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"setMemberRole";
+    param[@"type"] = type;
+    param[@"business_id"] = self.account_id;
+    param[@"member_id"] = model.member_id;
+    [MBProgressHUD showSimple:self.view];
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           [MBProgressHUD hideHUDForView:self.view];
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                   [MBProgressHUD showMessage:@"设置成功" toView:self.view];
+                                   [self getMemberListData];
+                               });
+                               
+                               
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           [MBProgressHUD hideHUDForView:self.view];
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
+}
+
+- (void)removeMenber:(CGMemberModel *)model
+{
+    
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"removeGroupMember";
+    param[@"members"] = model.member_id;
+    [MBProgressHUD showSimple:self.view];
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           [MBProgressHUD hideHUDForView:self.view];
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                   [MBProgressHUD showMessage:@"已移除" toView:self.view];
+                                   [self getMemberListData];
+                               });
+                               
+                               
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           [MBProgressHUD hideHUDForView:self.view];
                            [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
                        }];
 }

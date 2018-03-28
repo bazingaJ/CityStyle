@@ -101,6 +101,21 @@ return self;\
 \
 }
 
+#define FREE_PRICE [[NSUserDefaults standardUserDefaults] objectForKey:@"free_price"]
+#define FREE_USERNUM [[NSUserDefaults standardUserDefaults] objectForKey:@"free_user_num"]
+#define FREE_PRONUM [[NSUserDefaults standardUserDefaults] objectForKey:@"free_pro_num"]
+#define FREE_POSNUM [[NSUserDefaults standardUserDefaults] objectForKey:@"free_pos_num"]
+#define FREE_CATENUM [[NSUserDefaults standardUserDefaults] objectForKey:@"free_cate_num"]
+#define FREE_SKYDRIVERNUM [[NSUserDefaults standardUserDefaults] objectForKey:@"free_sky_drive_num"]
+
+#define VIP_PRICE [[NSUserDefaults standardUserDefaults] objectForKey:@"vip_price"]
+#define VIP_USERNUM [[NSUserDefaults standardUserDefaults] objectForKey:@"vip_user_num"]
+#define VIP_PRONUM [[NSUserDefaults standardUserDefaults] objectForKey:@"vip_pro_num"]
+#define VIP_POSNUM [[NSUserDefaults standardUserDefaults] objectForKey:@"vip_pos_num"]
+#define VIP_CATENUM [[NSUserDefaults standardUserDefaults] objectForKey:@"vip_cate_num"]
+#define VIP_SKYDRIVERNUM [[NSUserDefaults standardUserDefaults] objectForKey:@"vip_sky_drive_num"]
+
+#define VIP_TYPE [[NSUserDefaults standardUserDefaults] objectForKey:@"vip_type"]
 
 
 #endif /* CommonDefine_h */

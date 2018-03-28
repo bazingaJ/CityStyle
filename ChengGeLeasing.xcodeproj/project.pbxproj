@@ -396,6 +396,7 @@
 		F4F453C5202C6DC300F4A417 /* YWFilePreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4F453C2202C6DC200F4A417 /* YWFilePreviewView.xib */; };
 		F4F453C6202C6DC300F4A417 /* YWFilePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F453C4202C6DC300F4A417 /* YWFilePreviewView.m */; };
 		F4F453CC202D473100F4A417 /* CGFileOpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F453CB202D473100F4A417 /* CGFileOpenViewController.m */; };
+		F7873413206B9BB300DFBD10 /* CGMemberAddMobileVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F7873412206B9BB300DFBD10 /* CGMemberAddMobileVC.m */; };
 		F797193A20637987004085F8 /* CGMemberModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F797193920637987004085F8 /* CGMemberModel.m */; };
 		F797193E20637AE7004085F8 /* CGMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F797193C20637AE7004085F8 /* CGMemberCell.m */; };
 		F797193F20637AE7004085F8 /* CGMemberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F797193D20637AE7004085F8 /* CGMemberCell.xib */; };
@@ -1194,6 +1195,8 @@
 		F4F453C4202C6DC300F4A417 /* YWFilePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWFilePreviewView.m; sourceTree = "<group>"; };
 		F4F453CA202D473100F4A417 /* CGFileOpenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGFileOpenViewController.h; sourceTree = "<group>"; };
 		F4F453CB202D473100F4A417 /* CGFileOpenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGFileOpenViewController.m; sourceTree = "<group>"; };
+		F7873411206B9BB300DFBD10 /* CGMemberAddMobileVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGMemberAddMobileVC.h; sourceTree = "<group>"; };
+		F7873412206B9BB300DFBD10 /* CGMemberAddMobileVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGMemberAddMobileVC.m; sourceTree = "<group>"; };
 		F797193820637987004085F8 /* CGMemberModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGMemberModel.h; sourceTree = "<group>"; };
 		F797193920637987004085F8 /* CGMemberModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGMemberModel.m; sourceTree = "<group>"; };
 		F797193B20637AE7004085F8 /* CGMemberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGMemberCell.h; sourceTree = "<group>"; };
@@ -3474,6 +3477,8 @@
 				F79719632064D0B2004085F8 /* CGPaymentVC.m */,
 				F7B36D71206A3E8000EEDF56 /* CGMemberContactVC.h */,
 				F7B36D72206A3E8000EEDF56 /* CGMemberContactVC.m */,
+				F7873411206B9BB300DFBD10 /* CGMemberAddMobileVC.h */,
+				F7873412206B9BB300DFBD10 /* CGMemberAddMobileVC.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -3975,6 +3980,7 @@
 				F4281B1A1FDA5AE000A38C96 /* UIImage+ZLPhotoLib.m in Sources */,
 				F4281B211FDA5AE000A38C96 /* ZLPhotoPickerAssetsViewController.m in Sources */,
 				F470FF7F1FDE83750045C0D7 /* CGMineMessageUpcomingDetailViewController.m in Sources */,
+				F7873413206B9BB300DFBD10 /* CGMemberAddMobileVC.m in Sources */,
 				F4E9E0E01FE52A9C006F4D04 /* CGMineTeamMemberMobileCell.m in Sources */,
 				F7DB1FA420623298008FC53D /* CGVersionCell.m in Sources */,
 				F4EBB4B91FE93B4D00DB88AC /* CGFindHardwareModel.m in Sources */,

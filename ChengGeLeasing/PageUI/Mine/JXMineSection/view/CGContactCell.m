@@ -23,13 +23,25 @@
     self.phoneLab.text = model.mobileStr;
 }
 
+- (void)setTeamMemberModel:(CGTeamMemberModel *)teamMemberModel
+{
+    
+    [self.avatarImg sd_setImageWithURL:[NSURL URLWithString:teamMemberModel.avatar] placeholderImage:[UIImage imageNamed:@"contact_icon_avatar"]];
+    self.nameLab.text = teamMemberModel.name;
+    self.phoneLab.text = teamMemberModel.mobile;
+}
+
 - (IBAction)invateBtnClick:(UIButton *)sender
 {
  
-    
+    if ([self.delegate respondsToSelector:@selector(invateBtnClick:)])
+    {
+        [self.delegate invateBtnClick:sender];
+    }
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
     [super setSelected:selected animated:animated];
 
     

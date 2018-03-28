@@ -9,9 +9,12 @@
 #import "CGMineTeamListViewController.h"
 #import "CGMineTeamDetailViewController.h"
 #import "CGTeamAddViewController.h"
+#import "CGUpdateView.h"
+#import "CGUpgradeVersionVC.h"
 
 @interface CGMineTeamListViewController ()
-
+@property (nonatomic, strong) KLCPopup *popup;
+@property (nonatomic, strong) NSString *mypronum;
 @end
 
 @implementation CGMineTeamListViewController
@@ -20,7 +23,7 @@
     [self setBottomH:90];
     [self setShowFooterRefresh:YES];
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
     
     //创建“新建项目”
     UIButton *btnFunc = [[UIButton alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT-NAVIGATION_BAR_HEIGHT-HOME_INDICATOR_HEIGHT-90, SCREEN_WIDTH, 45)];
@@ -201,6 +204,69 @@
     //登录验证
     if(![[HelperManager CreateInstance] isLogin:NO completion:nil]) return;
     
+    // 判断是否能够继续创建新的项目 与本地存储的 免费或者vip账户进行比对
+    if ([HelperManager CreateInstance].isFree)
+    {
+        
+        if ([self.mypronum integerValue] >= [FREE_PRONUM integerValue])
+        {
+            CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"创建更多项目\n邀请小伙伴一起合作"];
+            view.clickCallBack = ^(NSInteger tIndex) {
+                [self.popup dismiss:YES];
+                if (tIndex == 0)
+                {
+                    return ;
+                }
+                else
+                {
+                    CGUpgradeVersionVC *vc = [CGUpgradeVersionVC new];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+            };
+            self.popup = [KLCPopup popupWithContentView:view
+                                               showType:KLCPopupShowTypeGrowIn
+                                            dismissType:KLCPopupDismissTypeGrowOut
+                                               maskType:KLCPopupMaskTypeDimmed
+                               dismissOnBackgroundTouch:NO
+                                  dismissOnContentTouch:NO];
+            [self.popup show];
+            return ;
+        }
+    
+    }
+    else
+    {
+        // VIP账户的 数量如果是0 意思就是 不限制数量
+        if ([VIP_PRONUM integerValue] != 0)
+        {
+            if ([self.mypronum integerValue] >= [VIP_PRONUM integerValue])
+            {
+                CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"创建更多项目\n邀请小伙伴一起合作"];
+                view.clickCallBack = ^(NSInteger tIndex) {
+                    [self.popup dismiss:YES];
+                    if (tIndex == 0)
+                    {
+                        return ;
+                    }
+                    else
+                    {
+                        CGUpgradeVersionVC *vc = [CGUpgradeVersionVC new];
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }
+                };
+                self.popup = [KLCPopup popupWithContentView:view
+                                                   showType:KLCPopupShowTypeGrowIn
+                                                dismissType:KLCPopupDismissTypeGrowOut
+                                                   maskType:KLCPopupMaskTypeDimmed
+                                   dismissOnBackgroundTouch:NO
+                                      dismissOnContentTouch:NO];
+                [self.popup show];
+                return ;
+            }
+        }
+        
+    }
+    
     CGTeamAddViewController *addView = [[CGTeamAddViewController alloc] init];
     addView.callBack = ^{
         [self.tableView.mj_header beginRefreshing];
@@ -222,6 +288,12 @@
         NSString *code = [json objectForKey:@"code"];
         if([code isEqualToString:SUCCESS]) {
             NSDictionary *dataDic = [json objectForKey:@"data"];
+            if (self.type == 1)
+            {
+                self.mypronum = dataDic[@"count"];
+            }
+            
+            
             if([dataDic isKindOfClass:[NSDictionary class]]) {
                 NSArray *dataArr = [dataDic objectForKey:@"list"];
                 if([dataArr isKindOfClass:[NSArray class]]) {

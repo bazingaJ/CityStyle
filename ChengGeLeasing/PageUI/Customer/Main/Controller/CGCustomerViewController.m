@@ -222,7 +222,7 @@
 //        [self getDataList:NO];
         
     };
-    leftView.didXiangmuClick = ^(XTHomeLeftView *view) {
+    leftView.didXiangmuClick = ^(XTHomeLeftView *view, NSString *myProNum) {
         NSLog(@"创建项目回调成功");
         
         [self.zh_popupController dismiss];

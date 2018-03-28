@@ -19,10 +19,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="57.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="租金≤" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zfr-gk-2OS">
-                        <rect key="frame" x="15" y="18" width="50" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zfr-gk-2OS">
+                        <rect key="frame" x="15" y="18" width="20" height="21"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="50" id="3aV-jX-uaq"/>
+                            <constraint firstAttribute="width" constant="20" id="3aV-jX-uaq"/>
                             <constraint firstAttribute="height" constant="21" id="qg9-jW-oZG"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -30,7 +30,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请填写低区最大值" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TAm-UM-jxF">
-                        <rect key="frame" x="75" y="13" width="155" height="30"/>
+                        <rect key="frame" x="80" y="13" width="150" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="8Oe-Ek-tlX"/>
                         </constraints>
@@ -55,16 +55,28 @@
                             <constraint firstAttribute="height" constant="0.5" id="63O-2K-9gF"/>
                         </constraints>
                     </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="—" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1V-pq-BQi">
+                        <rect key="frame" x="40" y="18.5" width="30" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="1T7-he-ywv"/>
+                            <constraint firstAttribute="height" constant="20" id="OC1-OC-gm4"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="zfr-gk-2OS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="1no-5m-419"/>
                     <constraint firstAttribute="bottom" secondItem="iP6-ca-tUe" secondAttribute="bottom" id="8JL-46-3Fw"/>
+                    <constraint firstItem="TAm-UM-jxF" firstAttribute="leading" secondItem="C1V-pq-BQi" secondAttribute="trailing" constant="10" id="9VN-Oc-eAS"/>
                     <constraint firstItem="iP6-ca-tUe" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Ejy-h6-EqS"/>
                     <constraint firstAttribute="trailing" secondItem="U67-Tr-EH4" secondAttribute="trailing" constant="15" id="LF0-H6-4Rj"/>
                     <constraint firstAttribute="trailing" secondItem="iP6-ca-tUe" secondAttribute="trailing" id="Nk8-xc-2TW"/>
                     <constraint firstItem="U67-Tr-EH4" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="OSV-ET-RxJ"/>
-                    <constraint firstItem="TAm-UM-jxF" firstAttribute="leading" secondItem="zfr-gk-2OS" secondAttribute="trailing" constant="10" id="ThQ-sX-lP0"/>
                     <constraint firstItem="TAm-UM-jxF" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="cIX-Fg-gnt"/>
+                    <constraint firstItem="C1V-pq-BQi" firstAttribute="leading" secondItem="zfr-gk-2OS" secondAttribute="trailing" constant="5" id="e0g-OX-m1R"/>
+                    <constraint firstItem="C1V-pq-BQi" firstAttribute="centerY" secondItem="zfr-gk-2OS" secondAttribute="centerY" id="fRy-lO-iyP"/>
                     <constraint firstItem="U67-Tr-EH4" firstAttribute="leading" secondItem="TAm-UM-jxF" secondAttribute="trailing" constant="10" id="kmm-wY-YPJ"/>
                     <constraint firstItem="zfr-gk-2OS" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="oM0-T2-CR2"/>
                     <constraint firstItem="U67-Tr-EH4" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="y6z-aQ-OdD"/>
@@ -84,7 +96,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请填写中区最大值" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LgT-eP-q1H">
+                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请填写中区最大值" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LgT-eP-q1H">
                         <rect key="frame" x="15" y="6" width="210" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="rPA-Lb-o8l"/>

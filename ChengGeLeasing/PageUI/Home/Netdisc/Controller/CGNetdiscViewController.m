@@ -18,6 +18,8 @@
 #import "YWFilePreviewView.h"
 #import "CGFileOpenViewController.h"
 #import "CGUpdateView.h"
+#import "CGUpgradeVersionVC.h"
+
 
 @interface CGNetdiscViewController () <ZLPhotoPickerBrowserViewControllerDelegate>
 
@@ -25,7 +27,7 @@
     //yes有权限
     BOOL is_authority;
 }
-
+@property (nonatomic, strong) NSString *my_sky_num;
 @end
 
 @implementation CGNetdiscViewController
@@ -38,28 +40,7 @@
 
     //获取我的权限
     [self getMyAuth];
-    if ([HelperManager CreateInstance].isFree)
-    {
-        CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"获取更大网盘空间"];
-        view.clickCallBack = ^(NSInteger tIndex) {
-            [self.popup dismiss:YES];
-            if (tIndex == 0)
-            {
-                return ;
-            }
-            else
-            {
-                [MBProgressHUD showMessage:@"确定删除" toView:self.view];
-            }
-        };
-        self.popup = [KLCPopup popupWithContentView:view
-                                           showType:KLCPopupShowTypeGrowIn
-                                        dismissType:KLCPopupDismissTypeGrowOut
-                                           maskType:KLCPopupMaskTypeDimmed
-                           dismissOnBackgroundTouch:NO
-                              dismissOnContentTouch:NO];
-        [self.popup show];
-    }
+    
     
 }
 
@@ -328,6 +309,69 @@
 - (void)btnFuncClick:(UIButton *)btnSender {
     NSLog(@"上传文件");
     
+    // 判断是否能够继续创建新的项目 与本地存储的 免费或者vip账户进行比对
+    if ([HelperManager CreateInstance].isFree)
+    {
+        
+        if ([self.my_sky_num integerValue] >= [FREE_SKYDRIVERNUM integerValue])
+        {
+            CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"获取更大网盘空间"];
+            view.clickCallBack = ^(NSInteger tIndex) {
+                [self.popup dismiss:YES];
+                if (tIndex == 0)
+                {
+                    return ;
+                }
+                else
+                {
+                    CGUpgradeVersionVC *vc = [CGUpgradeVersionVC new];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+            };
+            self.popup = [KLCPopup popupWithContentView:view
+                                               showType:KLCPopupShowTypeGrowIn
+                                            dismissType:KLCPopupDismissTypeGrowOut
+                                               maskType:KLCPopupMaskTypeDimmed
+                               dismissOnBackgroundTouch:NO
+                                  dismissOnContentTouch:NO];
+            [self.popup show];
+            return ;
+        }
+        
+    }
+    else
+    {
+        // VIP账户的 数量如果是0 意思就是 不限制数量
+        if ([VIP_SKYDRIVERNUM integerValue] != 0)
+        {
+            if ([self.my_sky_num integerValue] >= [VIP_SKYDRIVERNUM integerValue])
+            {
+                CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"获取更大网盘空间"];
+                view.clickCallBack = ^(NSInteger tIndex) {
+                    [self.popup dismiss:YES];
+                    if (tIndex == 0)
+                    {
+                        return ;
+                    }
+                    else
+                    {
+                        CGUpgradeVersionVC *vc = [CGUpgradeVersionVC new];
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }
+                };
+                self.popup = [KLCPopup popupWithContentView:view
+                                                   showType:KLCPopupShowTypeGrowIn
+                                                dismissType:KLCPopupDismissTypeGrowOut
+                                                   maskType:KLCPopupMaskTypeDimmed
+                                   dismissOnBackgroundTouch:NO
+                                      dismissOnContentTouch:NO];
+                [self.popup show];
+                return ;
+            }
+        }
+        
+    }
+    
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.delegate = self;
     imagePicker.allowsEditing = YES;
@@ -491,11 +535,11 @@
         NSDictionary *dataDic = json[@"data"];
         if ([code isEqualToString:SUCCESS])
         {
+            self.my_sky_num = dataDic[@"my_sky_num"];
+            NSLog(@"我创建的云盘文件%@",self.my_sky_num);
             NSArray *listArr =dataDic[@"list"];
-            for (NSDictionary *itemDic in listArr)
-            {
-                [self.dataArr addObject:[CGNetdiscModel mj_objectWithKeyValues:itemDic]];
-            }
+            [self.dataArr removeAllObjects];
+            self.dataArr = [CGNetdiscModel mj_objectArrayWithKeyValuesArray:listArr];
             
             //当前总数
             NSString *dataNum = [dataDic objectForKey:@"count"];

@@ -12,7 +12,7 @@
 @interface XTHomeLeftView () {
     CGRect leftFrame;
 }
-
+@property (nonatomic, strong) NSString *myPro_num;
 @end
 
 @implementation XTHomeLeftView
@@ -95,7 +95,7 @@
     [btnFunc setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
     [btnFunc addTouch:^{
         if(self.didXiangmuClick) {
-            self.didXiangmuClick(self);
+            self.didXiangmuClick(self,self.myPro_num);
         }
     }];
     [backView addSubview:btnFunc];
@@ -241,6 +241,7 @@
         NSString *code = [json objectForKey:@"code"];
         if([code isEqualToString:SUCCESS]) {
             NSDictionary *dataDic = [json objectForKey:@"data"];
+            self.myPro_num = dataDic[@"my_pro_num"];
             if(dataDic && [dataDic count]>0) {
                 NSArray *dataArr = [dataDic objectForKey:@"list"];
                 for (NSDictionary *itemDic in dataArr) {

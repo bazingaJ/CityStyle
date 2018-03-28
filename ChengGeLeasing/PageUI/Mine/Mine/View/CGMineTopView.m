@@ -33,6 +33,7 @@ static NSString *const timingPhotoText = @"timing";
 
 @property (nonatomic, strong) UILabel *timingLab;
 
+
 @end
 
 @implementation CGMineTopView
@@ -106,12 +107,17 @@ static NSString *const timingPhotoText = @"timing";
 {
     if ([[HelperManager CreateInstance] isLogin:NO completion:nil])
     {
-        if ([HelperManager CreateInstance].isFree){
+        if ([HelperManager CreateInstance].isFree)
+        {
+            [self.vipView removeFromSuperview];
+            self.vipView = nil;
             // 创建免费账户标志
             [self createFreeAccountSignButton];
         }
         else
         {
+            [self.freeView removeFromSuperview];
+            self.freeView = nil;
             // 创建企业版账户标志
             [self createEnterpriesSignButton];
         }
@@ -120,6 +126,15 @@ static NSString *const timingPhotoText = @"timing";
 #pragma mark - 创建免费版账户识别标志
 - (void)createFreeAccountSignButton
 {
+    self.freeView = [UIView new];
+    self.freeView.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.freeView];
+    [self.freeView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.lbNickName).offset(60);
+        make.left.right.bottom.mas_equalTo(self);
+        
+    }];
+    
     UILabel *signLab = [[UILabel alloc] init];
     signLab.font = FONT13;
     signLab.layer.cornerRadius = 5;
@@ -128,16 +143,16 @@ static NSString *const timingPhotoText = @"timing";
     signLab.text = freeAccountSignText;
     signLab.backgroundColor = MAIN_COLOR;
     signLab.textAlignment = NSTextAlignmentCenter;
-    [self addSubview:signLab];
+    [self.freeView addSubview:signLab];
     [signLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.lbNickName).offset(60);
-        make.centerX.mas_equalTo(self).offset(-20);
+        make.top.mas_equalTo(self.freeView);
+        make.centerX.mas_equalTo(self.freeView).offset(-20);
         make.width.mas_equalTo(75);
         make.height.mas_equalTo(22);
     }];
     
     UIImageView *freeSignImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:updatePhotoText]];
-    [self addSubview:freeSignImageView];
+    [self.freeView addSubview:freeSignImageView];
     [freeSignImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(signLab.mas_right).offset(10);
         make.top.mas_equalTo(signLab.mas_top);
@@ -150,18 +165,28 @@ static NSString *const timingPhotoText = @"timing";
     [coverBtn setBackgroundColor:CLEAR_COLOR];
     [coverBtn setTitle:@"" forState:UIControlStateNormal];
     [coverBtn addTarget:self action:@selector(upgradeBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:coverBtn];
+    [self.freeView addSubview:coverBtn];
     [coverBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(signLab.mas_left);
         make.right.mas_equalTo(freeSignImageView.mas_right);
         make.top.mas_equalTo(signLab.mas_top).offset(-10);
-        make.bottom.mas_equalTo(self.mas_bottom);
+        make.bottom.mas_equalTo(self.freeView.mas_bottom);
     }];
 }
 
 #pragma mark - 创建企业版账户识别标志
 - (void)createEnterpriesSignButton
 {
+
+    self.vipView = [UIView new];
+    self.vipView.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.vipView];
+    [self.vipView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.lbNickName).offset(50);
+        make.left.right.bottom.mas_equalTo(self);
+        
+    }];
+    
     UILabel *signLab = [[UILabel alloc] init];
     signLab.font = FONT13;
     signLab.layer.cornerRadius = 5;
@@ -170,16 +195,15 @@ static NSString *const timingPhotoText = @"timing";
     signLab.text = paidAccountSignText;
     signLab.backgroundColor = MAIN_COLOR;
     signLab.textAlignment = NSTextAlignmentCenter;
-    [self addSubview:signLab];
+    [self.vipView addSubview:signLab];
     [signLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.lbNickName).offset(50);
-        make.centerX.mas_equalTo(self);
+        make.top.centerX.mas_equalTo(self.vipView);
         make.width.mas_equalTo(75);
         make.height.mas_equalTo(22);
     }];
     
     UIImageView *timingImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:timingPhotoText]];
-    [self addSubview:timingImageView];
+    [self.vipView addSubview:timingImageView];
     [timingImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(signLab).offset(-10);
         make.top.mas_equalTo(signLab.mas_bottom).offset(7);
@@ -190,7 +214,7 @@ static NSString *const timingPhotoText = @"timing";
     self.timingLab.font = FONT12;
     self.timingLab.text = countingText;
     self.timingLab.textColor = WHITE_COLOR;
-    [self addSubview:self.timingLab];
+    [self.vipView addSubview:self.timingLab];
     [self.timingLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(timingImageView.mas_right).offset(10);
         make.centerY.mas_equalTo(timingImageView.mas_centerY);
@@ -202,6 +226,7 @@ static NSString *const timingPhotoText = @"timing";
 }
 - (void)setMineTopModel:(CGUserModel *)model {
     
+    [self createAccoutSign];
     //设置用户头像
     [self.imgView sd_setImageWithURL:[NSURL URLWithString:model.avatar] placeholderImage:[UIImage imageNamed:@"default_img_round_list"]];
     
@@ -225,7 +250,7 @@ static NSString *const timingPhotoText = @"timing";
     }
     else
     {
-        self.timingLab.text = @"您的VIP账户已过期请及时续费";
+        self.timingLab.text = @"您的VIP账户已过期";
     }
     
     

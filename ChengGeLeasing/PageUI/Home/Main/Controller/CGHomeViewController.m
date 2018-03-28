@@ -21,6 +21,7 @@
 #import "CGTeamAddViewController.h"
 #import "CGSpotlightView.h"
 #import "CGUpdateView.h"
+#import "CGUpgradeVersionVC.h"
 
 @interface CGHomeViewController ()<CGVersionPopupViewDelegate,UITableViewDelegate,UITableViewDataSource,CGHomeCellDelegate>
 
@@ -34,7 +35,7 @@
 @property (nonatomic, strong) CGHomeCollectionView *homeCollectionView;
 @property (nonatomic, strong) CGHomeModel *model;
 @property (nonatomic, strong) NSArray *spotlightArr;
-
+@property (nonatomic, strong) NSString *my_pro_num;
 @end
 
 @implementation CGHomeViewController
@@ -224,6 +225,14 @@
     //获取数据
     [self getHomeData];
     
+    // 获取个人信息-vip类型
+    [self getMineInfo];
+    
+    // 获取VIP配置信息
+    [self getVipConfigInfo];
+    
+    
+    
     //版本检测
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self checkSystemVersion];
@@ -288,30 +297,10 @@
     if(![[HelperManager CreateInstance] isLogin:NO completion:^(NSInteger tIndex) {
         [self getXiangmuList];
     }]) return;
-    if ([HelperManager CreateInstance].isFree)
-    {
-        CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"创建更多项目\n邀请小伙伴一起合作"];
-        view.clickCallBack = ^(NSInteger tIndex) {
-            [self.popup dismiss:YES];
-            if (tIndex == 0)
-            {
-                return ;
-            }
-            else
-            {
-                [MBProgressHUD showMessage:@"确定删除" toView:self.view];
-            }
-        };
-        self.popup = [KLCPopup popupWithContentView:view
-                                           showType:KLCPopupShowTypeGrowIn
-                                        dismissType:KLCPopupDismissTypeGrowOut
-                                           maskType:KLCPopupMaskTypeDimmed
-                           dismissOnBackgroundTouch:NO
-                              dismissOnContentTouch:NO];
-        [self.popup show];
-    }
+    
     XTHomeLeftView *leftView = [[XTHomeLeftView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-40, SCREEN_HEIGHT)];
     leftView.didClickItem = ^(XTHomeLeftView *view, CGTeamXiangmuModel *model, NSInteger index) {
+        
         NSLog(@"回调成功索引值:%zd",index);
         [self.zh_popupController dismiss];
         
@@ -324,17 +313,80 @@
         //重新刷数据
         [self getHomeData];
     };
-    leftView.didXiangmuClick = ^(XTHomeLeftView *view) {
+    leftView.didXiangmuClick = ^(XTHomeLeftView *view, NSString *myProNum) {
         NSLog(@"创建项目回调成功");
-        [self.zh_popupController dismiss];
         
+        // 判断是否能够继续创建新的项目 与本地存储的 免费或者vip账户进行比对
+        if ([HelperManager CreateInstance].isFree)
+        {
+            
+            if ([myProNum integerValue] >= [FREE_PRONUM integerValue])
+            {
+                CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"创建更多项目\n邀请小伙伴一起合作"];
+                view.clickCallBack = ^(NSInteger tIndex) {
+                    [self.popup dismiss:YES];
+                    if (tIndex == 0)
+                    {
+                        return ;
+                    }
+                    else
+                    {
+                        [self.zh_popupController dismiss];
+                        CGUpgradeVersionVC *vc = [CGUpgradeVersionVC new];
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }
+                };
+                self.popup = [KLCPopup popupWithContentView:view
+                                                   showType:KLCPopupShowTypeGrowIn
+                                                dismissType:KLCPopupDismissTypeGrowOut
+                                                   maskType:KLCPopupMaskTypeDimmed
+                                   dismissOnBackgroundTouch:NO
+                                      dismissOnContentTouch:NO];
+                [self.popup show];
+                return ;
+            }
+            
+        }
+        else
+        {
+            // VIP账户的 数量如果是0 意思就是 不限制数量
+            if ([VIP_PRONUM integerValue] != 0)
+            {
+                if ([myProNum integerValue] >= [VIP_PRONUM integerValue])
+                {
+                    CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"创建更多项目\n邀请小伙伴一起合作"];
+                    view.clickCallBack = ^(NSInteger tIndex) {
+                        [self.popup dismiss:YES];
+                        if (tIndex == 0)
+                        {
+                            return ;
+                        }
+                        else
+                        {
+                            [self.zh_popupController dismiss];
+                            CGUpgradeVersionVC *vc = [CGUpgradeVersionVC new];
+                            [self.navigationController pushViewController:vc animated:YES];
+                        }
+                    };
+                    self.popup = [KLCPopup popupWithContentView:view
+                                                       showType:KLCPopupShowTypeGrowIn
+                                                    dismissType:KLCPopupDismissTypeGrowOut
+                                                       maskType:KLCPopupMaskTypeDimmed
+                                       dismissOnBackgroundTouch:NO
+                                          dismissOnContentTouch:NO];
+                    [self.popup show];
+                    return ;
+                }
+            }
+            
+        }
+        [self.zh_popupController dismiss];
         //新建项目
         CGTeamAddViewController *addView = [[CGTeamAddViewController alloc] init];
         addView.callBack = ^{
             [self.tableView.mj_header beginRefreshing];
         };
         [self.navigationController pushViewController:addView animated:YES];
-        
         
     };
     self.zh_popupController = [zhPopupController new];
@@ -508,10 +560,12 @@
     [parm setValue:@"home" forKey:@"app"];
     [parm setValue:@"getIndexPage" forKey:@"act"];
     [parm setValue:[HelperManager CreateInstance].proId forKey:@"pro_id"];
-    [MBProgressHUD showMsg:@"加载中..." toView:self.view];
-    [HttpRequestEx postWithURL:SERVICE_URL params:parm success:^(id json)
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:parm
+                       success:^(id json)
      {
          [MBProgressHUD hideHUD:self.view];
+         
          NSString *code =[json objectForKey:@"code"];
          if ([code isEqualToString:SUCCESS])
          {
@@ -523,7 +577,9 @@
          [self.homeCollectionView reloadData];
      } failure:^(NSError *error)
      {
+
          [MBProgressHUD hideHUD:self.view];
+
      }];
 }
 
@@ -541,6 +597,9 @@
         NSString *code = [json objectForKey:@"code"];
         if([code isEqualToString:SUCCESS]) {
             NSDictionary *dataDic = [json objectForKey:@"data"];
+            
+            self.my_pro_num = dataDic[@"my_pro_num"];
+            
             if(dataDic && [dataDic count]>0) {
                 NSArray *dataList = [dataDic objectForKey:@"list"];
                 if(dataList && dataList.count>0) {
@@ -582,6 +641,121 @@
          
      }];
 }
+
+/**
+ 获取个人信息 只为获取VIP类型
+ */
+- (void)getMineInfo
+{
+    
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"getMyInfo";
+    
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               NSDictionary *dict = [json objectForKey:@"data"];
+                               NSUserDefaults *us = [NSUserDefaults standardUserDefaults];
+                               [us setObject:dict[@"vip_type"] forKey:@"vip_type"];
+                               [us synchronize];
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
+}
+
+/**
+ 获取VIP配置信息
+ */
+- (void)getVipConfigInfo
+{
+    
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"getVipConfig";
+    
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               NSDictionary *dict = [json objectForKey:@"data"];
+                               NSArray *listArr = dict[@"list"];
+                               
+                               NSDictionary *dic1 = [listArr firstObject];
+                               if ([dic1[@"vip_id"] isEqualToString:@"1"])
+                               {
+                                   [self saveFreeConfig:dic1];
+                               }
+                               else
+                               {
+                                   [self saveVipConfig:dic1];
+                               }
+                               NSDictionary *dic2 = [listArr lastObject];
+                               if ([dic2[@"vip_id"] isEqualToString:@"1"])
+                               {
+                                   [self saveFreeConfig:dic2];
+                               }
+                               else
+                               {
+                                   [self saveVipConfig:dic2];
+                               }
+                               
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
+}
+
+- (void)saveFreeConfig:(NSDictionary *)dict
+{
+    NSUserDefaults *us = [NSUserDefaults standardUserDefaults];
+    [us setObject:dict[@"cate_num"] forKey:@"free_cate_num"];
+    [us setObject:dict[@"name"] forKey:@"free_name"];
+    [us setObject:dict[@"pos_num"] forKey:@"free_pos_num"];
+    [us setObject:dict[@"price"] forKey:@"free_price"];
+    [us setObject:dict[@"pro_num"] forKey:@"free_pro_num"];
+    [us setObject:dict[@"sky_drive_num"] forKey:@"free_sky_drive_num"];
+    [us setObject:dict[@"user_num"] forKey:@"free_user_num"];
+    [us setObject:dict[@"vip_id"] forKey:@"free_vip_id"];
+    [us synchronize];
+}
+
+- (void)saveVipConfig:(NSDictionary *)dict
+{
+    NSUserDefaults *us = [NSUserDefaults standardUserDefaults];
+    [us setObject:dict[@"cate_num"] forKey:@"vip_cate_num"];
+    [us setObject:dict[@"name"] forKey:@"vip_name"];
+    [us setObject:dict[@"pos_num"] forKey:@"vip_pos_num"];
+    [us setObject:dict[@"price"] forKey:@"vip_price"];
+    [us setObject:dict[@"pro_num"] forKey:@"vip_pro_num"];
+    [us setObject:dict[@"sky_drive_num"] forKey:@"vip_sky_drive_num"];
+    [us setObject:dict[@"user_num"] forKey:@"vip_user_num"];
+    [us setObject:dict[@"vip_id"] forKey:@"vip_vip_id"];
+    [us synchronize];
+}
+
 
 
 @end

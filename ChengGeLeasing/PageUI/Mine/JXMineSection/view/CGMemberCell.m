@@ -17,15 +17,16 @@
 - (void)setModel:(CGMemberModel *)model
 {
     
+    [self.avatarImg sd_setImageWithURL:[NSURL URLWithString:model.avatar] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"contact_icon_avatar"]];
     self.name.text = model.name;
-    self.updateTimeLab.text = [NSString stringWithFormat:@"%@",model.add_date];
+    self.updateTimeLab.text = [NSString stringWithFormat:@"升级时间：%@",model.add_date];
     self.positionLab.text = model.type_name;
 }
 
 - (void)setRemove_model:(CGMemberModel *)remove_model
 {
     
-//    self.headImg sd
+    [self.headImg sd_setImageWithURL:[NSURL URLWithString:remove_model.avatar] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"contact_icon_avatar"]];
     self.memberName.text = remove_model.name;
     self.memberTel.text = remove_model.mobile;
 }

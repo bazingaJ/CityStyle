@@ -260,7 +260,8 @@
         model.avatar = @"mine_member_add";
         [self.dataArr addObject:model];
         
-        if(self.dataArr.count>2) {
+        if(self.dataArr.count>2)
+        {
             CGTeamMemberModel *model2 = [CGTeamMemberModel new];
             model2.name = @"";
             model2.avatar = @"mine_member_delete";
@@ -605,6 +606,7 @@
                     
                     CGRentDefineVC *defineVC = [[CGRentDefineVC alloc] init];
                     defineVC.pro_id = self.pro_id;
+                    defineVC.rentDict = xiangmuModel.rent;
                     [self.navigationController pushViewController:defineVC animated:YES];
                     
                     break;

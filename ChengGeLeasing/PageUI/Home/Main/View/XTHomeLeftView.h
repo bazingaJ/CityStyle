@@ -22,6 +22,6 @@
 /**
  *  创建项目回调函数
  */
-@property (nonatomic, copy) void(^didXiangmuClick)(XTHomeLeftView *view);
+@property (nonatomic, copy) void(^didXiangmuClick)(XTHomeLeftView *view,NSString *myProNum);
 
 @end

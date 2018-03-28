@@ -8,16 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "CGContactModel.h"
+#import "CGTeamMemberModel.h"
 
 @protocol JXContactDelegate <NSObject>
 
-
+- (void)invateBtnClick:(UIButton *)button;
 
 @end
 
 @interface CGContactCell : UITableViewCell
 
 @property (nonatomic, strong) CGContactModel *model;
+@property (nonatomic, strong) CGTeamMemberModel *teamMemberModel;
 
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImg;
 @property (weak, nonatomic) IBOutlet UILabel *nameLab;

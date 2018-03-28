@@ -54,13 +54,27 @@ static NSString *const cellItem5 = @"网盘文件数";
 
 - (void)prepareForData
 {
+    
     self.dataArr = [NSMutableArray array];
     [self.dataArr addObject:@[@"",versionText1,versionText2]];
-    [self.dataArr addObject:@[cellItem1,@"3",@"不限"]];
-    [self.dataArr addObject:@[cellItem2,@"2",@"不限"]];
-    [self.dataArr addObject:@[cellItem3,@"不限",@"不限"]];
-    [self.dataArr addObject:@[cellItem4,@"不限",@"不限"]];
-    [self.dataArr addObject:@[cellItem5,@"3",@"不限"]];
+    [self.dataArr addObject:@[cellItem1,[self changeZeroNumToString:FREE_PRONUM],[self changeZeroNumToString:VIP_PRONUM]]];
+    [self.dataArr addObject:@[cellItem2,[self changeZeroNumToString:FREE_USERNUM],[self changeZeroNumToString:VIP_USERNUM]]];
+    [self.dataArr addObject:@[cellItem3,[self changeZeroNumToString:FREE_POSNUM],[self changeZeroNumToString:VIP_POSNUM]]];
+    [self.dataArr addObject:@[cellItem4,[self changeZeroNumToString:FREE_CATENUM],[self changeZeroNumToString:VIP_CATENUM]]];
+    [self.dataArr addObject:@[cellItem5,[self changeZeroNumToString:FREE_SKYDRIVERNUM],[self changeZeroNumToString:VIP_SKYDRIVERNUM]]];
+    
+}
+
+- (NSString *)changeZeroNumToString:(NSString *)string
+{
+    if ([string isEqualToString:@"0"])
+    {
+        return @"不限";
+    }
+    else
+    {
+        return string;
+    }
     
 }
 
@@ -118,6 +132,36 @@ static NSString *const cellItem5 = @"网盘文件数";
 {
     CGLevelUpVC *vc = [[CGLevelUpVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+// 在首页获取过一次 所以直接在准备数据中 设置
+- (void)requestVipConfig
+{
+    
+//    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+//    param[@"app"] = @"ucenter";
+//    param[@"act"] = @"getVipConfig";
+//    [MBProgressHUD showSimple:self.view];
+//    [HttpRequestEx postWithURL:SERVICE_URL
+//                        params:param
+//                       success:^(id json) {
+//                           [MBProgressHUD hideHUDForView:self.view animated:YES];
+//                           NSString *code = [json objectForKey:@"code"];
+//                           NSString *msg  = [json objectForKey:@"msg"];
+//                           if ([code isEqualToString:SUCCESS])
+//                           {
+//                               NSDictionary *dict = [json objectForKey:@"data"];
+//
+//                           }
+//                           else
+//                           {
+//                               [MBProgressHUD showError:msg toView:self.view];
+//                           }
+//                       }
+//                       failure:^(NSError *error) {
+//                           [MBProgressHUD hideHUDForView:self.view animated:YES];
+//                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+//                       }];
 }
 
 - (CGVersionHeaderV *)topView

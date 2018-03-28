@@ -65,8 +65,10 @@ static NSString *const cellTitleText5 = @"设置";
 /**
  *  顶部视图
  */
-- (CGMineTopView *)topView {
-    if(!_topView) {
+- (CGMineTopView *)topView
+{
+    if(!_topView)
+    {
         _topView = [[CGMineTopView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, JXMineHeaderViewHeight)];
         [_topView setDelegate:self];
     }
@@ -126,7 +128,15 @@ static NSString *const cellTitleText5 = @"设置";
     }
     else
     {
-        if (![HelperManager CreateInstance].isFree)
+        if ([HelperManager CreateInstance].isFree)
+        {
+            //区块三
+            NSMutableArray *titleArr3 = [NSMutableArray array];
+            [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
+            [titleDic setObject:titleArr3 forKey:@"1"];
+            
+        }
+        else
         {
             //区块二
             NSMutableArray *titleArr2 = [NSMutableArray array];
@@ -137,13 +147,6 @@ static NSString *const cellTitleText5 = @"设置";
             NSMutableArray *titleArr3 = [NSMutableArray array];
             [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
             [titleDic setObject:titleArr3 forKey:@"2"];
-        }
-        else
-        {
-            //区块三
-            NSMutableArray *titleArr3 = [NSMutableArray array];
-            [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
-            [titleDic setObject:titleArr3 forKey:@"1"];
         }
     }
 }
@@ -313,10 +316,10 @@ static NSString *const cellTitleText5 = @"设置";
         if([code isEqualToString:SUCCESS]) {
             NSDictionary *dataDic = [json objectForKey:@"data"];
             userInfo = [CGUserModel mj_objectWithKeyValues:dataDic];
-            [_topView setMineTopModel:userInfo];
+            
             [titleDic removeAllObjects];
             [self createCellContents];
-            [self.topView createAccoutSign];
+            [self.topView setMineTopModel:userInfo];
             [self.tableView reloadData];
         }
     } failure:^(NSError *error) {

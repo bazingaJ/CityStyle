@@ -194,9 +194,17 @@ static HelperManager *_createInstance;
  */
 - (BOOL)isFree
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *level = [userDefaults objectForKey:@"vip_type"];
-    return [level isEqualToString:@"1"] ? YES : NO ;
+    NSDictionary *userDic = [self getUserDefaultInfo];
+    NSString *level = [userDic objectForKey:@"vip_type"];
+    if ([level isEqualToString:@"2"])
+    {
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
+    
     
 }
 /**

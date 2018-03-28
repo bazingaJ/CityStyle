@@ -10,7 +10,7 @@
 #import "RCSegmentView.h"
 #import "CGMineTeamListViewController.h"
 #import "CGMineTeamCustomerFormatViewController.h"
-#import "CGUpdateView.h"
+
 
 @interface CGMineTeamViewController ()
 
@@ -72,28 +72,6 @@
         
     };
     [self.view addSubview:segmentView];
-    if ([HelperManager CreateInstance].isFree)
-    {
-        CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"创建更多项目\n邀请小伙伴一起合作"];
-        view.clickCallBack = ^(NSInteger tIndex) {
-            [self.popup dismiss:YES];
-            if (tIndex == 0)
-            {
-                return ;
-            }
-            else
-            {
-                [MBProgressHUD showMessage:@"确定删除" toView:self.view];
-            }
-        };
-        self.popup = [KLCPopup popupWithContentView:view
-                                           showType:KLCPopupShowTypeGrowIn
-                                        dismissType:KLCPopupDismissTypeGrowOut
-                                           maskType:KLCPopupMaskTypeDimmed
-                           dismissOnBackgroundTouch:NO
-                              dismissOnContentTouch:NO];
-        [self.popup show];
-    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,14 +79,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

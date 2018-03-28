@@ -96,7 +96,7 @@
                 <outlet property="nameLab" destination="VCH-HS-qXs" id="zhM-Ns-tuR"/>
                 <outlet property="phoneLab" destination="Zjc-u2-6Hj" id="Bdt-ym-Vg5"/>
             </connections>
-            <point key="canvasLocation" x="7" y="-131"/>
+            <point key="canvasLocation" x="-47" y="-240"/>
         </tableViewCell>
     </objects>
     <resources>

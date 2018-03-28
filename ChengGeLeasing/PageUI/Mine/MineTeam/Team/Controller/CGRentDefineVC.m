@@ -24,6 +24,7 @@ static const CGFloat bottomHeight = 45.f;
 @property (nonatomic, strong) NSArray *titleArr;
 @property (nonatomic, strong) NSArray *placeholderArr;
 @property (nonatomic, strong) NSMutableDictionary *contentDic;
+@property (nonatomic, strong) NSString *rent_id;
 @end
 
 @implementation CGRentDefineVC
@@ -40,19 +41,21 @@ static const CGFloat bottomHeight = 45.f;
 - (void)prepareForData
 {
     
+    self.rent_id = self.rentDict[@"rent_id"];
+    
+    
     self.sectionTitlesArr = @[@"低区",@"中区",@"高区"];
-    self.titleArr = @[@[@"租金≤"],@[@"租金≤",@"租金≥"],@[@"租金≥"]];
-    self.placeholderArr = @[@[@"请输入最低租金"],@[@"请输入最低租金",@"请输入最高租金"],@[@"请输入最低租金"]];
+    self.placeholderArr = @[@[@"请填写低区最大值"],@[@"低区最大值",@"请填写中区最大值"],@[@"中区最大值"]];
     
     self.contentDic = [NSMutableDictionary dictionary];
     NSIndexPath *index1 = [NSIndexPath indexPathForRow:0 inSection:0];
     NSIndexPath *index2 = [NSIndexPath indexPathForRow:0 inSection:1];
     NSIndexPath *index3 = [NSIndexPath indexPathForRow:1 inSection:1];
     NSIndexPath *index4 = [NSIndexPath indexPathForRow:0 inSection:2];
-    self.contentDic[index1] = @"";
-    self.contentDic[index2] = @"";
-    self.contentDic[index3] = @"";
-    self.contentDic[index4] = @"";
+    self.contentDic[index1] = self.rentDict[@"lower_price"];
+    self.contentDic[index2] = self.rentDict[@"lower_price"];
+    self.contentDic[index3] = self.rentDict[@"med_high_price"];
+    self.contentDic[index4] = self.rentDict[@"med_high_price"];
     
 }
 
@@ -91,17 +94,50 @@ static const CGFloat bottomHeight = 45.f;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    CGRentCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier1];
-    if (!cell)
+    CGRentCell *cell1 = [tableView dequeueReusableCellWithIdentifier:cellIdentifier1];
+    CGRentCell *cell2 = [tableView dequeueReusableCellWithIdentifier:cellIdentifier2];
+    
+    if (indexPath.section == 0)
     {
-        cell = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CGRentCell class]) owner:nil options:nil]objectAtIndex:0];
+        if (!cell1)
+        {
+            cell1 = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CGRentCell class]) owner:nil options:nil]objectAtIndex:0];
+        }
+        cell1.numTF1.text = self.contentDic[indexPath];
+        cell1.numTF1.placeholder = self.placeholderArr[indexPath.section][indexPath.row];
+        [cell1.numTF1 addTarget:self action:@selector(textfieldEdit:) forControlEvents:UIControlEventEditingChanged];
+        return cell1;
     }
-    cell.titleLab.text = self.titleArr[indexPath.section][indexPath.row];
-    cell.numTF1.text = self.contentDic[indexPath];
-    cell.numTF1.placeholder = self.placeholderArr[indexPath.section][indexPath.row];
-    [cell.numTF1 addTarget:self action:@selector(textfieldEditing:) forControlEvents:UIControlEventEditingChanged];
-//    cell.numTF1.tag = indexPath.section *10 + indexPath.row;
-    return cell;
+    else if (indexPath.section == 1)
+    {
+        if (!cell2)
+        {
+            cell2 = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CGRentCell class]) owner:nil options:nil]objectAtIndex:1];
+        }
+        cell2.numTF2.userInteractionEnabled = YES;
+        cell2.numTF2.text = self.contentDic[indexPath];
+        cell2.numTF2.placeholder = self.placeholderArr[indexPath.section][indexPath.row];
+        cell2.conditionLab.text = @"元/m²/天";
+        [cell2.numTF2 addTarget:self action:@selector(textfieldEdit:) forControlEvents:UIControlEventEditingChanged];
+        if (indexPath.row == 0)
+        {
+            cell2.numTF2.userInteractionEnabled = NO;
+        }
+        return cell2;
+    }
+    else
+    {
+        if (!cell2)
+        {
+            cell2 = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CGRentCell class]) owner:nil options:nil]objectAtIndex:1];
+        }
+        cell2.numTF2.text = self.contentDic[indexPath];
+        cell2.numTF2.placeholder = @"中区最大值";
+        cell2.numTF2.userInteractionEnabled = NO;
+        cell2.conditionLab.text = @"元/m²/天及以上";
+        [cell2.numTF2 addTarget:self action:@selector(textfieldEdit:) forControlEvents:UIControlEventEditingChanged];
+        return cell2;
+    }
     
 }
     
@@ -139,37 +175,24 @@ static const CGFloat bottomHeight = 45.f;
 - (void)bottomContainBtnClick
 {
     NSIndexPath *index1 = [NSIndexPath indexPathForRow:0 inSection:0];
-    NSIndexPath *index2 = [NSIndexPath indexPathForRow:0 inSection:1];
     NSIndexPath *index3 = [NSIndexPath indexPathForRow:1 inSection:1];
-    NSIndexPath *index4 = [NSIndexPath indexPathForRow:0 inSection:2];
     if ([self.contentDic[index1] isEqualToString:@""])
     {
-        [MBProgressHUD showError:@"请输入低区最低租金" toView:self.view];
-        return;
-    }
-    if ([self.contentDic[index2] isEqualToString:@""])
-    {
-        [MBProgressHUD showError:@"请输入中区最低租金" toView:self.view];
+        [MBProgressHUD showError:@"请输入低区最大值" toView:self.view];
         return;
     }
     if ([self.contentDic[index3] isEqualToString:@""])
     {
-        [MBProgressHUD showError:@"请输入中区最高租金" toView:self.view];
-        return;
-    }
-    if ([self.contentDic[index4] isEqualToString:@""])
-    {
-        [MBProgressHUD showError:@"请输入高区最低租金" toView:self.view];
+        [MBProgressHUD showError:@"请输入中区最大值" toView:self.view];
         return;
     }
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     param[@"ucenter"] = @"app";
     param[@"setRent"] = @"act";
+    param[@"rent_id"] = self.rent_id;
     param[@"pro_id"] = self.pro_id;
     param[@"lower_price"] = self.contentDic[index1];
-    param[@"med_lower_price"] = self.contentDic[index2];
     param[@"med_high_price"] = self.contentDic[index3];
-    param[@"high_price"] = self.contentDic[index4];
     [MBProgressHUD showMsg:@"" toView:self.view];
     [HttpRequestEx postWithURL:SERVICE_URL
                         params:param
@@ -192,13 +215,30 @@ static const CGFloat bottomHeight = 45.f;
 }
 
 // call this method when textfield is editing
-- (void)textfieldEditing:(UITextField *)textField
+- (void)textfieldEdit:(UITextField *)textField
 {
     
     CGRentCell *cell = (CGRentCell *)textField.superview.superview;
     NSIndexPath *index = [self.tableView indexPathForCell:cell];
-    self.contentDic[index] = textField.text;
     
+    NSIndexPath *index1 = [NSIndexPath indexPathForRow:0 inSection:0];
+    NSIndexPath *index2 = [NSIndexPath indexPathForRow:0 inSection:1];
+    NSIndexPath *index3 = [NSIndexPath indexPathForRow:1 inSection:1];
+    NSIndexPath *index4 = [NSIndexPath indexPathForRow:0 inSection:2];
+    
+    self.contentDic[index] = textField.text;
+    if ([index isEqual:index1])
+    {
+        CGRentCell *cell = [self.tableView cellForRowAtIndexPath:index2];
+        self.contentDic[index2] = textField.text;
+        cell.numTF2.text = textField.text;
+    }
+    else if ([index isEqual:index3])
+    {
+        CGRentCell *cell = [self.tableView cellForRowAtIndexPath:index4];
+        self.contentDic[index4] = textField.text;
+        cell.numTF2.text = textField.text;
+    }
     
 }
 

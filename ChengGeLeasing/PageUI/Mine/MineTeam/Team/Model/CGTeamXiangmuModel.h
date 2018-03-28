@@ -106,5 +106,10 @@
  *  联系人名称
  */
 @property (nonatomic, strong) NSString *linkman_name;
+/**
+ *  租金定义
+ */
+@property (nonatomic, strong) NSDictionary *rent;
+
 
 @end

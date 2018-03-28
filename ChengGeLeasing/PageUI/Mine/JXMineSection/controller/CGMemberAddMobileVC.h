@@ -1,17 +1,18 @@
 //
-//  CGRentDefineVC.h
+//  CGMemberAddMobileVC.h
 //  ChengGeLeasing
 //
-//  Created by yunduopu-ios-2 on 2018/3/23.
+//  Created by yunduopu-ios-2 on 2018/3/28.
 //  Copyright © 2018年 印特. All rights reserved.
 //
 
 #import "BaseTableViewController.h"
 
-@interface CGRentDefineVC : BaseTableViewController
 
+@interface CGMemberAddMobileVC : BaseTableViewController 
+/**
+ *  项目ID
+ */
 @property (nonatomic, strong) NSString *pro_id;
-
-@property (nonatomic, strong) NSDictionary *rentDict;
 
 @end
