@@ -16,7 +16,7 @@
 /**
  *  用户ID
  */
-@property (nonatomic, strong) NSString *id;
+@property (nonatomic, strong) NSString *user_id;
 /**
  *  姓名
  */

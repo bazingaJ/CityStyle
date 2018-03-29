@@ -10,4 +10,9 @@
 
 @implementation CGContactModel
 
++ (NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{@"user_id":@"id"};
+}
+
 @end

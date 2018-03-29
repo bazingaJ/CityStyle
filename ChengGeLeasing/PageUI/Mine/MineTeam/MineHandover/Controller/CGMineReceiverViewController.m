@@ -85,7 +85,7 @@
     NSLog(@"确定按钮事件");
     
     //接收人验证
-    if(IsStringEmpty(currentMemModel.id)) {
+    if(IsStringEmpty(currentMemModel.ID)) {
         [MBProgressHUD showError:@"请选择接收人" toView:self.view];
         return;
     }
@@ -96,7 +96,7 @@
     [param setValue:@"abutmentCust" forKey:@"act"];
     [param setValue:self.pro_id forKey:@"pro_id"];
     [param setValue:self.member_id forKey:@"from_member"];
-    [param setValue:currentMemModel.id forKey:@"to_member"];
+    [param setValue:currentMemModel.ID forKey:@"to_member"];
     [param setValue:self.customerStr forKey:@"cust"];
     [HttpRequestEx postWithURL:SERVICE_URL params:param success:^(id json) {
         [MBProgressHUD hideHUD:self.view];

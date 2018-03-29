@@ -135,7 +135,7 @@
             {
                 for (CGTeamMemberModel *seleModel in self.selecteArr)
                 {
-                    if ([model.id isEqualToString:seleModel.id])
+                    if ([model.ID isEqualToString:seleModel.ID])
                     {
                         model.isAdd = YES;
                     }

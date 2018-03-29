@@ -101,6 +101,8 @@ return self;\
 \
 }
 
+#define PRICE
+
 #define FREE_PRICE [[NSUserDefaults standardUserDefaults] objectForKey:@"free_price"]
 #define FREE_USERNUM [[NSUserDefaults standardUserDefaults] objectForKey:@"free_user_num"]
 #define FREE_PRONUM [[NSUserDefaults standardUserDefaults] objectForKey:@"free_pro_num"]

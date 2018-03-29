@@ -27,6 +27,8 @@ static NSString *const transforAccountText = @"移交账户";
 @property (nonatomic, strong) NSString *accountid;
 // endDate
 @property (nonatomic, strong) NSString *endDateStr;
+
+@property (nonatomic, strong) NSString *accountNum;
 @end
 
 @implementation CGEntManagerVC
@@ -127,16 +129,20 @@ static NSString *const transforAccountText = @"移交账户";
         CGMemberInfoVC *vc = [CGMemberInfoVC new];
         vc.account_id = self.accountid;
         vc.endDate = self.endDateStr;
+        vc.wholeSeatNum = self.accountNum;
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if (indexPath.row == 4)
     {
         CGPayOrderVC *vc = [CGPayOrderVC new];
+        vc.wholeSeats = self.accountNum;
+        vc.endTime = self.endDateStr;
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if (indexPath.row == 5)
     {
         CGRemoveVC *vc = [CGRemoveVC new];
+        vc.account_id = self.accountid;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -188,6 +194,7 @@ static NSString *const transforAccountText = @"移交账户";
                                NSDictionary *dict = [json objectForKey:@"data"];
                                self.accountid = dict[@"account_id"];
                                self.endDateStr = dict[@"end_date"];
+                               self.accountNum = dict[@"account_num"];
                                NSString *numInfo = [NSString stringWithFormat:@"%@/%@",dict[@"group_num"],dict[@"account_num"]];
                                NSArray *dataArr = @[dict[@"account_id"],dict[@"account_name"],dict[@"end_date"],numInfo];
                                [self prepareForDataWithDataArr:dataArr];

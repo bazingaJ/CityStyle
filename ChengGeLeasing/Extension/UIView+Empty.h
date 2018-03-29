@@ -35,6 +35,8 @@ typedef NS_ENUM(NSInteger, EmptyViewType)
     EmptyViewTypeData = 8,
     //暂无成员
     EmptyViewTypeMember = 9,
+    //暂无订单
+    EmptyViewTypeOrder = 10,
 };
 
 @interface EmptyWarnView : UIView

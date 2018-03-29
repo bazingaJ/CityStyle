@@ -84,7 +84,7 @@
     NSLog(@"确定");
     
     //被转移人验证
-    if(IsStringEmpty(currentMemModel.id)) {
+    if(IsStringEmpty(currentMemModel.ID)) {
         [MBProgressHUD showError:@"请选择转移的创建人" toView:self.view];
         return;
     }
@@ -94,7 +94,7 @@
     [param setValue:@"ucenter" forKey:@"app"];
     [param setValue:@"devProject" forKey:@"act"];
     [param setValue:self.pro_id forKey:@"pro_id"];
-    [param setValue:currentMemModel.id forKey:@"to_user_id"];
+    [param setValue:currentMemModel.ID forKey:@"to_user_id"];
     [HttpRequestEx postWithURL:SERVICE_URL params:param success:^(id json) {
         [MBProgressHUD hideHUD:self.view];
         NSString *msg = [json objectForKey:@"msg"];

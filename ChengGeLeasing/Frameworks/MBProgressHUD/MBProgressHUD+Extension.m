@@ -85,7 +85,7 @@
     hud.removeFromSuperViewOnHide = YES;
     hud.dimBackground = NO;
     // 1秒之后再消失
-    [hud hide:YES afterDelay:1.0];
+    [hud hide:YES afterDelay:1.5];
 }
 
 + (void)showMessage:(NSString *)message toView:(UIView *)view delay:(NSTimeInterval)timeInterval

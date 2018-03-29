@@ -54,7 +54,7 @@
         for (int i=0; i<self.groupModel.memberList.count; i++) {
             CGTeamMemberModel *memberModel = [self.groupModel.memberList objectAtIndex:i];
             [self.dataArr addObject:memberModel];
-            [self.userArr addObject:memberModel.id];
+            [self.userArr addObject:memberModel.ID];
         }
     }
     
@@ -256,7 +256,7 @@
                             [self.view endEditing:YES];
                             
                             [self.dataArr removeObject:model];
-                            [self.userArr removeObject:model.id];
+                            [self.userArr removeObject:model.ID];
                             
                             //刷新界面
                             [self.tableView beginUpdates];
@@ -322,7 +322,7 @@
                 CGTeamMemberModel *model = [memberArr objectAtIndex:i];
                 [self.dataArr addObject:model];
                 
-                [self.userArr addObject:model.id];
+                [self.userArr addObject:model.ID];
                 
             }
             

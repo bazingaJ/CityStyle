@@ -62,6 +62,8 @@
 
 #import <Masonry.h>
 #import "JXTool.h"
+#import <AlipaySDK/AlipaySDK.h>
+#import "WXApi.h"
 
 //上传图片
 #define pictureHW (SCREEN_WIDTH - 4*10)/3
@@ -81,4 +83,7 @@
 //API测试接口
 #define SERVICE_URL @"http://api.chengge.renxixi.com"
 
+// 支付宝支付测试接口
+#define ALIPAY_URL @"http://service.chengge.renxixi.com/pay/alipayPreOrder.do"
+#define WECHATPAY_URL @"http://service.chengge.renxixi.com/pay/wxPreOrder.do"
 #endif /* ChengGeLeasing_prefix_pch */

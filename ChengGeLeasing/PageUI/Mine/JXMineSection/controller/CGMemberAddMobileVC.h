@@ -11,8 +11,8 @@
 
 @interface CGMemberAddMobileVC : BaseTableViewController 
 /**
- *  项目ID
+ *  企业ID
  */
-@property (nonatomic, strong) NSString *pro_id;
+@property (nonatomic, strong) NSString *account_id;
 
 @end

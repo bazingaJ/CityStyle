@@ -10,4 +10,11 @@
 
 @interface CGPayOrderVC : BaseTableViewController
 
+@property (nonatomic, strong) NSString *wholeSeats;
+
+/**
+ 账户到期时间
+ */
+@property (nonatomic, strong) NSString *endTime;
+
 @end

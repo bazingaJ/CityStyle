@@ -9,6 +9,7 @@
 #import "CGBuySeatVC.h"
 #import "CGLevelUpCell.h"
 #import "CGPaymentVC.h"
+#import "CGRenewModel.h"
 
 static NSString *const currentTitle = @"购买席位";
 static NSString *const priceText = @"单价";
@@ -28,11 +29,26 @@ static NSString *const alertPhotoText = @"remind";
 static NSString *const agreePhotoText = @"agree_blank";
 static NSString *const agredPhotoText = @"agree";
 
-static const NSInteger minNumberCount = 10;
-static const NSInteger minMonthCount = 12;
+static const NSInteger minNumberCount = 1;
 
 @interface CGBuySeatVC ()<JXLevelUpDelegate>
 @property (nonatomic, strong) NSArray *originArr;
+@property (nonatomic, strong) UIButton *countBtn;
+
+/**
+ 购买席位的个数
+ */
+@property (nonatomic, strong) NSString *seatNum;
+
+/**
+ 购买时长的月份数
+ */
+@property (nonatomic, strong) NSString *monthNum;
+
+/**
+ 续费和购买席位支付界面公用model
+ */
+@property (nonatomic, strong) CGRenewModel *model;
 @end
 
 @implementation CGBuySeatVC
@@ -49,8 +65,31 @@ static const NSInteger minMonthCount = 12;
 
 - (void)prepareForData
 {
+    
+    // tableview 标题数据准备
     self.originArr = @[@[priceText,seatSaleText,timingSaleText,tatolText,wechatDetailText],
                        @[payTypeText,wechatPayText,aliPayText,aliPayDetailText]];
+    
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"yyyy-MM-dd"];
+    // 先将传过来的到期时间转换成日期格式
+    NSDate *endDate = [format dateFromString:self.endTime];
+    // 然后将日期个数转换成单个的月格式
+    [format setDateFormat:@"MM"];
+    NSString *nowMonth = [format stringFromDate:[NSDate date]];
+    NSString *endMonth = [format stringFromDate:endDate];
+    // 然后两个月份格式的日期相减得出购买时长
+    self.monthNum = [NSString stringWithFormat:@"%ld",(long)([endMonth integerValue]-[nowMonth integerValue])];
+    self.seatNum = [NSString stringWithFormat:@"%ld",(long)minNumberCount];
+    // prepare origin data
+    NSString *unitPrice = [NSString stringWithFormat:@"%@元/人/月",VIP_PRICE];
+    self.model = [CGRenewModel new];
+    self.model.unit_price = unitPrice;
+    self.model.seats_number = self.seatNum;
+    self.model.month = [NSString stringWithFormat:@"%@月",self.monthNum];
+    self.model.total_prices = [NSString stringWithFormat:@"%ld元",(long)([VIP_PRICE integerValue] * [self.seatNum integerValue] * [self.monthNum integerValue])];
+    self.model.payType = @"1";
+    self.model.isRead = @"2";
 }
 
 - (void)createUI
@@ -60,13 +99,14 @@ static const NSInteger minMonthCount = 12;
     bottomView.backgroundColor = MAIN_COLOR;
     [self.view addSubview:bottomView];
     
-    UIButton *countBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    countBtn.frame = CGRectMake(0, 1, SCREEN_WIDTH * 0.5, 44);
-    [countBtn setTitle:@"合计：8910元" forState:UIControlStateNormal];
-    [countBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
-    countBtn.titleLabel.font = FONT20;
-    [countBtn setBackgroundColor:WHITE_COLOR];
-    [bottomView addSubview:countBtn];
+    NSString *btnTitleStr = [NSString stringWithFormat:@"合计：%@",self.model.total_prices];
+    self.countBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.countBtn.frame = CGRectMake(0, 1, SCREEN_WIDTH * 0.5, 44);
+    [self.countBtn setTitle:btnTitleStr forState:UIControlStateNormal];
+    [self.countBtn setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+    self.countBtn.titleLabel.font = FONT20;
+    [self.countBtn setBackgroundColor:WHITE_COLOR];
+    [bottomView addSubview:self.countBtn];
     
     UIButton *payBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     payBtn.frame = CGRectMake(SCREEN_WIDTH * 0.5, 0, SCREEN_WIDTH * 0.5, 45);
@@ -134,7 +174,7 @@ static const NSInteger minMonthCount = 12;
                 cell1 = [[[NSBundle mainBundle] loadNibNamed:@"CGLevelUpCell" owner:nil options:nil]objectAtIndex:0];
             }
             cell1.itemLab1.text = self.originArr[0][indexPath.row];
-            cell1.detailLab1.text = @[@"99元/人/月",@"",@"9月",@"8910元"][indexPath.row];
+            cell1.detailLab1.text = @[self.model.unit_price,@"",self.model.month,self.model.total_prices][indexPath.row];
             return cell1;
         }
         else
@@ -145,8 +185,8 @@ static const NSInteger minMonthCount = 12;
             }
             cell2.delegate = self;
             cell2.itemLab2.text = self.originArr[0][indexPath.row];
-            cell2.countLab.text = @[@"",@"10",@"12",@""][indexPath.row];
-            cell2.detailLab2.text = @[@"",@"个",@"月",@""][indexPath.row];
+            cell2.countLab.text = self.model.seats_number;
+            cell2.detailLab2.text = @"个";
             return cell2;
         }
     }
@@ -159,6 +199,7 @@ static const NSInteger minMonthCount = 12;
                 cell1 = [[[NSBundle mainBundle] loadNibNamed:@"CGLevelUpCell" owner:nil options:nil]objectAtIndex:0];
             }
             cell1.itemLab1.text = payTypeText;
+            cell1.detailLab1.text = @"";
             return cell1;
         }
         else
@@ -257,6 +298,7 @@ static const NSInteger minMonthCount = 12;
         CGLevelUpCell *cell2 = [self.tableView cellForRowAtIndexPath:indexPath2];
         cell1.selectBtn.hidden = NO;
         cell2.selectBtn.hidden = YES;
+        self.model.payType = @"1";
     }
     else if (indexPath.section == 1 && indexPath.row == 2)
     {
@@ -265,6 +307,7 @@ static const NSInteger minMonthCount = 12;
         CGLevelUpCell *cell2 = [self.tableView cellForRowAtIndexPath:indexPath];
         cell1.selectBtn.hidden = YES;
         cell2.selectBtn.hidden = NO;
+        self.model.payType = @"2";
     }
 }
 
@@ -275,6 +318,15 @@ static const NSInteger minMonthCount = 12;
     CGLevelUpCell *cell2 = (CGLevelUpCell *)sender.superview.superview;
     NSString *numberText = cell2.countLab.text;
     cell2.countLab.text = @([numberText integerValue] + 1).stringValue;
+    self.model.seats_number = cell2.countLab.text;
+    // 总价同时发生改变
+    NSIndexPath *index = [NSIndexPath indexPathForRow:3 inSection:0];
+    CGLevelUpCell *cell4 = [self.tableView cellForRowAtIndexPath:index];
+    cell4.detailLab1.text = [NSString stringWithFormat:@"%ld元",(long)([VIP_PRICE integerValue] * [self.model.seats_number integerValue] * [self.model.month integerValue])];
+    self.model.total_prices = cell4.detailLab1.text;
+    NSString *btnTitleStr = [NSString stringWithFormat:@"合计：%@",self.model.total_prices];
+    [self.countBtn setTitle:btnTitleStr forState:UIControlStateNormal];
+    
 }
 
 // miuns button click event method
@@ -282,48 +334,166 @@ static const NSInteger minMonthCount = 12;
 {
     
     CGLevelUpCell *cell2 = (CGLevelUpCell *)sender.superview.superview;
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell2];
-    // distinguish which one is number or month
-    if (indexPath.row == 1)//------number
+    NSString *numberText = cell2.countLab.text;
+    // less minMonthCount can not miuns
+    if ([numberText integerValue] > minNumberCount)
     {
-        NSString *numberText = cell2.countLab.text;
-        // less minMonthCount can not miuns
-        if ([numberText integerValue] > minNumberCount)
-        {
-            cell2.countLab.text = @([numberText integerValue] - 1).stringValue;
-        }
-        
+        cell2.countLab.text = @([numberText integerValue] - 1).stringValue;
+        self.model.seats_number = cell2.countLab.text;
     }
-    else//-----month
-    {
-        NSString *numberText = cell2.countLab.text;
-        // less minMonthCount can not miuns
-        if ([numberText integerValue] > minMonthCount)
-        {
-            cell2.countLab.text = @([numberText integerValue] - 1).stringValue;
-        }
-    }
-    
+    // same time totle_price make the change
+    NSIndexPath *index = [NSIndexPath indexPathForRow:3 inSection:0];
+    CGLevelUpCell *cell4 = [self.tableView cellForRowAtIndexPath:index];
+    cell4.detailLab1.text = [NSString stringWithFormat:@"%ld元",(long)([VIP_PRICE integerValue] * [self.model.seats_number integerValue] * [self.model.month integerValue])];
+    self.model.total_prices = cell4.detailLab1.text;
+    NSString *btnTitleStr = [NSString stringWithFormat:@"合计：%@",self.model.total_prices];
+    [self.countBtn setTitle:btnTitleStr forState:UIControlStateNormal];
 }
 
 - (void)alertBtnClick:(UIButton *)button
 {
     
     button.selected = !button.selected;
+    if (button.isSelected)
+    {
+        self.model.isRead = @"1";
+    }
+    else
+    {
+        self.model.isRead = @"2";
+    }
 }
 
 - (void)agreeBtnClick:(UIButton *)button
 {
     
-    [MBProgressHUD showMessage:@"暂无服务协议" toView:self.view];
+    [MBProgressHUD showMessage:@"去阅读服务协议" toView:self.view];
 }
 
 - (void)goPayClick
 {
     
-    CGPaymentVC *vc = [CGPaymentVC new];
-    vc.payStatus = NO;
-    [self.navigationController pushViewController:vc animated:YES];
+    if ([self.model.isRead isEqualToString:@"2"])
+    {
+        [MBProgressHUD showError:@"请阅读服务协议" toView:self.view];
+        return;
+    }
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"createVipOrder";
+    param[@"type"] = @"1";
+    param[@"vip_type"] = @"2";
+    param[@"member_num"] = self.model.seats_number;
+    param[@"price"] = VIP_PRICE;
+    param[@"vip_time"] = self.model.month;
+    [MBProgressHUD showSimple:self.view];
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           [MBProgressHUD hideHUDForView:self.view];
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               NSDictionary *dict = [json objectForKey:@"data"];
+                               if ([self.model.payType isEqualToString:@"1"])
+                               {
+                                   [self paymentByWechat:dict[@"order_id"]];
+                               }
+                               else
+                               {
+                                   [self paymentByAlipay:dict[@"order_id"]];
+                               }
+                               
+//                               CGPaymentVC *vc = [CGPaymentVC new];
+//                               vc.payStatus = NO;
+//                               [self.navigationController pushViewController:vc animated:YES];
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           [MBProgressHUD hideHUDForView:self.view];
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
+    
+}
+
+#pragma mark - 向微信发起支付
+- (void)paymentByWechat:(NSString *)orderID
+{
+    
+    if([[UIApplication sharedApplication]canOpenURL:[NSURL URLWithString:@"weixin://"]])
+    {
+        NSMutableDictionary *param = [NSMutableDictionary dictionary];
+        param[@"type"] = @"1";
+        param[@"type_id"] = orderID;
+        [MBProgressHUD showSimple:self.view];
+        [HttpRequestEx postWithURL:WECHATPAY_URL
+                            params:param
+                           success:^(id json) {
+                               [MBProgressHUD hideHUDForView:self.view];
+                               NSString *code = [json objectForKey:@"code"];
+                               NSString *msg  = [json objectForKey:@"msg"];
+                               if ([code isEqualToString:SUCCESS])
+                               {
+                                   NSDictionary *dict = [json objectForKey:@"data"];
+                                   PayReq* req = [[PayReq alloc] init];
+                                   req.partnerId=dict[@"partnerid"];
+                                   req.prepayId=dict[@"prepayid"];
+                                   req.nonceStr = dict[@"noncestr"];
+                                   req.timeStamp = [dict[@"timestamp"] intValue];
+                                   req.package = dict[@"package"];
+                                   req.sign = dict[@"sign"];
+                                   [WXApi sendReq:req];
+                               }
+                               else
+                               {
+                                   [MBProgressHUD showError:msg toView:self.view];
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               [MBProgressHUD hideHUDForView:self.view];
+                               [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                           }];
+    }
+    else
+    {
+        [MBProgressHUD showMessage:@"您的手机未安装微信" toView:self.view];
+    }
+    
+}
+
+#pragma mark - 向支付宝发起支付
+- (void)paymentByAlipay:(NSString *)orderID
+{
+    
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"type"] = @"1";
+    param[@"type_id"] = orderID;
+    [MBProgressHUD showSimple:self.view];
+    [HttpRequestEx postWithURL:ALIPAY_URL
+                        params:param
+                       success:^(id json) {
+                           [MBProgressHUD hideHUDForView:self.view];
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               NSDictionary *dict = [json objectForKey:@"data"];
+                               
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           [MBProgressHUD hideHUDForView:self.view];
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
 }
 
 - (void)didReceiveMemoryWarning {

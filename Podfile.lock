@@ -30,6 +30,7 @@ PODS:
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
   - UIImage-Helpers (0.0.3)
+  - WechatOpenSDK (1.8.1)
   - XHLaunchAd (3.9.1):
     - FLAnimatedImage (~> 1.0.12)
   - XHToast (1.4.0)
@@ -49,6 +50,7 @@ DEPENDENCIES:
   - SDCycleScrollView (~> 1.65)
   - SDWebImage (~> 3.8.1)
   - UIImage-Helpers (~> 0.0.3)
+  - WechatOpenSDK
   - XHLaunchAd (~> 3.9.1)
   - XHToast (~> 1.4.0)
   - zhPopupController (~> 1.0.2)
@@ -68,10 +70,11 @@ SPEC CHECKSUMS:
   SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   UIImage-Helpers: 06b04a42bdd222844035602e87e936765c80f620
+  WechatOpenSDK: 491d965d79335070328571d3e79f714549e79a5e
   XHLaunchAd: f452a6758e46ca6fbaf8b19eef4865003ec710e7
   XHToast: 3b354766d56d9df8fef8e64387bbd25c90d71a86
   zhPopupController: 411af38e63764130e4ae4ba5cde12c776dc84824
 
-PODFILE CHECKSUM: 3d41fe8044872cc12b58b4eb20b3e5151b82e57a
+PODFILE CHECKSUM: 2fa70fb78ed80e775480e598772fa2c2cd993d6f
 
 COCOAPODS: 1.4.0

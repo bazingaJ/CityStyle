@@ -68,7 +68,7 @@
     for (int i=0; i<self.dataArr.count; i++) {
         CGTeamMemberModel *model = [self.dataArr objectAtIndex:i];
         if(model.is_selected) {
-            [itemArr addObject:model.id];
+            [itemArr addObject:model.ID];
         }
     }
     if(!itemArr.count) {

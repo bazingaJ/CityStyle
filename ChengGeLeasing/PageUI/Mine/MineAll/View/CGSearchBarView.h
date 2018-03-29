@@ -17,6 +17,7 @@
 @interface CGSearchBarView : UIView<UITextFieldDelegate>
 
 @property (assign) id<CGSearchBarViewDelegate> delegate;
+
 @property (nonatomic, strong) UITextField *tbxContent;
 
 @end

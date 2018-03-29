@@ -42,6 +42,8 @@ static const void *strLaunchSrcKey = &strLaunchSrcKey;
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSFontAttributeName:FONT18, NSForegroundColorAttributeName:[UIColor whiteColor]}];
 
     
+    [WXApi registerApp:WetChatAppID];
+    
     // 配置IQ键盘插件
     IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
     manager.enable =YES;// 控制整个功能是否启用。

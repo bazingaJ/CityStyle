@@ -13,6 +13,9 @@
 #import "CGTeamMemberContactAddViewController.h"
 #import "CGTeamMemberMobileAddViewController.h"
 #import "CGMemberContactVC.h"
+#import "CGMemberAddMobileVC.h"
+#import "CGUpdateView.h"
+#import "CGUpgradeVersionVC.h"
 
 static NSString *const currentTitle = @"成员信息";
 
@@ -58,14 +61,7 @@ static NSString *cellIdentifier = @"CGMemberCell1";
 
 - (void)prepareForData
 {
-//    CGMemberModel *model = [CGMemberModel new];
-//    model.name = @"张卫东";
-//    model.add_date = @"升级时间：2018.03.01";
-//    model.type_name = @"管理员";
-//    [self.dataArr removeAllObjects];
-//    [self.dataArr addObject:model];
-//    [self.dataArr addObject:model];
-//    [self.dataArr addObject:model];
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -89,12 +85,11 @@ static NSString *cellIdentifier = @"CGMemberCell1";
     }
     CGMemberModel *model = self.dataArr[indexPath.row];
     cell.model = model;
-    if (![model.is_owner isEqualToString:@"1"])
+    if (![model.is_owner isEqualToString:@"1"] && ![[HelperManager CreateInstance].user_id isEqualToString:model.member_id])
     {
         cell.delegate = self;
         [cell setRightUtilityButtons:[self rightButtons:model] WithButtonWidth:110];
     }
-    
     return cell;
 }
 
@@ -255,6 +250,30 @@ static NSString *cellIdentifier = @"CGMemberCell1";
 
 - (void)rightButtonItemClick
 {
+    if (self.dataArr.count >= [self.wholeSeatNum integerValue])
+    {
+        CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"添加更多项目\n小伙伴一起合作"];
+        view.clickCallBack = ^(NSInteger tIndex) {
+            [self.popup dismiss:YES];
+            if (tIndex == 0)
+            {
+                return ;
+            }
+            else
+            {
+                CGUpgradeVersionVC *vc = [CGUpgradeVersionVC new];
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+        };
+        self.popup = [KLCPopup popupWithContentView:view
+                                           showType:KLCPopupShowTypeGrowIn
+                                        dismissType:KLCPopupDismissTypeGrowOut
+                                           maskType:KLCPopupMaskTypeDimmed
+                           dismissOnBackgroundTouch:NO
+                              dismissOnContentTouch:NO];
+        [self.popup show];
+        return ;
+    }
     
     UIAlertController *alertController = [[UIAlertController alloc] init];
     [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
@@ -272,10 +291,8 @@ static NSString *cellIdentifier = @"CGMemberCell1";
         NSLog(@"输入手机号添加");
         
         //手机号码添加
-        CGTeamMemberMobileAddViewController *mobileView = [[CGTeamMemberMobileAddViewController alloc] init];
-//        mobileView.pro_id = self.pro_id;
-//        //把已选的客户带过去
-//        mobileView.selecteArr = self.allArr;
+        CGMemberAddMobileVC *mobileView = [[CGMemberAddMobileVC alloc] init];
+        mobileView.account_id = self.account_id;
         [self.navigationController pushViewController:mobileView animated:YES];
         
     }]];
@@ -321,7 +338,6 @@ static NSString *cellIdentifier = @"CGMemberCell1";
 #pragma mark - tableview cell operation
 - (void)managerOperation:(CGMemberModel *)model operType:(NSString *)type
 {
-    
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     param[@"app"] = @"ucenter";
     param[@"act"] = @"setMemberRole";
@@ -337,7 +353,7 @@ static NSString *cellIdentifier = @"CGMemberCell1";
                            NSString *msg  = [json objectForKey:@"msg"];
                            if ([code isEqualToString:SUCCESS])
                            {
-                               dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                               dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                                    [MBProgressHUD showMessage:@"设置成功" toView:self.view];
                                    [self getMemberListData];
                                });
@@ -361,7 +377,7 @@ static NSString *cellIdentifier = @"CGMemberCell1";
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     param[@"app"] = @"ucenter";
     param[@"act"] = @"removeGroupMember";
-    param[@"members"] = model.member_id;
+    param[@"members"] = model.group_mem_id;
     [MBProgressHUD showSimple:self.view];
     [HttpRequestEx postWithURL:SERVICE_URL
                         params:param
@@ -371,7 +387,7 @@ static NSString *cellIdentifier = @"CGMemberCell1";
                            NSString *msg  = [json objectForKey:@"msg"];
                            if ([code isEqualToString:SUCCESS])
                            {
-                               dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                               dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                                    [MBProgressHUD showMessage:@"已移除" toView:self.view];
                                    [self getMemberListData];
                                });

@@ -149,4 +149,14 @@
 #define kRGB(R,G,B) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1]
 #define kRGB_alpha(R,G,B,A) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:A]
 
+//=========================微信=====================\\
+
+#define WetChatAppID        @"wx2b33ffa189d5bc6f"
+#define WetChatAppSecret    @"26f045af7a090b0b7a35bf3fa5fbdd50"
+//=========================支付宝=====================\\
+
+#define AliPayAppID         @""
+#define AliPartnerID        @""
+#define AliSellerID         @""
+
 #endif /* Theme_h */

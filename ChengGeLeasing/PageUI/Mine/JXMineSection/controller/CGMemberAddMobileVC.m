@@ -63,8 +63,6 @@
     CGTeamMemberModel *model = self.dataArr[indexPath.row];
     cell.teamMemberModel = model;
     cell.delegate = self;
-//    cell.isAdd = self.isAdd;
-//    [cell setTeamMemberModel:model pro_id:self.pro_id];
     
     return cell;
 }
@@ -81,22 +79,21 @@
 - (void)CGMineSearchBarViewClick:(NSString *)searchStr
 {
     
-    NSLog(@"搜索委托代理");
-    
-    //获取数据源
+    //get origin data
     [self.dataArr removeAllObjects];
     
-    //清空界面
+    //clear UI
     [self.tableView beginUpdates];
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:0];
     [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.tableView endUpdates];
     
-    //根据根据判断状态
+    //request data
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     [param setValue:@"home" forKey:@"app"];
     [param setValue:@"searchUserByMobile" forKey:@"act"];
     [param setValue:searchStr forKey:@"mobile"];
+    [param setValue:self.account_id forKey:@"business_id"];
     [MBProgressHUD showSimple:self.view];
     [HttpRequestEx postWithURL:SERVICE_URL
                         params:param
@@ -109,20 +106,11 @@
                                NSArray *dataList = [json objectForKey:@"data"];
                                self.dataArr = [CGTeamMemberModel mj_objectArrayWithKeyValuesArray:dataList];
                                
-                               for (CGTeamMemberModel *model in self.dataArr)
-                               {
-                   //                for (CGTeamMemberModel *seleModel in self.selecteArr)
-                   //                {
-                   //                    if ([model.id isEqualToString:seleModel.id])
-                   //                    {
-                   //                        model.isAdd = YES;
-                   //                    }
-                   //                }
-                               }
-                               //设置空白页面
+                               //set empty page
                                [self.tableView emptyViewShowWithDataType:EmptyViewTypeCustomer
                                                                  isEmpty:self.dataArr.count<=0
                                                      emptyViewClickBlock:nil];
+                               [self.tableView reloadData];
                            }
                            else
                            {
@@ -133,37 +121,6 @@
                            [MBProgressHUD hideHUDForView:self.view];
                            [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
                        }];
-    [HttpRequestEx postWithURL:SERVICE_URL params:param success:^(id json) {
-        NSString *code = [json objectForKey:@"code"];
-        if([code isEqualToString:SUCCESS]) {
-            NSArray *dataList = [json objectForKey:@"data"];
-            self.dataArr = [CGTeamMemberModel mj_objectArrayWithKeyValuesArray:dataList];
-            
-            for (CGTeamMemberModel *model in self.dataArr)
-            {
-//                for (CGTeamMemberModel *seleModel in self.selecteArr)
-//                {
-//                    if ([model.id isEqualToString:seleModel.id])
-//                    {
-//                        model.isAdd = YES;
-//                    }
-//                }
-            }
-            //设置空白页面
-            [self.tableView emptyViewShowWithDataType:EmptyViewTypeCustomer
-                                              isEmpty:self.dataArr.count<=0
-                                  emptyViewClickBlock:nil];
-        }
-        else
-        {
-            //            [MBProgressHUD showError:msg toView:self.view];
-        }
-        [self.tableView reloadData];
-        [self endDataRefresh];
-    } failure:^(NSError *error) {
-        NSLog(@"%@",[error description]);
-        [self endDataRefresh];
-    }];
     
 }
 
@@ -178,9 +135,6 @@
             //邀请
             //程序内调用系统发短信
             [self showMessageView:[NSArray arrayWithObjects:model.mobile, nil] title:model.name body:@"我邀请你加入商业不动产租赁管家——城格租赁 ，点击链接下载http://t.cn/RXidqzh"];
-            
-            //程序外调用系统发短信
-            //[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"sms://13888888888"]];
             
             break;
         }
@@ -200,7 +154,35 @@
 - (void)invateBtnClick:(UIButton *)button
 {
     
-    
+    CGContactCell *cell = (CGContactCell *)button.superview.superview;
+    NSIndexPath *index = [self.tableView indexPathForCell:cell];
+    CGTeamMemberModel *model = self.dataArr[index.row];
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"addGroupMember";
+    param[@"business_id"] = self.account_id;
+    param[@"member"] = model.ID;
+    [MBProgressHUD showSimple:self.view];
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           [MBProgressHUD hideHUDForView:self.view];
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               [MBProgressHUD showMessage:@"添加成功" toView:self.view];
+                               [self CGMineSearchBarViewClick:self.searchView.searchBar.text];
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           [MBProgressHUD hideHUDForView:self.view];
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
 }
 
 -(void)showMessageView:(NSArray *)phones title:(NSString *)title body:(NSString *)body
@@ -214,15 +196,6 @@
         controller.messageComposeDelegate = self;
         [self presentViewController:controller animated:YES completion:nil];
         [[[[controller viewControllers] lastObject] navigationItem] setTitle:title];//修改短信界面标题
-    }
-    else
-    {
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
-        //                                                        message:@"该设备不支持短信功能"
-        //                                                       delegate:nil
-        //                                              cancelButtonTitle:@"确定"
-        //                                              otherButtonTitles:nil, nil];
-        //        [alert show];
     }
 }
 

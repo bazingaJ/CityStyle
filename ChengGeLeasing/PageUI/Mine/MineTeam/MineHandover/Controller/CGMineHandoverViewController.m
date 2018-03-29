@@ -87,14 +87,14 @@
     NSLog(@"下一步");
     
     //交接人验证
-    if(IsStringEmpty(currentMemModel.id)) {
+    if(IsStringEmpty(currentMemModel.ID)) {
         [MBProgressHUD showError:@"请选择交接人" toView:self.view];
         return;
     }
     
     CGMineHandoverCustomerViewController *customerView = [[CGMineHandoverCustomerViewController alloc] init];
     customerView.pro_id = self.pro_id;
-    customerView.member_id = currentMemModel.id;
+    customerView.member_id = currentMemModel.ID;
     [self.navigationController pushViewController:customerView animated:YES];
     
 }

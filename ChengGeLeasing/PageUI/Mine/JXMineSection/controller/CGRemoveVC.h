@@ -10,4 +10,6 @@
 
 @interface CGRemoveVC : BaseTableViewController
 
+@property (nonatomic, strong) NSString *account_id;
+
 @end

@@ -15,5 +15,6 @@ target 'ChengGeLeasing' do
     pod 'UIImage-Helpers', '~> 0.0.3'
     pod 'zhPopupController', '~> 1.0.2'
     pod 'Masonry'
-    pod 'IQKeyboardManager' 
+    pod 'IQKeyboardManager'
+    pod 'WechatOpenSDK'
 end

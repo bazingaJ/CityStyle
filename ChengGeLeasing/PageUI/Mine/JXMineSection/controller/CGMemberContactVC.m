@@ -16,8 +16,7 @@
 #import "CGTeamMemberModel.h"
 #import "CGContactCell.h"
 
-@interface CGMemberContactVC ()<CGMineTeamMemberContactCellDelegate,
-                                CGMineSearchBarViewDelegate,
+@interface CGMemberContactVC ()<CGMineSearchBarViewDelegate,
                                 MFMessageComposeViewControllerDelegate,
                                 JXContactDelegate>
 {
@@ -38,28 +37,18 @@
     [self searchView];
     if ([[UIDevice currentDevice].systemVersion floatValue]>=9.0)
     {
-        
         CNAuthorizationStatus authorizationStatus = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
         if (authorizationStatus == CNAuthorizationStatusNotDetermined)
         {
             CNContactStore *contactStore = [[CNContactStore alloc] init];
             [contactStore requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
-                if (granted)
-                {
-                    
-                }
-                else
+                if (!granted)
                 {
                     NSLog(@"授权失败, error=%@", error);
                 }
             }];
         }
-        
-    }else
-    {
-        NSLog(@"请升级系统");
     }
-    
 }
 
 /**
@@ -117,14 +106,17 @@
     return nil;
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    
     [self.searchView.searchBar resignFirstResponder];
 }
 
 /**
  *  搜索委托代理
  */
-- (void)CGMineSearchBarViewClick:(NSString *)searchStr {
+- (void)CGMineSearchBarViewClick:(NSString *)searchStr
+{
     NSLog(@"搜索委托代理");
     
     keywordsStr = searchStr;
@@ -212,58 +204,47 @@
             model.mobile = [phoneValue stringByReplacingOccurrencesOfString:@"-" withString:@""];
             [mobileArr addObject:model.mobile];
             [self.dataArr addObject:model];
-//            if(IsStringEmpty(keywordsStr))
-//            {
-//                [self.dataArr addObject:model];
-//            }
-//            else if([model.mobile containsString:keywordsStr] ||[model.name containsString:keywordsStr])
-//            {
-//                [self.dataArr addObject:model];
-//            }
         }
-        
-        
-        
     }];
     [self.tableView reloadData];
-//    //根据根据判断状态
-//    NSMutableDictionary *param = [NSMutableDictionary dictionary];
-//    [param setValue:@"home" forKey:@"app"];
-//    [param setValue:@"mailList" forKey:@"act"];
-//    [param setValue:[mobileArr componentsJoinedByString:@","] forKey:@"mobile"];
-//    [HttpRequestEx postWithURL:SERVICE_URL params:param success:^(id json)
-//     {
-//         NSString *code = [json objectForKey:@"code"];
-//         if([code isEqualToString:SUCCESS])
-//         {
-//             NSArray *dataList = [json objectForKey:@"data"];
-//             if(dataList && dataList.count>=1) {
-//
-//                 for (int i=0; i<dataList.count; i++)
-//                 {
-//                     NSDictionary *dataDic =  [dataList objectAtIndex:i];
-//
-//                     for (CGContactModel *model in self.dataArr)
-//                     {
-//                         model.mobile = [model.mobile stringByReplacingOccurrencesOfString:@" " withString:@""];
-//                         if ([model.mobile isEqualToString:dataDic[@"mobile"]])
-//                         {
-//                             model.isIn =@"1";
-//                             model.id = dataDic[@"id"];
-//                             model.name = dataDic[@"name"];
-//                             model.avatar = dataDic[@"avatar"];
-//                         }
-//                     }
-//                 }
+    //根据根据判断状态
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    [param setValue:@"home" forKey:@"app"];
+    [param setValue:@"mailList" forKey:@"act"];
+    [param setValue:[mobileArr componentsJoinedByString:@","] forKey:@"mobile"];
+    [HttpRequestEx postWithURL:SERVICE_URL params:param success:^(id json)
+     {
+         NSString *code = [json objectForKey:@"code"];
+         if([code isEqualToString:SUCCESS])
+         {
+             NSArray *dataList = [json objectForKey:@"data"];
+             if(dataList && dataList.count>=1) {
+
+                 for (int i=0; i<dataList.count; i++)
+                 {
+                     NSDictionary *dataDic =  [dataList objectAtIndex:i];
+
+                     for (CGContactModel *model in self.dataArr)
+                     {
+                         model.mobile = [model.mobile stringByReplacingOccurrencesOfString:@" " withString:@""];
+                         if ([model.mobile isEqualToString:dataDic[@"mobile"]])
+                         {
+                             model.isIn =@"1";
+                             model.user_id = dataDic[@"id"];
+                             model.name = dataDic[@"name"];
+                             model.avatar = dataDic[@"avatar"];
+                         }
+                     }
+                 }
     
-                 //循环是否添加
+////                 循环是否添加
 //                 for (CGContactModel *model in self.dataArr)
 //                 {
 //                     for (CGTeamMemberModel *selectedModel in self.selecteArr)
 //                     {
-//                         if (!IsStringEmpty(model.id))
+//                         if (!IsStringEmpty(model.user_id))
 //                         {
-//                             if ([selectedModel.id isEqualToString:model.id])
+//                             if ([selectedModel.user_id isEqualToString:model.user_id])
 //                             {
 //                                 model.isAdd =YES;
 //                             }
@@ -271,33 +252,33 @@
 //
 //                     }
 //                 }
-//
-//                 [self.tableView reloadData];
-//             }
-//         }
-//     } failure:^(NSError *error) {
-//
-//     }];
-//
-    //    NSDictionary *dataDic = [HttpRequestEx getSyncWidthURL:SERVICE_URL param:param];
-    //    NSString *code = [dataDic objectForKey:@"code"];
-    //    if([code isEqualToString:SUCCESS])
-    //    {
-    //        NSArray *dataList = [dataDic objectForKey:@"data"];
-    //        if(dataList && dataList.count>=1) {
-    //
-    //            for (NSDictionary *dataDic in dataList)
-    //            {
-    //                [self.dataArr addObject:[CGContactModel mj_objectWithKeyValues:dataDic]];
-    //            }
-    //
-    //            CGContactModel *contactModel = [CGContactModel mj_objectWithKeyValues:dataList[0]];
-    ////            model.id = contactModel.id;
-    ////            model.isIn = contactModel.isIn;
-    ////            model.avatar = contactModel.avatar;
-    ////            model.id = contactModel.id;
-    //        }
-    //    }
+
+                 [self.tableView reloadData];
+             }
+         }
+     } failure:^(NSError *error) {
+
+     }];
+
+        NSDictionary *dataDic = [HttpRequestEx getSyncWidthURL:SERVICE_URL param:param];
+        NSString *code = [dataDic objectForKey:@"code"];
+        if([code isEqualToString:SUCCESS])
+        {
+            NSArray *dataList = [dataDic objectForKey:@"data"];
+            if(dataList && dataList.count>=1) {
+    
+                for (NSDictionary *dataDic in dataList)
+                {
+                    [self.dataArr addObject:[CGContactModel mj_objectWithKeyValues:dataDic]];
+                }
+    
+                CGContactModel *contactModel = [CGContactModel mj_objectWithKeyValues:dataList[0]];
+    //            model.id = contactModel.id;
+    //            model.isIn = contactModel.isIn;
+    //            model.avatar = contactModel.avatar;
+    //            model.id = contactModel.id;
+            }
+        }
     
     
     [self.tableView reloadData];
@@ -351,6 +332,12 @@
         default:
             break;
     }
+    
+}
+
+// 邀请按钮点击事件
+- (void)invateBtnClick:(UIButton *)button
+{
     
 }
 

@@ -36,19 +36,19 @@
     
     //创建“邀请”按钮
     UIButton *btnFunc = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH-70, 25, 60, 25)];
-    if (IsStringEmpty(model.id))
+    if (IsStringEmpty(model.user_id))
     {
         [btnFunc setTitle:@"邀请" forState:UIControlStateNormal];
         [btnFunc setBackgroundColor:MAIN_COLOR];
         [btnFunc setTag:100];
     }
-    if (model.isAdd && !IsStringEmpty(model.id))
+    if (model.isAdd && !IsStringEmpty(model.user_id))
     {
         [btnFunc setUserInteractionEnabled:NO];
         [btnFunc setTitle:@"已添加" forState:UIControlStateNormal];
         [btnFunc setBackgroundColor:[UIColor grayColor]];
     }
-    if (!model.isAdd && !IsStringEmpty(model.id))
+    if (!model.isAdd && !IsStringEmpty(model.user_id))
     {
         [btnFunc setTitle:@"添加" forState:UIControlStateNormal];
         [btnFunc setBackgroundColor:MAIN_COLOR];
@@ -74,7 +74,7 @@
             NSMutableDictionary *param = [NSMutableDictionary dictionary];
             [param setValue:@"ucenter" forKey:@"app"];
             [param setValue:@"addNewUser" forKey:@"act"];
-            [param setValue:model.id forKey:@"member"];
+            [param setValue:model.user_id forKey:@"member"];
             [param setValue:pro_id forKey:@"pro_id"];
             [HttpRequestEx postWithURL:SERVICE_URL params:param success:^(id json) {
                 NSString *msg = [json objectForKey:@"msg"];

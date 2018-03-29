@@ -161,7 +161,7 @@
         case 200: {
             //添加
             CGTeamMemberModel *teamModel = [CGTeamMemberModel new];
-            teamModel.id =model.id;
+            teamModel.ID =model.user_id;
             teamModel.name = model.name;
             teamModel.avatar = model.avatar;
             [self.selecteArr addObject:teamModel];
@@ -256,7 +256,7 @@
                          if ([model.mobile isEqualToString:dataDic[@"mobile"]])
                          {
                              model.isIn =@"1";
-                             model.id = dataDic[@"id"];
+                             model.user_id = dataDic[@"id"];
                              model.name = dataDic[@"name"];
                              model.avatar = dataDic[@"avatar"];
                          }
@@ -268,9 +268,9 @@
                  {
                      for (CGTeamMemberModel *selectedModel in self.selecteArr)
                      {
-                         if (!IsStringEmpty(model.id))
+                         if (!IsStringEmpty(model.user_id))
                          {
-                             if ([selectedModel.id isEqualToString:model.id])
+                             if ([selectedModel.ID isEqualToString:model.user_id])
                              {
                                  model.isAdd =YES;
                              }

@@ -11,6 +11,7 @@
 #import "CGOrderDetailVC.h"
 #import "CGRenewPayVC.h"
 #import "CGBuySeatVC.h"
+#import "CGOrderListModel.h"
 
 static NSString *const currentTitle = @"支付与订单";
 
@@ -29,6 +30,10 @@ static const CGFloat bottomHeight = 45;
 @property (nonatomic, strong) UIButton *bottomBtn;
 // current order list type
 @property (nonatomic, strong) NSString *typeStr;
+// 续费订单按钮
+@property (nonatomic, strong) UIButton *renewBtn;
+// 席位订单按钮
+@property (nonatomic, strong) UIButton *seatBtn;
 @end
 
 @implementation CGPayOrderVC
@@ -44,35 +49,35 @@ static const CGFloat bottomHeight = 45;
 }
 - (void)prepareForData
 {
-    [self.dataArr removeAllObjects];
-    [self.dataArr addObjectsFromArray:@[@"",@"",@""]];
     // set current list type 2.续费 3 席位
     self.typeStr = @"2";
 }
 - (void)createUI
 {
-    UIButton *renewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [renewBtn setTitle:@"续费订单" forState:UIControlStateNormal];
-    [renewBtn setBackgroundColor:NAV_COLOR];
-    renewBtn.titleLabel.font= FONT15;
-    [renewBtn addTarget:self action:@selector(renewBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:renewBtn];
-    [renewBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.renewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.renewBtn setTitle:@"续费订单" forState:UIControlStateNormal];
+    [self.renewBtn setTitleColor:WHITE_COLOR forState:UIControlStateNormal];
+    [self.renewBtn setBackgroundColor:NAV_COLOR];
+    self.renewBtn.titleLabel.font= FONT15;
+    [self.renewBtn addTarget:self action:@selector(renewBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.renewBtn];
+    [self.renewBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.mas_equalTo(self.view);
         make.width.mas_equalTo(SCREEN_WIDTH * 0.5);
         make.height.mas_equalTo(topHeight);
     }];
     
-    UIButton *seatBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [seatBtn setTitle:@"席位订单" forState:UIControlStateNormal];
-    [seatBtn setBackgroundColor:NAV_COLOR];
-    seatBtn.titleLabel.font= FONT15;
-    [seatBtn addTarget:self action:@selector(seatBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:seatBtn];
-    [seatBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.seatBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.seatBtn setTitle:@"席位订单" forState:UIControlStateNormal];
+    [self.seatBtn setTitleColor:COLOR9 forState:UIControlStateNormal];
+    [self.seatBtn setBackgroundColor:NAV_COLOR];
+    self.seatBtn.titleLabel.font= FONT15;
+    [self.seatBtn addTarget:self action:@selector(seatBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.seatBtn];
+    [self.seatBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.right.mas_equalTo(self.view);
-        make.left.mas_equalTo(renewBtn.mas_right).offset(1);
-        make.height.mas_equalTo(renewBtn);
+        make.left.mas_equalTo(self.renewBtn.mas_right).offset(1);
+        make.height.mas_equalTo(self.renewBtn);
     }];
     
     self.lineView = [UIView new];
@@ -80,7 +85,7 @@ static const CGFloat bottomHeight = 45;
     self.lineView.alpha = 0.5;
     [self.view addSubview:self.lineView];
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.mas_equalTo(renewBtn);
+        make.left.right.bottom.mas_equalTo(self.renewBtn);
         make.height.mas_equalTo(3);
     }];
     
@@ -155,6 +160,8 @@ static const CGFloat bottomHeight = 45;
             self.lineView.transform = CGAffineTransformIdentity;
             [self.tableView.mj_header beginRefreshing];
             [self.bottomBtn setTitle:payBtnText forState:UIControlStateNormal];
+            [self.renewBtn setTitleColor:WHITE_COLOR forState:UIControlStateNormal];
+            [self.seatBtn setTitleColor:COLOR9 forState:UIControlStateNormal];
         } completion:^(BOOL finished) {
             
         }];
@@ -172,6 +179,8 @@ static const CGFloat bottomHeight = 45;
             self.lineView.transform = CGAffineTransformMakeTranslation(SCREEN_WIDTH * 0.5, 0);
             [self.tableView.mj_header beginRefreshing];
             [self.bottomBtn setTitle:seatBtnText forState:UIControlStateNormal];
+            [self.renewBtn setTitleColor:COLOR9 forState:UIControlStateNormal];
+            [self.seatBtn setTitleColor:WHITE_COLOR forState:UIControlStateNormal];
         } completion:^(BOOL finished) {
             
             
@@ -184,12 +193,14 @@ static const CGFloat bottomHeight = 45;
     if ([self.bottomBtn.currentTitle isEqualToString:payBtnText])
     {
         CGRenewPayVC *vc = [[CGRenewPayVC alloc] init];
+        vc.wholeSeats = self.wholeSeats;
         [self.navigationController pushViewController:vc animated:YES];
 
     }
     else
     {
         CGBuySeatVC *vc = [[CGBuySeatVC alloc] init];
+        vc.endTime = self.endTime;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -211,8 +222,13 @@ static const CGFloat bottomHeight = 45;
                            NSString *msg  = [json objectForKey:@"msg"];
                            if ([code isEqualToString:SUCCESS])
                            {
-                               NSDictionary *dict = [json objectForKey:@"data"];
-                               
+                               NSArray *dataArr = [json objectForKey:@"data"];
+                               [self.dataArr removeAllObjects];
+                               self.dataArr = [CGOrderListModel mj_objectArrayWithKeyValuesArray:dataArr];
+                               [self.tableView reloadData];
+                               [self.tableView emptyViewShowWithDataType:EmptyViewTypeOrder
+                                                                 isEmpty:self.dataArr.count<=0
+                                                     emptyViewClickBlock:nil];
                            }
                            else
                            {

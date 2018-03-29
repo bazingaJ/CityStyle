@@ -16,7 +16,7 @@
 /**
  *  成员ID
  */
-@property (nonatomic, strong) NSString *id;
+@property (nonatomic, strong) NSString *ID;
 /**
  *  成员ID(第二种写法)
  */

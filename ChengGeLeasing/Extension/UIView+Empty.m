@@ -200,6 +200,12 @@ static char WarningViewKey;
             title = @"暂无成员～";
             break;
         }
+        case EmptyViewTypeOrder: {
+            
+            imageName = @"empty_icon_contract";
+            title = @"暂无订单～";
+            break;
+        }
             
         default:
             break;

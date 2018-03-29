@@ -10,4 +10,9 @@
 
 @interface CGBuySeatVC : BaseTableViewController
 
+/**
+ 账户到期时间
+ */
+@property (nonatomic, strong) NSString *endTime;
+
 @end

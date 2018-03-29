@@ -57,7 +57,7 @@
             NSMutableDictionary *param = [NSMutableDictionary dictionary];
             [param setValue:@"ucenter" forKey:@"app"];
             [param setValue:@"addNewUser" forKey:@"act"];
-            [param setValue:model.id forKey:@"member"];
+            [param setValue:model.ID forKey:@"member"];
             [param setValue:pro_id forKey:@"pro_id"];
             [HttpRequestEx postWithURL:SERVICE_URL params:param success:^(id json) {
                 NSString *msg = [json objectForKey:@"msg"];

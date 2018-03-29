@@ -10,4 +10,6 @@
 
 @interface CGRenewPayVC : BaseTableViewController
 
+@property (nonatomic, strong) NSString *wholeSeats;
+
 @end

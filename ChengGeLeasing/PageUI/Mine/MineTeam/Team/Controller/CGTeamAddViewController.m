@@ -49,7 +49,7 @@
     model.name = [HelperManager CreateInstance].nickname;
     model.avatar = [HelperManager CreateInstance].avatar;
     model.isCharge = @"1";
-    model.id = [HelperManager CreateInstance].user_id;
+    model.ID = [HelperManager CreateInstance].user_id;
     [self.dataArr addObject:model];
     
     //设置模拟成员
@@ -504,9 +504,9 @@
     NSMutableArray *userIds = [NSMutableArray array];
     for (int i=0; i<[self.dataArr count]-1; i++) {
         CGTeamMemberModel *model = [self.dataArr objectAtIndex:i];
-        if(!model || model.id.length<=0) continue;
+        if(!model || model.ID.length<=0) continue;
         
-        [userIds addObject:model.id];
+        [userIds addObject:model.ID];
         
     }
     if(userIds.count<=0) {

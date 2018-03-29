@@ -1272,7 +1272,7 @@
                 CGTeamMemberModel *model = [self.teamMemberArr objectAtIndex:btnSender.tag-1000];
                 [self.currentItem setTitle:model.name forState:UIControlStateNormal];
                 if(self.callTeamMemberBack) {
-                    self.callTeamMemberBack(model.id,model.name);
+                    self.callTeamMemberBack(model.ID,model.name);
                     [self dismiss];
                 }
                 return;

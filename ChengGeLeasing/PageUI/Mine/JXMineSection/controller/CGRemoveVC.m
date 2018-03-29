@@ -40,15 +40,8 @@ static const CGFloat bottomBtnHeight = 45.f;
 - (void)prepareData
 {
     
-    CGMemberModel *model = [CGMemberModel new];
-    model.name = @"王红红";
-    model.mobile = @"13260894473";
-    [self.dataArr removeAllObjects];
-    [self.dataArr addObject:model];
-    [self.dataArr addObject:model];
-    [self.dataArr addObject:model];
-    [self.dataArr addObject:model];
-    [self.dataArr addObject:model];
+    // 获取成员列表
+    [self getMemberListData];
     
 }
 
@@ -120,11 +113,91 @@ static const CGFloat bottomBtnHeight = 45.f;
     self.beforeIndex = indexPath;
     
 }
-
-- (void)bottomBtnClick
+#pragma mark - Get Members List Data
+- (void)getMemberListData
 {
     
-    [MBProgressHUD showMessage:@"已移除" toView:self.view];
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"getGroupMember";
+    param[@"business_id"] = self.account_id;
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               NSDictionary *dataDic = [json objectForKey:@"data"];
+                               NSArray *arr = dataDic[@"list"];
+                               [self.dataArr removeAllObjects];
+                               NSArray *dataArr = [CGMemberModel mj_objectArrayWithKeyValuesArray:arr];
+                               // 数据筛选 创建者本人或者非管理员账户不可移交
+                               [dataArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                  
+                                   CGMemberModel *model = (CGMemberModel *)obj;
+                                   if ([model.is_owner isEqualToString:@"2"] && [model.type isEqualToString:@"1"]  && ![[HelperManager CreateInstance].user_id isEqualToString:model.member_id])
+                                   {
+                                       [self.dataArr addObject:model];
+                                   }
+                                   
+                               }];
+                               [self.tableView reloadData];
+                               //设置空白页面
+                               [self.tableView emptyViewShowWithDataType:EmptyViewTypeMember
+                                                                 isEmpty:self.dataArr.count<=0
+                                                     emptyViewClickBlock:nil];
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
+}
+- (void)bottomBtnClick
+{
+    if (self.dataArr.count == 0)
+    {
+        [MBProgressHUD showError:@"暂无成员" toView:self.view];
+        return;
+    }
+    CGMemberModel *model = self.dataArr[self.beforeIndex.row];
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"devAccount";
+    param[@"member_id"] = model.member_id;
+    param[@"business_id"] = self.account_id;
+    [MBProgressHUD showSimple:self.view];
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           [MBProgressHUD hideHUDForView:self.view];
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                   [MBProgressHUD showMessage:@"移交成功" toView:self.view];
+                                   
+                               });
+                               [self.navigationController popViewControllerAnimated:YES];
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           [MBProgressHUD hideHUDForView:self.view];
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {

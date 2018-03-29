@@ -6,6 +6,31 @@
 	<string>zh_CN</string>
 	<key>CFBundleDisplayName</key>
 	<string>城格租赁</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>com.myapp.common-data</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.microsoft.powerpoint.ppt</string>
+				<string>public.item</string>
+				<string>com.microsoft.word.doc</string>
+				<string>com.adobe.pdf</string>
+				<string>com.microsoft.excel.xls</string>
+				<string>public.image</string>
+				<string>public.content</string>
+				<string>public.composite-content</string>
+				<string>public.archive</string>
+				<string>public.audio</string>
+				<string>public.movie</string>
+				<string>public.text</string>
+				<string>public.data</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -44,34 +69,19 @@
 				<string>tencent1105997869</string>
 			</array>
 		</dict>
-	</array>
-	<key>CFBundleVersion</key>
-	<string>1</string>
-	<key>CFBundleDocumentTypes</key>
-	<array>
 		<dict>
-			<key>CFBundleTypeName</key>
-			<string>com.myapp.common-data</string>
-			<key>LSHandlerRank</key>
-			<string>Default</string>
-			<key>LSItemContentTypes</key>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>wechat</string>
+			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.microsoft.powerpoint.ppt</string>
-				<string>public.item</string>
-				<string>com.microsoft.word.doc</string>
-				<string>com.adobe.pdf</string>
-				<string>com.microsoft.excel.xls</string>
-				<string>public.image</string>
-				<string>public.content</string>
-				<string>public.composite-content</string>
-				<string>public.archive</string>
-				<string>public.audio</string>
-				<string>public.movie</string>
-				<string>public.text</string>
-				<string>public.data</string>
+				<string>wx1d1fbf6c9bf2b906</string>
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleVersion</key>
+	<string>1</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>wechat</string>

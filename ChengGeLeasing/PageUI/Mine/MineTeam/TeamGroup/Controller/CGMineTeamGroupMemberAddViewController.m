@@ -147,7 +147,7 @@
                 NSArray *dataList = [dataDic objectForKey:@"list"];
                 for (NSDictionary *itemDic in dataList) {
                     CGTeamMemberModel *model = [CGTeamMemberModel mj_objectWithKeyValues:itemDic];
-                    if([self.selectedArr containsObject:model.id]) {
+                    if([self.selectedArr containsObject:model.ID]) {
                         model.is_selected = YES;
                     }
                     [self.dataArr addObject:model];
