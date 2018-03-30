@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CGOrderListModel.h"
 
 @interface CGPayOrderCell : UITableViewCell
+
+@property (nonatomic, strong) CGOrderListModel *model;
+@property (weak, nonatomic) IBOutlet UILabel *titleLab;
+@property (weak, nonatomic) IBOutlet UILabel *orderNumLab;
+@property (weak, nonatomic) IBOutlet UILabel *orderContentLab;
+@property (weak, nonatomic) IBOutlet UILabel *orderAmount;
 
 @end

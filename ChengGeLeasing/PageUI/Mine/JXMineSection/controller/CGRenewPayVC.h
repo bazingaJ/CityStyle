@@ -7,8 +7,13 @@
 //
 
 #import "BaseTableViewController.h"
+#import "CGLevelUpCell.h"
+#import "CGPaymentVC.h"
+#import "CGRenewModel.h"
+#import "Order.h"
+#import "RSADataSigner.h"
 
-@interface CGRenewPayVC : BaseTableViewController
+@interface CGRenewPayVC : BaseTableViewController<JXLevelUpDelegate,WXApiDelegate>
 
 @property (nonatomic, strong) NSString *wholeSeats;
 

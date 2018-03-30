@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CGOrderListModel.h"
 
 @interface CGPaymentTopV : UIView
 
@@ -18,5 +19,7 @@
  @return 返回视图实例
  */
 - (instancetype)initWithFrame:(CGRect)frame payStatus:(BOOL)status;
+
+@property (nonatomic, strong) CGOrderListModel *model;
 
 @end

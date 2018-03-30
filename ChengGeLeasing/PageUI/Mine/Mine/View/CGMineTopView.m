@@ -31,7 +31,7 @@ static NSString *const timingPhotoText = @"timing";
 @property (nonatomic, strong) UILabel *lbNickName;
 @property (nonatomic, strong) UILabel *lbMobile;
 
-@property (nonatomic, strong) UILabel *timingLab;
+@property (nonatomic, strong) UIButton *timingBtn;
 
 
 @end
@@ -187,16 +187,16 @@ static NSString *const timingPhotoText = @"timing";
         
     }];
     
-    UILabel *signLab = [[UILabel alloc] init];
-    signLab.font = FONT13;
-    signLab.layer.cornerRadius = 5;
-    signLab.textColor = WHITE_COLOR;
-    signLab.layer.masksToBounds = YES;
-    signLab.text = paidAccountSignText;
-    signLab.backgroundColor = MAIN_COLOR;
-    signLab.textAlignment = NSTextAlignmentCenter;
-    [self.vipView addSubview:signLab];
-    [signLab mas_makeConstraints:^(MASConstraintMaker *make) {
+    UIButton *signBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    signBtn.titleLabel.font = FONT13;
+    signBtn.layer.cornerRadius = 5;
+    [signBtn setTitleColor:WHITE_COLOR forState:UIControlStateNormal];
+    [signBtn setTitle:paidAccountSignText forState:UIControlStateNormal];
+    signBtn.layer.masksToBounds = YES;
+    signBtn.backgroundColor = MAIN_COLOR;
+    [signBtn addTarget:self action:@selector(showXuFeiWindow) forControlEvents:UIControlEventTouchUpInside];
+    [self.vipView addSubview:signBtn];
+    [signBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.centerX.mas_equalTo(self.vipView);
         make.width.mas_equalTo(75);
         make.height.mas_equalTo(22);
@@ -205,17 +205,18 @@ static NSString *const timingPhotoText = @"timing";
     UIImageView *timingImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:timingPhotoText]];
     [self.vipView addSubview:timingImageView];
     [timingImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(signLab).offset(-10);
-        make.top.mas_equalTo(signLab.mas_bottom).offset(7);
+        make.left.mas_equalTo(signBtn).offset(-10);
+        make.top.mas_equalTo(signBtn.mas_bottom).offset(7);
         make.width.height.mas_equalTo(15);
     }];
     
-    self.timingLab = [[UILabel alloc] init];
-    self.timingLab.font = FONT12;
-    self.timingLab.text = countingText;
-    self.timingLab.textColor = WHITE_COLOR;
-    [self.vipView addSubview:self.timingLab];
-    [self.timingLab mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.timingBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.timingBtn.titleLabel.font = FONT12;
+    [self.timingBtn setTitle:countingText forState:UIControlStateNormal];
+    [self.timingBtn setTitleColor:WHITE_COLOR forState:UIControlStateNormal];
+    [self.timingBtn addTarget:self action:@selector(showXuFeiWindow) forControlEvents:UIControlEventTouchUpInside];
+    [self.vipView addSubview:self.timingBtn];
+    [self.timingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(timingImageView.mas_right).offset(10);
         make.centerY.mas_equalTo(timingImageView.mas_centerY);
         make.width.mas_equalTo(120);
@@ -246,14 +247,24 @@ static NSString *const timingPhotoText = @"timing";
         NSInteger days = wholehours / 24; // 差额共多少天
         NSInteger hours = wholehours - days * 24;
         NSLog(@"到期日期是%@还剩余：%ld-%ld",enddate,(long)days,(long)hours);
-        self.timingLab.text = [NSString stringWithFormat:@"剩余%ld天%ld小时",(long)days,(long)hours];
+        [self.timingBtn setTitle:@"" forState:UIControlStateNormal];
+        [self.timingBtn setTitle:[NSString stringWithFormat:@"剩余%ld天%ld小时",(long)days,(long)hours] forState:UIControlStateNormal];
     }
     else
     {
-        self.timingLab.text = @"您的VIP账户已过期";
+        [self.timingBtn setTitle:@"您的VIP账户已过期" forState:UIControlStateNormal];
     }
     
     
+}
+
+- (void)showXuFeiWindow
+{
+    
+    if ([self.delegate respondsToSelector:@selector(showXuFeiWindow)])
+    {
+        [self.delegate showXuFeiWindow];
+    }
 }
 
 // cover button click method

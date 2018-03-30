@@ -42,6 +42,7 @@ static const CGFloat bottomHeight = 45;
 {
     self.topH = topHeight;
     self.bottomH = bottomHeight;
+    [self setShowFooterRefresh:YES];
     [super viewDidLoad];
     self.title = currentTitle;
     [self prepareForData];
@@ -122,7 +123,8 @@ static const CGFloat bottomHeight = 45;
     {
         cell = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CGPayOrderCell class]) owner:nil options:nil]objectAtIndex:0];
     }
-    
+    CGOrderListModel *model = self.dataArr[indexPath.row];
+    cell.model = model;
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -149,6 +151,7 @@ static const CGFloat bottomHeight = 45;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     CGOrderDetailVC *vc = [[CGOrderDetailVC alloc] init];
+    vc.model = self.dataArr[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)renewBtnClick
@@ -212,6 +215,7 @@ static const CGFloat bottomHeight = 45;
     param[@"app"] = @"ucenter";
     param[@"act"] = @"getVipOrderList";
     param[@"type"] = self.typeStr;
+    param[@"page"] = @(self.pageIndex).stringValue;
     [MBProgressHUD showSimple:self.view];
     [HttpRequestEx postWithURL:SERVICE_URL
                         params:param
@@ -222,9 +226,10 @@ static const CGFloat bottomHeight = 45;
                            NSString *msg  = [json objectForKey:@"msg"];
                            if ([code isEqualToString:SUCCESS])
                            {
-                               NSArray *dataArr = [json objectForKey:@"data"];
+                               NSDictionary *dataDic = [json objectForKey:@"data"];
+                               NSArray *arr = dataDic[@"list"];
                                [self.dataArr removeAllObjects];
-                               self.dataArr = [CGOrderListModel mj_objectArrayWithKeyValuesArray:dataArr];
+                               self.dataArr = [CGOrderListModel mj_objectArrayWithKeyValuesArray:arr];
                                [self.tableView reloadData];
                                [self.tableView emptyViewShowWithDataType:EmptyViewTypeOrder
                                                                  isEmpty:self.dataArr.count<=0

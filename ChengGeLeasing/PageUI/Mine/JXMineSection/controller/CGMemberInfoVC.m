@@ -14,8 +14,8 @@
 #import "CGTeamMemberMobileAddViewController.h"
 #import "CGMemberContactVC.h"
 #import "CGMemberAddMobileVC.h"
-#import "CGUpdateView.h"
-#import "CGUpgradeVersionVC.h"
+#import "CGBuySeatView.h"
+#import "CGBuySeatVC.h"
 
 static NSString *const currentTitle = @"成员信息";
 
@@ -85,6 +85,7 @@ static NSString *cellIdentifier = @"CGMemberCell1";
     }
     CGMemberModel *model = self.dataArr[indexPath.row];
     cell.model = model;
+    cell.delegate = nil;
     if (![model.is_owner isEqualToString:@"1"] && ![[HelperManager CreateInstance].user_id isEqualToString:model.member_id])
     {
         cell.delegate = self;
@@ -252,16 +253,17 @@ static NSString *cellIdentifier = @"CGMemberCell1";
 {
     if (self.dataArr.count >= [self.wholeSeatNum integerValue])
     {
-        CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"添加更多项目\n小伙伴一起合作"];
+        CGBuySeatView *view = [[CGBuySeatView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 260) contentStr:@"请购买席位\n邀请小伙伴一起合作"];
         view.clickCallBack = ^(NSInteger tIndex) {
             [self.popup dismiss:YES];
-            if (tIndex == 0)
+            if (tIndex == 0 || tIndex == 1)
             {
                 return ;
             }
             else
             {
-                CGUpgradeVersionVC *vc = [CGUpgradeVersionVC new];
+                CGBuySeatVC *vc = [CGBuySeatVC new];
+                vc.endTime = self.endDate;
                 [self.navigationController pushViewController:vc animated:YES];
             }
         };

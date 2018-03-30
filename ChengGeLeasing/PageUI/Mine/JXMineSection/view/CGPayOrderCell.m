@@ -15,6 +15,15 @@
     // Initialization code
 }
 
+- (void)setModel:(CGOrderListModel *)model
+{
+    
+    self.titleLab.text = model.title;
+    self.orderNumLab.text = model.order_num;
+    self.orderContentLab.text = [NSString stringWithFormat:@"购买%@席位%@个月",model.member_num,model.vip_time];
+    self.orderAmount.text = [NSString stringWithFormat:@"￥%@",model.total_price];
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

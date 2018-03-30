@@ -7,8 +7,14 @@
 //
 
 #import "BaseTableViewController.h"
+#import "CGLevelUpCell.h"
+#import "CGPaymentVC.h"
+#import "CGRenewModel.h"
+#import "CGRenewModel.h"
+#import "Order.h"
+#import "RSADataSigner.h"
 
-@interface CGBuySeatVC : BaseTableViewController
+@interface CGBuySeatVC : BaseTableViewController<JXLevelUpDelegate,WXApiDelegate>
 
 /**
  账户到期时间

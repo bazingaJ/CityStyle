@@ -69,6 +69,7 @@ static NSString *const failText = @"支付失败";
 {
     UIViewController *currentVC = [JXTool currentViewController];
     CGOrderDetailVC *vc = [[CGOrderDetailVC alloc] init];
+    vc.model = self.model;
     [currentVC.navigationController pushViewController:vc animated:YES];
 }
 

@@ -33,7 +33,16 @@ static NSString *cellIdentifier = @"CGOrderDeteailIdentifier";
     self.titleArr = [NSMutableArray array];
     self.detailArr = [NSMutableArray array];
     [self.titleArr addObjectsFromArray:@[@[orderNumberText,orderTimeText,operationManText],@[memberSeatText,buyingTimeText],@[amountText]]];
-    [self.detailArr addObjectsFromArray:@[@[@"1213142341231",@"2017.04.16",@"董伟民"],@[@"30个",@"3月"],@[@"￥8820"]]];
+    
+    // 数据准备
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[self.model.add_date integerValue]];
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"yyyy.MM.dd"];
+    NSString *order_time = [format stringFromDate:date];
+    NSString *member_seatNum = [NSString stringWithFormat:@"%@个",self.model.member_num];
+    NSString *buy_time = [NSString stringWithFormat:@"%@月",self.model.vip_time];
+    NSString *amount = [NSString stringWithFormat:@"￥%@",self.model.total_price];
+    [self.detailArr addObjectsFromArray:@[@[self.model.order_num,order_time,self.model.user_name],@[member_seatNum,buy_time],@[amount]]];
     
 }
 
@@ -104,6 +113,7 @@ static NSString *cellIdentifier = @"CGOrderDeteailIdentifier";
     
     return nil;
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     

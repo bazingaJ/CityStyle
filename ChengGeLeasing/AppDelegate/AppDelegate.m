@@ -11,6 +11,8 @@
 #import "AppDelegate+UMSoc.h"
 #import "AppDelegate+JPUSH.h"
 #import "CGLoginViewController.h"
+#import "CGRenewPayVC.h"
+#import "CGBuySeatVC.h"
 
 @interface AppDelegate ()
 
@@ -112,7 +114,9 @@
 }
 
 // NOTE: 9.0以后使用新API接口--支付宝
-- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
+- (BOOL)application:(UIApplication *)app
+            openURL:(NSURL *)url
+            options:(NSDictionary<NSString*, id> *)options
 {
     BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url];
     if (result == FALSE) {
@@ -121,25 +125,45 @@
             //支付宝支付
         }
         if ([url.host isEqualToString:@"pay"]) {
-            //微信支付
+            
+            NSUserDefaults *us = [NSUserDefaults standardUserDefaults];
+            NSString *payTypeStr = [us objectForKey:@"payType"];
+            
+            if ([payTypeStr isEqualToString:@"shengji"])
+            {
+                
+            }
+            else if ([payTypeStr isEqualToString:@"xufei"])
+            {
+                CGRenewPayVC *vc = (CGRenewPayVC *)[JXTool currentViewController];
+                [WXApi handleOpenURL:url delegate:vc];
+            }
+            else if ([payTypeStr isEqualToString:@"xiwei"])
+            {
+                CGBuySeatVC *vc = (CGBuySeatVC *)[JXTool currentViewController];
+                [WXApi handleOpenURL:url delegate:vc];
+            }
+
+            
         }
     }
     return result;
 }
 
+
 - (void)userLogin:(void (^)(BOOL isLogin))completion {
     
     dispatch_async(dispatch_get_main_queue(), ^
-                   {
-                       //界面条转
-                       CGLoginViewController *loginView = [CGLoginViewController  new];
-                       loginView.callback = ^(BOOL isLogin) {
-                           completion(isLogin);
-                       };
-                       UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginView];
-                       [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:nav animated:YES completion:nil];
-//
-                   });
+       {
+           //界面条转
+           CGLoginViewController *loginView = [CGLoginViewController  new];
+           loginView.callback = ^(BOOL isLogin) {
+               completion(isLogin);
+           };
+           UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginView];
+           [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:nav animated:YES completion:nil];
+
+       });
     
 }
 

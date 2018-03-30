@@ -12,4 +12,6 @@
 
 @property (nonatomic, assign) BOOL payStatus;
 
+@property (nonatomic, strong) NSString *orderID;
+
 @end

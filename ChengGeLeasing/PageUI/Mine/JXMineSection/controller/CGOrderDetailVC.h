@@ -7,7 +7,10 @@
 //
 
 #import "BaseTableViewController.h"
+#import "CGOrderListModel.h"
 
 @interface CGOrderDetailVC : BaseTableViewController
+
+@property (nonatomic, strong) CGOrderListModel *model;
 
 @end

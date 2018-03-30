@@ -15,4 +15,14 @@
  */
 @property (nonatomic, strong) NSString *account_id;
 
+/**
+ 该账户总席位
+ */
+@property (nonatomic, strong) NSString *wholeCount;
+
+/**
+ 当前已经有的席位
+ */
+@property (nonatomic, strong) NSString *nowCount;
+
 @end

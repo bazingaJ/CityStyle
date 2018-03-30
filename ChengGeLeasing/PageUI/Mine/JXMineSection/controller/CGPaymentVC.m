@@ -8,6 +8,7 @@
 
 #import "CGPaymentVC.h"
 #import "CGPaymentTopV.h"
+#import "CGOrderListModel.h"
 
 static NSString *const currentCompleteTitle = @"支付完成";
 static NSString *const currentFailTitle = @"支付失败";
@@ -28,6 +29,7 @@ static const CGFloat bottomHeight = 60.f;
 
 @interface CGPaymentVC ()
 @property (nonatomic, strong) CGPaymentTopV *topView;
+@property (nonatomic, strong) CGOrderListModel *model;
 @end
 
 @implementation CGPaymentVC
@@ -49,8 +51,8 @@ static const CGFloat bottomHeight = 60.f;
     
     [self.dataArr removeAllObjects];
     [self.dataArr addObject:@[cellTitleText1,cellTitleText2,cellTitleText3,cellTitleText4]];
-    [self.dataArr addObject:@[@"99元/人/月",@"5个",@"12月",@"5940元"]];
-    
+    [self.dataArr addObject:@[@"",@"",@"",@""]];
+    [self getDataList:NO];
 }
 
 - (void)createUI
@@ -65,6 +67,7 @@ static const CGFloat bottomHeight = 60.f;
     [sureBtn setBackgroundColor:MAIN_COLOR];
     sureBtn.layer.masksToBounds = YES;
     sureBtn.layer.cornerRadius = 5;
+    [sureBtn addTarget:self action:@selector(sureBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:sureBtn];
     
     if (self.payStatus)
@@ -75,6 +78,12 @@ static const CGFloat bottomHeight = 60.f;
     self.tableView.scrollEnabled = NO;
 }
 
+- (void)leftButtonItemClick
+{
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"paymentDismiss" object:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -163,6 +172,51 @@ static const CGFloat bottomHeight = 60.f;
     [self.view addSubview:callWebview];
 }
 
+- (void)getDataList:(BOOL)isMore
+{
+    
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"getVipOrderInfo";
+    param[@"order_id"] = self.orderID;
+    [MBProgressHUD showSimple:self.view];
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           [MBProgressHUD hideHUDForView:self.view];
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               NSDictionary *dict = [json objectForKey:@"data"];
+                               self.model = [CGOrderListModel mj_objectWithKeyValues:dict];
+                               NSString *priceStr = [NSString stringWithFormat:@"%@元/人/月",self.model.price];
+                               NSString *member_numStr = [NSString stringWithFormat:@"%@个",self.model.member_num];
+                               NSString *vip_timeStr = [NSString stringWithFormat:@"%@月",self.model.vip_time];
+                               NSString *total_priceStr = [NSString stringWithFormat:@"%@元",self.model.total_price];
+                               [self.dataArr removeObjectAtIndex:1];
+                               [self.dataArr addObject:@[priceStr,member_numStr,vip_timeStr,total_priceStr]];
+                               self.topView.model = self.model;
+                               [self.tableView reloadData];
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           [MBProgressHUD hideHUDForView:self.view];
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
+    
+}
+
+- (void)sureBtnClick
+{
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"paymentDismiss" object:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (CGPaymentTopV *)topView
 {

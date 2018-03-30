@@ -14,7 +14,6 @@ static NSString *const knowMoreText = @"了解更多VIP企业版特权";
 
 static NSString *const vipText = @"升级VIP";
 
-
 @implementation CGUpdateView
 // 275 345
 - (instancetype)initWithFrame:(CGRect)frame contentStr:(NSString *)contentStr

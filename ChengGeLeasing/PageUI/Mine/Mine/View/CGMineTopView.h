@@ -16,6 +16,8 @@ extern const CGFloat JXMineHeaderViewHeight;
 
 - (void)CGMineTopViewEditInfoClick:(NSInteger)tIndex;
 
+- (void)showXuFeiWindow;
+
 @end
 
 @interface CGMineTopView : UIView

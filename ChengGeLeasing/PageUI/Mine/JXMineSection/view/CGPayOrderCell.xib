@@ -118,6 +118,12 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="orderAmount" destination="eej-YI-J2d" id="piY-iU-uuV"/>
+                <outlet property="orderContentLab" destination="7EJ-qF-U7f" id="i24-Wx-Pbr"/>
+                <outlet property="orderNumLab" destination="riq-gS-6CG" id="Eaa-Nf-a4g"/>
+                <outlet property="titleLab" destination="pd2-Hs-XXC" id="zK2-F8-kOj"/>
+            </connections>
             <point key="canvasLocation" x="-217" y="-129"/>
         </tableViewCell>
     </objects>

@@ -7,12 +7,7 @@
 //
 
 #import "CGRenewPayVC.h"
-#import "CGLevelUpCell.h"
-#import "CGPaymentVC.h"
-#import "CGRenewModel.h"
-#import "Order.h"
-#import "RSADataSigner.h"
-#import <AlipaySDK/AlipaySDK.h>
+#import "BaseNavigationController.h"
 
 static NSString *const currentTitle = @"续费";
 static NSString *const priceText = @"单价";
@@ -32,14 +27,14 @@ static NSString *const alertPhotoText = @"remind";
 static NSString *const agreePhotoText = @"agree_blank";
 static NSString *const agredPhotoText = @"agree";
 
-static const NSInteger minNumberCount = 5;
 static const NSInteger minMonthCount = 12;
 
-@interface CGRenewPayVC ()<JXLevelUpDelegate,WXApiDelegate>
+@interface CGRenewPayVC ()
 @property (nonatomic, strong) NSArray *originArr;
 @property (nonatomic, assign) CGFloat unit_price;
 @property (nonatomic, strong) CGRenewModel *model;
 @property (nonatomic, strong) UIButton *countBtn;
+@property (nonatomic, strong) NSString *order_id;
 @end
 
 @implementation CGRenewPayVC
@@ -69,6 +64,8 @@ static const NSInteger minMonthCount = 12;
     self.model.payType = @"1";
     self.model.isRead = @"2";
 
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(dismissVC) name:@"paymentDismiss" object:nil];
+    
 }
 
 - (void)createUI
@@ -95,6 +92,14 @@ static const NSInteger minMonthCount = 12;
     [payBtn setBackgroundColor:MAIN_COLOR];
     [payBtn addTarget:self action:@selector(payBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:payBtn];
+}
+
+- (void)dismissVC
+{
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.navigationController popViewControllerAnimated:YES];
+    });
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -358,33 +363,31 @@ static const NSInteger minMonthCount = 12;
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     param[@"app"] = @"ucenter";
     param[@"act"] = @"createVipOrder";
-    param[@"type"] = @"1";
+    param[@"type"] = @"2";
     param[@"vip_type"] = @"2";
     param[@"member_num"] = self.wholeSeats;
     param[@"price"] = VIP_PRICE;
     param[@"vip_time"] = self.model.month;
-    [MBProgressHUD showSimple:self.view];
+    [MBProgressHUD showMsg:@"正在生成订单" toView:self.view];
     [HttpRequestEx postWithURL:SERVICE_URL
                         params:param
                        success:^(id json) {
-                           [MBProgressHUD hideHUDForView:self.view];
                            NSString *code = [json objectForKey:@"code"];
                            NSString *msg  = [json objectForKey:@"msg"];
                            if ([code isEqualToString:SUCCESS])
                            {
                                NSDictionary *dict = [json objectForKey:@"data"];
+                               self.order_id = dict[@"order_id"];
                                if ([self.model.payType isEqualToString:@"1"])
                                {
+                                   // 微信支付
                                    [self paymentByWechat:dict[@"order_id"]];
                                }
                                else
                                {
+                                   // 支付宝支付
                                    [self paymentByAlipay:dict[@"order_id"]];
                                }
-                               
-//                               CGPaymentVC *vc = [CGPaymentVC new];
-//                               vc.payStatus = YES;
-//                               [self.navigationController pushViewController:vc animated:YES];
                            }
                            else
                            {
@@ -407,7 +410,7 @@ static const NSInteger minMonthCount = 12;
         NSMutableDictionary *param = [NSMutableDictionary dictionary];
         param[@"type"] = @"1";
         param[@"type_id"] = orderID;
-        [MBProgressHUD showSimple:self.view];
+        
         [HttpRequestEx postWithURL:WECHATPAY_URL
                             params:param
                            success:^(id json) {
@@ -416,6 +419,11 @@ static const NSInteger minMonthCount = 12;
                                NSString *msg  = [json objectForKey:@"msg"];
                                if ([code isEqualToString:SUCCESS])
                                {
+                                   // 设置区别字符 区别是续费还是席位购买 以便回到正确的页面
+                                   NSUserDefaults *us = [NSUserDefaults standardUserDefaults];
+                                   [us setObject:@"xufei" forKey:@"payType"];
+                                   [us synchronize];
+                                   
                                    NSDictionary *dict = [json objectForKey:@"data"];
                                    PayReq* req = [[PayReq alloc] init];
                                    req.partnerId=dict[@"partnerid"];
@@ -442,7 +450,58 @@ static const NSInteger minMonthCount = 12;
     }
     
 }
-
+/**
+ 微信支付回调方法
+ 
+ @param resp 回调实例
+ */
+- (void)onResp:(BaseResp*)resp
+{
+    //启动微信支付的response
+    NSString *payResoult = [NSString stringWithFormat:@"errcode:%d", resp.errCode];
+    if([resp isKindOfClass:[PayResp class]])
+    {
+        //支付返回结果，实际支付结果需要去微信服务器端查询
+        switch (resp.errCode)
+        {
+            case 0:
+            {
+                [MBProgressHUD showMessage:@"支付成功" toView:self.view];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.8f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    CGPaymentVC *paymentVC = [CGPaymentVC new];
+                    BaseNavigationController *nav = [[BaseNavigationController alloc] initWithRootViewController:paymentVC];
+                    paymentVC.payStatus = YES;
+                    paymentVC.orderID = self.order_id;
+                    [self presentViewController:nav animated:YES completion:nil];
+                });
+            }
+                break;
+            case -1:
+            {
+                [MBProgressHUD showMessage:@"支付失败" toView:self.view];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.8f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    CGPaymentVC *paymentVC = [CGPaymentVC new];
+                    BaseNavigationController *nav = [[BaseNavigationController alloc] initWithRootViewController:paymentVC];
+                    paymentVC.payStatus = NO;
+                    paymentVC.orderID = self.order_id;
+                    [self.navigationController pushViewController:nav animated:YES];
+                });
+            }
+                break;
+            case -2:
+            {
+                [MBProgressHUD showMessage:@"支付取消" toView:self.view];
+            }
+                break;
+            default:
+            {
+                payResoult = [NSString stringWithFormat:@"支付结果：失败！retcode = %d, retstr = %@", resp.errCode,resp.errStr];
+            }
+                
+                break;
+        }
+    }
+}
 #pragma mark - 向支付宝发起支付
 - (void)paymentByAlipay:(NSString *)orderID
 {
@@ -450,7 +509,7 @@ static const NSInteger minMonthCount = 12;
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     param[@"type"] = @"1";
     param[@"type_id"] = orderID;
-    [MBProgressHUD showSimple:self.view];
+    
     [HttpRequestEx postWithURL:ALIPAY_URL
                         params:param
                        success:^(id json) {
@@ -459,8 +518,8 @@ static const NSInteger minMonthCount = 12;
                            NSString *msg  = [json objectForKey:@"msg"];
                            if ([code isEqualToString:SUCCESS])
                            {
-                               NSDictionary *dict = [json objectForKey:@"data"];
-                               [self alipay:dict[@"key"]];
+                               NSString *orderString = [json objectForKey:@"data"];
+                               [self alipay:orderString];
                            }
                            else
                            {
@@ -475,11 +534,8 @@ static const NSInteger minMonthCount = 12;
 
 - (void)alipay:(NSString *)orderString
 {
-    
-    
-    //应用注册scheme,在AliSDKDemo-Info.plist定义URL types
-    NSString *appScheme = @"kuaiyunDriver";
-    
+    NSString *appScheme = @"AliPayChengGe";
+
     // NOTE: 将签名成功字符串格式化为订单字符串,请严格按照该格式
     if ([orderString isKindOfClass:[NSString class]] && orderString.length > 0)
     {
@@ -514,8 +570,14 @@ static const NSInteger minMonthCount = 12;
                  [MBProgressHUD showMessage:@"支付失败" toView:self.view];
              }
          }];
-        
     }
+    
+}
+
+- (void)dealloc
+{
+    
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {

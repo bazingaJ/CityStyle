@@ -9,7 +9,19 @@
 #import "BaseTableViewController.h"
 
 @interface CGMemberInfoVC : BaseTableViewController
+
+/**
+ 企业ID
+ */
 @property (nonatomic, strong) NSString *account_id;
+
+/**
+ 到期时间
+ */
 @property (nonatomic, strong) NSString *endDate;
+
+/**
+ 总席位数
+ */
 @property (nonatomic, strong) NSString *wholeSeatNum;
 @end

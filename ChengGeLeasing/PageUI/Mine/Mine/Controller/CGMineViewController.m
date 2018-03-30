@@ -16,6 +16,8 @@
 #import "CGUserModel.h"
 #import "CGSpotlightView.h"
 #import "CGEntManagerVC.h"
+#import "CGXuFeiView.h"
+#import "CGRenewPayVC.h"
 
 /**
  Word
@@ -35,7 +37,9 @@ static NSString *const cellTitleText5 = @"设置";
 
 @property (nonatomic, strong) CGMineTopView *topView;
 @property (nonatomic, strong) NSArray *spotlightArr;
-
+@property (nonatomic, strong) NSString *wholeMemberNum;
+@property (nonatomic, strong) NSString *endTimeStr;
+@property (nonatomic, strong) KLCPopup *popup;
 @end
 
 @implementation CGMineViewController
@@ -316,7 +320,11 @@ static NSString *const cellTitleText5 = @"设置";
         if([code isEqualToString:SUCCESS]) {
             NSDictionary *dataDic = [json objectForKey:@"data"];
             userInfo = [CGUserModel mj_objectWithKeyValues:dataDic];
-            
+            self.wholeMemberNum = dataDic[@"member_num"];
+            NSDateFormatter *format = [[NSDateFormatter alloc] init];
+            [format setDateFormat:@"yyyy-MM-dd"];
+            NSDate *date = [NSDate dateWithTimeIntervalSince1970:[dataDic[@"end_time"] integerValue]];
+            self.endTimeStr = [format stringFromDate:date];
             [titleDic removeAllObjects];
             [self createCellContents];
             [self.topView setMineTopModel:userInfo];
@@ -326,5 +334,35 @@ static NSString *const cellTitleText5 = @"设置";
         NSLog(@"%@",[error description]);
     }];
 }
+
+// 点击VIP标志和剩余时间 弹出弹窗
+- (void)showXuFeiWindow
+{
+    
+    NSArray *endTimeArr = [self.endTimeStr componentsSeparatedByString:@"-"];
+    NSString *wholeStr = [NSString stringWithFormat:@"您的VIP企业版\n将于%@年%@月%@日到期\n请尽快续费。",endTimeArr[0],endTimeArr[1],endTimeArr[2]];
+    CGXuFeiView *view = [[CGXuFeiView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 240) contentStr:wholeStr];
+    view.clickCallBack = ^(NSInteger tIndex) {
+        [self.popup dismiss:YES];
+        if (tIndex == 0 || tIndex == 1)
+        {
+            return ;
+        }
+        else
+        {
+            CGRenewPayVC *vc = [CGRenewPayVC new];
+            vc.wholeSeats = self.wholeMemberNum;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    };
+    self.popup = [KLCPopup popupWithContentView:view
+                                       showType:KLCPopupShowTypeGrowIn
+                                    dismissType:KLCPopupDismissTypeGrowOut
+                                       maskType:KLCPopupMaskTypeDimmed
+                       dismissOnBackgroundTouch:NO
+                          dismissOnContentTouch:NO];
+    [self.popup show];
+}
+
 
 @end
