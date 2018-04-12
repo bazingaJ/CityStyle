@@ -107,17 +107,17 @@ static NSString *const timingPhotoText = @"timing";
 {
     if ([[HelperManager CreateInstance] isLogin:NO completion:nil])
     {
+        [self.freeView removeFromSuperview];
+        self.freeView = nil;
+        [self.vipView removeFromSuperview];
+        self.vipView = nil;
         if ([HelperManager CreateInstance].isFree)
         {
-            [self.vipView removeFromSuperview];
-            self.vipView = nil;
             // 创建免费账户标志
             [self createFreeAccountSignButton];
         }
         else
         {
-            [self.freeView removeFromSuperview];
-            self.freeView = nil;
             // 创建企业版账户标志
             [self createEnterpriesSignButton];
         }
@@ -212,12 +212,11 @@ static NSString *const timingPhotoText = @"timing";
     
     self.timingBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.timingBtn.titleLabel.font = FONT12;
-    [self.timingBtn setTitle:countingText forState:UIControlStateNormal];
     [self.timingBtn setTitleColor:WHITE_COLOR forState:UIControlStateNormal];
     [self.timingBtn addTarget:self action:@selector(showXuFeiWindow) forControlEvents:UIControlEventTouchUpInside];
     [self.vipView addSubview:self.timingBtn];
     [self.timingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(timingImageView.mas_right).offset(10);
+        make.left.mas_equalTo(timingImageView.mas_right);
         make.centerY.mas_equalTo(timingImageView.mas_centerY);
         make.width.mas_equalTo(120);
         make.height.mas_equalTo(20);
@@ -247,7 +246,6 @@ static NSString *const timingPhotoText = @"timing";
         NSInteger days = wholehours / 24; // 差额共多少天
         NSInteger hours = wholehours - days * 24;
         NSLog(@"到期日期是%@还剩余：%ld-%ld",enddate,(long)days,(long)hours);
-        [self.timingBtn setTitle:@"" forState:UIControlStateNormal];
         [self.timingBtn setTitle:[NSString stringWithFormat:@"剩余%ld天%ld小时",(long)days,(long)hours] forState:UIControlStateNormal];
     }
     else

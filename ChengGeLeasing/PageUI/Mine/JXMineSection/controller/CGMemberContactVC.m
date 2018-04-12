@@ -13,7 +13,7 @@
 #import <Contacts/Contacts.h>
 #import <AddressBook/AddressBookDefines.h>
 #import <AddressBook/ABRecord.h>
-#import "CGTeamMemberModel.h"
+#import "CGMemberModel.h"
 #import "CGContactCell.h"
 
 @interface CGMemberContactVC ()<CGMineSearchBarViewDelegate,
@@ -163,7 +163,8 @@
 /**
  *  获取数据源
  */
-- (void)getDataList:(BOOL)isMore {
+- (void)getDataList:(BOOL)isMore
+{
     
     CNAuthorizationStatus authorizationStatus = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
     if (authorizationStatus == CNAuthorizationStatusAuthorized)
@@ -172,6 +173,11 @@
     }
     
     // 获取指定的字段,并不是要获取所有字段，需要指定具体的字段
+    /**
+     1. 首先获取数据源，获取通讯录权限，之后获取到所有的通讯录
+     2. 判断是否使用注册过APP，加入过团队
+     3. 如果注册使用过APP，是否加入本项目的团队
+     */
     NSArray *keysToFetch = @[CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey];
     CNContactFetchRequest *fetchRequest = [[CNContactFetchRequest alloc] initWithKeysToFetch:keysToFetch];
     CNContactStore *contactStore = [[CNContactStore alloc] init];
@@ -191,7 +197,8 @@
         model.name = nameStr;
         
         NSArray *phoneNumbers = contact.phoneNumbers;
-        for (CNLabeledValue *labelValue in phoneNumbers) {
+        for (CNLabeledValue *labelValue in phoneNumbers)
+        {
             
             // 获取电话号码的KEY
             //NSString *phoneLabel = labelValue.label;
@@ -202,12 +209,13 @@
             
             model.mobileStr = phoneValue;
             model.mobile = [phoneValue stringByReplacingOccurrencesOfString:@"-" withString:@""];
+            model.mobile = [model.mobile stringByReplacingOccurrencesOfString:@"+86" withString:@""];
             [mobileArr addObject:model.mobile];
             [self.dataArr addObject:model];
         }
     }];
-    [self.tableView reloadData];
-    //根据根据判断状态
+    
+    //根据根据判断状态 是否使用过该APP 加入过任何一个团队
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     [param setValue:@"home" forKey:@"app"];
     [param setValue:@"mailList" forKey:@"act"];
@@ -237,48 +245,48 @@
                      }
                  }
     
-////                 循环是否添加
-//                 for (CGContactModel *model in self.dataArr)
-//                 {
-//                     for (CGTeamMemberModel *selectedModel in self.selecteArr)
-//                     {
-//                         if (!IsStringEmpty(model.user_id))
-//                         {
-//                             if ([selectedModel.user_id isEqualToString:model.user_id])
-//                             {
-//                                 model.isAdd =YES;
-//                             }
-//                         }
-//
-//                     }
-//                 }
+//               判断是否 已经加入本项目
+                 for (CGContactModel *model in self.dataArr)
+                 {
+                     for (CGMemberModel *selectedModel in self.selectArr)
+                     {
+                         if (!IsStringEmpty(model.user_id))
+                         {
+                             if ([selectedModel.member_id isEqualToString:model.user_id])
+                             {
+                                 model.isAdd =YES;
+                             }
+                         }
 
-                 [self.tableView reloadData];
+                     }
+                 }
+
+
              }
          }
      } failure:^(NSError *error) {
 
      }];
 
-        NSDictionary *dataDic = [HttpRequestEx getSyncWidthURL:SERVICE_URL param:param];
-        NSString *code = [dataDic objectForKey:@"code"];
-        if([code isEqualToString:SUCCESS])
-        {
-            NSArray *dataList = [dataDic objectForKey:@"data"];
-            if(dataList && dataList.count>=1) {
-    
-                for (NSDictionary *dataDic in dataList)
-                {
-                    [self.dataArr addObject:[CGContactModel mj_objectWithKeyValues:dataDic]];
-                }
-    
-                CGContactModel *contactModel = [CGContactModel mj_objectWithKeyValues:dataList[0]];
-    //            model.id = contactModel.id;
-    //            model.isIn = contactModel.isIn;
-    //            model.avatar = contactModel.avatar;
-    //            model.id = contactModel.id;
-            }
-        }
+//        NSDictionary *dataDic = [HttpRequestEx getSyncWidthURL:SERVICE_URL param:param];
+//        NSString *code = [dataDic objectForKey:@"code"];
+//        if([code isEqualToString:SUCCESS])
+//        {
+//            NSArray *dataList = [dataDic objectForKey:@"data"];
+//            if(dataList && dataList.count>=1) {
+//
+//                for (NSDictionary *dataDic in dataList)
+//                {
+//                    [self.dataArr addObject:[CGContactModel mj_objectWithKeyValues:dataDic]];
+//                }
+//
+//                CGContactModel *contactModel = [CGContactModel mj_objectWithKeyValues:dataList[0]];
+//    //            model.id = contactModel.id;
+//    //            model.isIn = contactModel.isIn;
+//    //            model.avatar = contactModel.avatar;
+//    //            model.id = contactModel.id;
+//            }
+//        }
     
     
     [self.tableView reloadData];
@@ -336,9 +344,58 @@
 }
 
 // 邀请按钮点击事件
-- (void)invateBtnClick:(UIButton *)button
+- (void)invateBtnClick:(UIButton *)button model:(CGContactModel *)model
 {
     
+    // 按钮的当前标题是邀请
+    if (button.tag == 111)
+    {
+        //邀请
+        //程序内调用系统发短信
+        [self showMessageView:[NSArray arrayWithObjects:model.mobile, nil] title:model.name body:@"我邀请你加入商业不动产租赁管家——城格租赁 ，点击链接下载http://t.cn/RXidqzh"];
+    }
+    // 按钮的当前标题是添加
+    else if (button.tag == 222)
+    {
+        CGContactCell *cell = (CGContactCell *)button.superview.superview;
+        NSIndexPath *index = [self.tableView indexPathForCell:cell];
+        CGContactModel *model = self.dataArr[index.row];
+        NSMutableDictionary *param = [NSMutableDictionary dictionary];
+        param[@"app"] = @"ucenter";
+        param[@"act"] = @"addGroupMember";
+        param[@"business_id"] = self.account_id;
+        param[@"member"] = model.user_id;
+        [MBProgressHUD showSimple:self.view];
+        [HttpRequestEx postWithURL:SERVICE_URL
+                            params:param
+                           success:^(id json) {
+                               [MBProgressHUD hideHUDForView:self.view];
+                               NSString *code = [json objectForKey:@"code"];
+                               NSString *msg  = [json objectForKey:@"msg"];
+                               if ([code isEqualToString:SUCCESS])
+                               {
+                                   [MBProgressHUD showMessage:@"添加成功" toView:self.view];
+       //                               [self CGMineSearchBarViewClick:self.searchView.searchBar.text];
+                                   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                       [self.navigationController popViewControllerAnimated:YES];
+                                   });
+                                   
+                               }
+                               else
+                               {
+                                   [MBProgressHUD showError:msg toView:self.view];
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               [MBProgressHUD hideHUDForView:self.view];
+                               [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                           }];
+    }
+    // 按钮的当前标题是已添加
+    else
+    {
+        // 按钮的交互已经关闭 故而不用做任何事情
+    }
 }
 
 /**

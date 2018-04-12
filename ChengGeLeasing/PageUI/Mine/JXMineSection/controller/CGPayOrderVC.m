@@ -48,6 +48,13 @@ static const CGFloat bottomHeight = 45;
     [self prepareForData];
     [self createUI];
 }
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.tableView.mj_header beginRefreshing];
+}
+
 - (void)prepareForData
 {
     // set current list type 2.续费 3 席位
@@ -197,6 +204,7 @@ static const CGFloat bottomHeight = 45;
     {
         CGRenewPayVC *vc = [[CGRenewPayVC alloc] init];
         vc.wholeSeats = self.wholeSeats;
+        vc.account_id = self.model.account_id;
         [self.navigationController pushViewController:vc animated:YES];
 
     }
@@ -204,6 +212,7 @@ static const CGFloat bottomHeight = 45;
     {
         CGBuySeatVC *vc = [[CGBuySeatVC alloc] init];
         vc.endTime = self.endTime;
+        vc.account_id = self.model.account_id;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -214,6 +223,7 @@ static const CGFloat bottomHeight = 45;
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     param[@"app"] = @"ucenter";
     param[@"act"] = @"getVipOrderList";
+    param[@"business_id"] = self.model.account_id;
     param[@"type"] = self.typeStr;
     param[@"page"] = @(self.pageIndex).stringValue;
     [MBProgressHUD showSimple:self.view];
@@ -224,6 +234,7 @@ static const CGFloat bottomHeight = 45;
                            [self endDataRefresh];
                            NSString *code = [json objectForKey:@"code"];
                            NSString *msg  = [json objectForKey:@"msg"];
+                           NSLog(@"---获取订单列表%@",json);
                            if ([code isEqualToString:SUCCESS])
                            {
                                NSDictionary *dataDic = [json objectForKey:@"data"];

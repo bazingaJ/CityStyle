@@ -17,4 +17,6 @@
 
 @property (nonatomic, strong) NSString *wholeSeats;
 
+@property (nonatomic, strong) NSString *account_id;
+
 @end

@@ -7,7 +7,10 @@
 //
 
 #import "BaseTableViewController.h"
+#import "CGLevelUpCell.h"
+#import "CGRenewModel.h"
+#import "CGPaymentVC.h"
 
-@interface CGLevelUpVC : BaseTableViewController
+@interface CGLevelUpVC : BaseTableViewController<JXLevelUpDelegate,WXApiDelegate>
 
 @end

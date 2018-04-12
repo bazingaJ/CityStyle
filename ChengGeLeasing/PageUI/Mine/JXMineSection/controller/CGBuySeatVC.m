@@ -397,11 +397,11 @@ static const NSInteger minNumberCount = 1;
     param[@"member_num"] = self.model.seats_number;
     param[@"price"] = VIP_PRICE;
     param[@"vip_time"] = self.model.month;
-    [MBProgressHUD showSimple:self.view];
+    param[@"business_id"] = self.account_id;
+    [MBProgressHUD showMsg:@"正在生成订单" toView:self.view];
     [HttpRequestEx postWithURL:SERVICE_URL
                         params:param
                        success:^(id json) {
-                           [MBProgressHUD hideHUDForView:self.view];
                            NSString *code = [json objectForKey:@"code"];
                            NSString *msg  = [json objectForKey:@"msg"];
                            if ([code isEqualToString:SUCCESS])
@@ -419,6 +419,7 @@ static const NSInteger minNumberCount = 1;
                            }
                            else
                            {
+                               [MBProgressHUD hideHUDForView:self.view];
                                [MBProgressHUD showError:msg toView:self.view];
                            }
                        }
@@ -438,7 +439,6 @@ static const NSInteger minNumberCount = 1;
         NSMutableDictionary *param = [NSMutableDictionary dictionary];
         param[@"type"] = @"1";
         param[@"type_id"] = orderID;
-        [MBProgressHUD showSimple:self.view];
         [HttpRequestEx postWithURL:WECHATPAY_URL
                             params:param
                            success:^(id json) {
@@ -548,8 +548,8 @@ static const NSInteger minNumberCount = 1;
                            NSString *msg  = [json objectForKey:@"msg"];
                            if ([code isEqualToString:SUCCESS])
                            {
-                               NSDictionary *dict = [json objectForKey:@"data"];
-                               [self alipay:dict];
+                               NSString *orderString = [json objectForKey:@"data"];
+                               [self alipay:orderString];
                            }
                            else
                            {
@@ -562,110 +562,45 @@ static const NSInteger minNumberCount = 1;
                        }];
 }
 
-- (void)alipay:(NSDictionary *)dict
+- (void)alipay:(NSString *)orderString
 {
+    NSString *appScheme = @"AliPayChengGe";
     
-    NSString *appid = dict[@"appid"];
-    NSString *pay_url = dict[@"pay_url"];
-    NSString *subject = dict[@"subject"];
-    NSString *out_trade_no = dict[@"out_trade_no"];
-    NSString *total_fee = dict[@"total_fee"];
-    NSString *key = dict[@"key"];
-    
-    
-    /*
-     *生成订单信息及签名
-     */
-    //将商品信息赋予AlixPayOrder的成员变量
-    Order* order = [Order new];
-    
-    // NOTE: app_id设置
-    order.app_id = appid;
-    
-    // NOTE: 支付接口名称
-    order.method = @"alipay.trade.app.pay";
-    
-    // NOTE: 参数编码格式
-    order.charset = @"utf-8";
-    
-    // NOTE: 当前时间点
-    NSDateFormatter* formatter = [NSDateFormatter new];
-    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    order.timestamp = [formatter stringFromDate:[NSDate date]];
-    
-    // NOTE: 支付版本
-    order.version = @"1.0";
-    
-    // NOTE: sign_type设置
-    order.sign_type = @"RSA";
-    
-    // NOTE: 回调地址
-    order.notify_url = pay_url;
-    
-    // NOTE: 商品数据
-    order.biz_content = [BizContent new];
-    order.biz_content.subject = subject;
-    order.biz_content.out_trade_no = out_trade_no; //订单ID（由商家自行制定）
-    order.biz_content.timeout_express = @"15m"; //超时时间设置
-    order.biz_content.total_amount = [NSString stringWithFormat:@"%.2f", [total_fee floatValue]]; //商品价格
-    
-    //将商品信息拼接成字符串
-    NSString *orderInfo = [order orderInfoEncoded:NO];
-    NSString *orderInfoEncoded = [order orderInfoEncoded:YES];
-    NSLog(@"orderSpec = %@",orderInfo);
-    
-    // NOTE: 获取私钥并将商户信息签名，外部商户的加签过程请务必放在服务端，防止公私钥数据泄露；
-    //       需要遵循RSA签名规范，并将签名字符串base64编码和UrlEncode
-    RSADataSigner *signer = [[RSADataSigner alloc] initWithPrivateKey:key];
-    NSString *signedString = [signer signString:orderInfo withRSA2:NO];
-    
-    // NOTE: 如果加签成功，则继续执行支付
-    if (signedString != nil) {
-        //应用注册scheme,在AliSDKDemo-Info.plist定义URL types
-        NSString *appScheme = @"AliPayChengGe";
-        
-        // NOTE: 将签名成功字符串格式化为订单字符串,请严格按照该格式
-        NSString *orderString = [NSString stringWithFormat:@"%@&sign=%@",
-                                 orderInfoEncoded, signedString];
-        
-        // NOTE: 将签名成功字符串格式化为订单字符串,请严格按照该格式
-        if ([orderString isKindOfClass:[NSString class]] && orderString.length > 0)
-        {
-            // NOTE: 调用支付结果开始支付
-            [[AlipaySDK defaultService] payOrder:orderString fromScheme:appScheme callback:^(NSDictionary *resultDic)
+    // NOTE: 将签名成功字符串格式化为订单字符串,请严格按照该格式
+    if ([orderString isKindOfClass:[NSString class]] && orderString.length > 0)
+    {
+        // NOTE: 调用支付结果开始支付
+        [[AlipaySDK defaultService] payOrder:orderString fromScheme:appScheme callback:^(NSDictionary *resultDic)
+         {
+             NSLog(@"代码中reslut = %@",resultDic);
+             NSString *resultStatus = [NSString stringWithFormat:@"%@",resultDic[@"resultStatus"]];
+             if ([resultStatus isEqualToString:@"9000"])
              {
-                 NSLog(@"代码中reslut = %@",resultDic);
-                 NSString *resultStatus = [NSString stringWithFormat:@"%@",resultDic[@"resultStatus"]];
-                 if ([resultStatus isEqualToString:@"9000"])
-                 {
-                     [MBProgressHUD showMessage:@"支付成功" toView:self.view];
-                     //                 [self afterPayOption];
-                 }
-                 else if ([resultStatus isEqualToString:@"4000"])
-                 {
-                     [MBProgressHUD showMessage:@"订单支付失败" toView:self.view];
-                 }
-                 else if ([resultStatus isEqualToString:@"5000"])
-                 {
-                     [MBProgressHUD showMessage:@"重复请求" toView:self.view];
-                 }
-                 else if ([resultStatus isEqualToString:@"6001"])
-                 {
-                     [MBProgressHUD showMessage:@"支付取消" toView:self.view];
-                 }
-                 else if ([resultStatus isEqualToString:@"6002"])
-                 {
-                     [MBProgressHUD showMessage:@"网络连接出错" toView:self.view];
-                 }
-                 else
-                 {
-                     [MBProgressHUD showMessage:@"支付失败" toView:self.view];
-                 }
-             }];
-            
-        }
+                 [MBProgressHUD showMessage:@"支付成功" toView:self.view];
+                 //                 [self afterPayOption];
+             }
+             else if ([resultStatus isEqualToString:@"4000"])
+             {
+                 [MBProgressHUD showMessage:@"订单支付失败" toView:self.view];
+             }
+             else if ([resultStatus isEqualToString:@"5000"])
+             {
+                 [MBProgressHUD showMessage:@"重复请求" toView:self.view];
+             }
+             else if ([resultStatus isEqualToString:@"6001"])
+             {
+                 [MBProgressHUD showMessage:@"支付取消" toView:self.view];
+             }
+             else if ([resultStatus isEqualToString:@"6002"])
+             {
+                 [MBProgressHUD showMessage:@"网络连接出错" toView:self.view];
+             }
+             else
+             {
+                 [MBProgressHUD showMessage:@"支付失败" toView:self.view];
+             }
+         }];
     }
-    
     
 }
 

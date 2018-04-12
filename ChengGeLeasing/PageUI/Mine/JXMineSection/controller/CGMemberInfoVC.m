@@ -85,60 +85,61 @@ static NSString *cellIdentifier = @"CGMemberCell1";
     }
     CGMemberModel *model = self.dataArr[indexPath.row];
     cell.model = model;
-    cell.delegate = nil;
-    if (![model.is_owner isEqualToString:@"1"] && ![[HelperManager CreateInstance].user_id isEqualToString:model.member_id])
-    {
-        cell.delegate = self;
-        [cell setRightUtilityButtons:[self rightButtons:model] WithButtonWidth:110];
-    }
+    cell.delegate = self;
+    [cell setRightUtilityButtons:[self rightButtons:model] WithButtonWidth:110];
+    
     return cell;
 }
 
 - (NSArray *)rightButtons:(CGMemberModel *)model
 {
-    NSMutableArray *rightUtilityButtons = [NSMutableArray new];
-    NSString *role = @"";
-    NSString *rolePic= @"";
-    // type 1.管理员 2.普通成员
-    if ([model.type isEqualToString:@"1"])
+    if (![model.is_owner isEqualToString:@"1"] && ![[HelperManager CreateInstance].user_id isEqualToString:model.member_id])
     {
-        role = cancelBtnText;
-        rolePic = cancelPicText;
+        NSMutableArray *rightUtilityButtons = [NSMutableArray new];
+        NSString *role = @"";
+        NSString *rolePic= @"";
+        // type 1.管理员 2.普通成员
+        if ([model.type isEqualToString:@"1"])
+        {
+            role = cancelBtnText;
+            rolePic = cancelPicText;
+        }
+        else
+        {
+            role = setBtnText;
+            rolePic = setPicText;
+        }
+        //设置已办按钮
+        UIButton *btnFunc2 = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btnFunc2 setTitle:role forState:UIControlStateNormal];
+        [btnFunc2 setTitleColor:COLOR3 forState:UIControlStateNormal];
+        [btnFunc2.titleLabel setFont:FONT14];
+        [btnFunc2 setBackgroundColor:GRAY_COLOR];
+        [btnFunc2 setImage:[UIImage imageNamed:rolePic] forState:UIControlStateNormal];
+        //    [btnFunc2 setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+        //文字距离上边框的距离增加imageView的高度，距离左边框减少imageView的宽度，距离下边框和右边框距离不变
+        [btnFunc2 setTitleEdgeInsets:UIEdgeInsetsMake(45 ,0, 0, 0)];
+        //图片距离右边框距离减少图片的宽度，其它不边
+        [btnFunc2 setImageEdgeInsets:UIEdgeInsetsMake(0, 47, 25, 0)];
+        [rightUtilityButtons addObject:btnFunc2];
+        
+        //设置删除按钮
+        UIButton *btnFunc = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btnFunc setTitle:removeText forState:UIControlStateNormal];
+        [btnFunc setTitleColor:COLOR3 forState:UIControlStateNormal];
+        [btnFunc.titleLabel setFont:FONT14];
+        [btnFunc setBackgroundColor:GRAY_COLOR];
+        [btnFunc setImage:[UIImage imageNamed:removePicText] forState:UIControlStateNormal];
+        [btnFunc setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+        //文字距离上边框的距离增加imageView的高度，距离左边框减少imageView的宽度，距离下边框和右边框距离不变
+        [btnFunc setTitleEdgeInsets:UIEdgeInsetsMake(45 ,0, 0, 5)];
+        //图片距离右边框距离减少图片的宽度，其它不边
+        [btnFunc setImageEdgeInsets:UIEdgeInsetsMake(0, 47, 25, 0)];
+        [rightUtilityButtons addObject:btnFunc];
+        
+        return rightUtilityButtons;
     }
-    else
-    {
-        role = setBtnText;
-        rolePic = setPicText;
-    }
-    //设置已办按钮
-    UIButton *btnFunc2 = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnFunc2 setTitle:role forState:UIControlStateNormal];
-    [btnFunc2 setTitleColor:COLOR3 forState:UIControlStateNormal];
-    [btnFunc2.titleLabel setFont:FONT14];
-    [btnFunc2 setBackgroundColor:GRAY_COLOR];
-    [btnFunc2 setImage:[UIImage imageNamed:rolePic] forState:UIControlStateNormal];
-//    [btnFunc2 setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
-    //文字距离上边框的距离增加imageView的高度，距离左边框减少imageView的宽度，距离下边框和右边框距离不变
-    [btnFunc2 setTitleEdgeInsets:UIEdgeInsetsMake(45 ,0, 0, 0)];
-    //图片距离右边框距离减少图片的宽度，其它不边
-    [btnFunc2 setImageEdgeInsets:UIEdgeInsetsMake(0, 47, 25, 0)];
-    [rightUtilityButtons addObject:btnFunc2];
-    
-    //设置删除按钮
-    UIButton *btnFunc = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnFunc setTitle:removeText forState:UIControlStateNormal];
-    [btnFunc setTitleColor:COLOR3 forState:UIControlStateNormal];
-    [btnFunc.titleLabel setFont:FONT14];
-    [btnFunc setBackgroundColor:GRAY_COLOR];
-    [btnFunc setImage:[UIImage imageNamed:removePicText] forState:UIControlStateNormal];
-    [btnFunc setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
-    //文字距离上边框的距离增加imageView的高度，距离左边框减少imageView的宽度，距离下边框和右边框距离不变
-    [btnFunc setTitleEdgeInsets:UIEdgeInsetsMake(45 ,0, 0, 5)];
-    //图片距离右边框距离减少图片的宽度，其它不边
-    [btnFunc setImageEdgeInsets:UIEdgeInsetsMake(0, 47, 25, 0)];
-    [rightUtilityButtons addObject:btnFunc];
-    
-    return rightUtilityButtons;
+    return nil;
 }
 
 /**
@@ -159,14 +160,21 @@ static NSString *cellIdentifier = @"CGMemberCell1";
     
     switch (index) {
         case 0: {
-            //设置管理员 取消管理员
-            if ([model.type isEqualToString:@"1"])  //已经是管理员了 所以操作是取消管理员
+            if ([self.model.is_owner isEqualToString:@"1"])
             {
-                [self managerOperation:model operType:@"2"];
+                //设置管理员 取消管理员
+                if ([model.type isEqualToString:@"1"])  //已经是管理员了 所以操作是取消管理员
+                {
+                    [self managerOperation:model operType:@"2"];
+                }
+                else //不是管理员了 所以操作是设置为管理员
+                {
+                    [self managerOperation:model operType:@"1"];
+                }
             }
-            else //不是管理员了 所以操作是设置为管理员
+            else
             {
-                [self managerOperation:model operType:@"1"];
+                [MBProgressHUD showError:@"权限不足" toView:self.view];
             }
             
             break;
@@ -204,8 +212,17 @@ static NSString *cellIdentifier = @"CGMemberCell1";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    
-    return 30.f;
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"yyyy-MM-dd"];
+    NSDate *date = [format dateFromString:self.model.end_date];
+    NSTimeInterval endInterval = [date timeIntervalSince1970];
+    NSTimeInterval nowInterval = [[NSDate date] timeIntervalSince1970];
+    // 到期日期时间戳 - 当前时间戳是否 小于一个月的时间戳
+    if (endInterval - nowInterval <= 3600 * 24 * 30)
+    {
+        return 30.f;
+    }
+    return 10.f;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
@@ -217,7 +234,7 @@ static NSString *cellIdentifier = @"CGMemberCell1";
     
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"yyyy-MM-dd"];
-    NSDate *date = [format dateFromString:self.endDate];
+    NSDate *date = [format dateFromString:self.model.end_date];
     NSTimeInterval endInterval = [date timeIntervalSince1970];
     NSTimeInterval nowInterval = [[NSDate date] timeIntervalSince1970];
     // 到期日期时间戳 - 当前时间戳是否 小于一个月的时间戳
@@ -251,7 +268,7 @@ static NSString *cellIdentifier = @"CGMemberCell1";
 
 - (void)rightButtonItemClick
 {
-    if (self.dataArr.count >= [self.wholeSeatNum integerValue])
+    if (self.dataArr.count >= [self.model.account_num integerValue])
     {
         CGBuySeatView *view = [[CGBuySeatView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 260) contentStr:@"请购买席位\n邀请小伙伴一起合作"];
         view.clickCallBack = ^(NSInteger tIndex) {
@@ -263,7 +280,7 @@ static NSString *cellIdentifier = @"CGMemberCell1";
             else
             {
                 CGBuySeatVC *vc = [CGBuySeatVC new];
-                vc.endTime = self.endDate;
+                vc.endTime = self.model.end_date;
                 [self.navigationController pushViewController:vc animated:YES];
             }
         };
@@ -284,8 +301,8 @@ static NSString *cellIdentifier = @"CGMemberCell1";
         
         //通讯录添加成员
         CGMemberContactVC *bookView = [[CGMemberContactVC alloc] init];
-//        bookView.pro_id = self.pro_id;
-//        bookView.selecteArr = self.allArr;
+        bookView.account_id = self.model.account_id;
+        bookView.selectArr = self.dataArr;
         [self.navigationController pushViewController:bookView animated:YES];
         
     }]];
@@ -294,7 +311,7 @@ static NSString *cellIdentifier = @"CGMemberCell1";
         
         //手机号码添加
         CGMemberAddMobileVC *mobileView = [[CGMemberAddMobileVC alloc] init];
-        mobileView.account_id = self.account_id;
+        mobileView.account_id = self.model.account_id;
         [self.navigationController pushViewController:mobileView animated:YES];
         
     }]];
@@ -308,7 +325,7 @@ static NSString *cellIdentifier = @"CGMemberCell1";
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     param[@"app"] = @"ucenter";
     param[@"act"] = @"getGroupMember";
-    param[@"business_id"] = self.account_id;
+    param[@"business_id"] = self.model.account_id;
     [HttpRequestEx postWithURL:SERVICE_URL
                         params:param
                        success:^(id json) {
@@ -344,7 +361,7 @@ static NSString *cellIdentifier = @"CGMemberCell1";
     param[@"app"] = @"ucenter";
     param[@"act"] = @"setMemberRole";
     param[@"type"] = type;
-    param[@"business_id"] = self.account_id;
+    param[@"business_id"] = self.model.account_id;
     param[@"member_id"] = model.member_id;
     [MBProgressHUD showSimple:self.view];
     [HttpRequestEx postWithURL:SERVICE_URL
@@ -376,6 +393,15 @@ static NSString *cellIdentifier = @"CGMemberCell1";
 - (void)removeMenber:(CGMemberModel *)model
 {
     
+    // 是管理员 但不是创建者
+    if ([self.model.is_admin isEqualToString:@"1"] && [self.model.is_owner isEqualToString:@"2"])
+    {
+        if ([model.type isEqualToString:@"1"])
+        {
+            [MBProgressHUD showError:@"权限不足" toView:self.view];
+            return;
+        }
+    }
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     param[@"app"] = @"ucenter";
     param[@"act"] = @"removeGroupMember";

@@ -13,6 +13,7 @@
 #import "CGLoginViewController.h"
 #import "CGRenewPayVC.h"
 #import "CGBuySeatVC.h"
+#import "CGLevelUpVC.h"
 
 @interface AppDelegate ()
 
@@ -131,7 +132,8 @@
             
             if ([payTypeStr isEqualToString:@"shengji"])
             {
-                
+                CGLevelUpVC *vc = (CGLevelUpVC *)[JXTool currentViewController];
+                [WXApi handleOpenURL:url delegate:vc];
             }
             else if ([payTypeStr isEqualToString:@"xufei"])
             {

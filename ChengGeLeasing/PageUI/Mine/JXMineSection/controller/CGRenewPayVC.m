@@ -355,6 +355,7 @@ static const NSInteger minMonthCount = 12;
 
 - (void)payBtnClick
 {
+    
     if ([self.model.isRead isEqualToString:@"2"])
     {
         [MBProgressHUD showError:@"请阅读服务协议" toView:self.view];
@@ -368,6 +369,7 @@ static const NSInteger minMonthCount = 12;
     param[@"member_num"] = self.wholeSeats;
     param[@"price"] = VIP_PRICE;
     param[@"vip_time"] = self.model.month;
+    param[@"business_id"] = self.account_id;
     [MBProgressHUD showMsg:@"正在生成订单" toView:self.view];
     [HttpRequestEx postWithURL:SERVICE_URL
                         params:param
@@ -391,6 +393,7 @@ static const NSInteger minMonthCount = 12;
                            }
                            else
                            {
+                               [MBProgressHUD hideHUDForView:self.view];
                                [MBProgressHUD showError:msg toView:self.view];
                            }
                        }

@@ -7,6 +7,7 @@
 //
 
 #import "BaseTableViewController.h"
+#import "CGEnterpriseModel.h"
 
 @interface CGPayOrderVC : BaseTableViewController
 
@@ -16,5 +17,7 @@
  账户到期时间
  */
 @property (nonatomic, strong) NSString *endTime;
+
+@property (nonatomic, strong) CGEnterpriseModel *model;
 
 @end

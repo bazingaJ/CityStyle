@@ -7,21 +7,13 @@
 //
 
 #import "BaseTableViewController.h"
+#import "CGEnterpriseModel.h"
 
 @interface CGMemberInfoVC : BaseTableViewController
 
 /**
- 企业ID
+ 企业账户管理模型
  */
-@property (nonatomic, strong) NSString *account_id;
+@property (nonatomic, strong) CGEnterpriseModel *model;
 
-/**
- 到期时间
- */
-@property (nonatomic, strong) NSString *endDate;
-
-/**
- 总席位数
- */
-@property (nonatomic, strong) NSString *wholeSeatNum;
 @end

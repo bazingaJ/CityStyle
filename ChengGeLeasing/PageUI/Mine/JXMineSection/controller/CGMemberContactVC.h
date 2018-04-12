@@ -10,4 +10,6 @@
 
 @interface CGMemberContactVC : BaseTableViewController
 
+@property (nonatomic, strong) NSArray *selectArr;
+@property (nonatomic, strong) NSString *account_id;
 @end

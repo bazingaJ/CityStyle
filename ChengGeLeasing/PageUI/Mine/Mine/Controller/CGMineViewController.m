@@ -318,13 +318,16 @@ static NSString *const cellTitleText5 = @"设置";
     [HttpRequestEx postWithURL:SERVICE_URL params:param success:^(id json) {
         NSString *code = [json objectForKey:@"code"];
         if([code isEqualToString:SUCCESS]) {
+            NSLog(@"---获取用户信息%@",json);
             NSDictionary *dataDic = [json objectForKey:@"data"];
             userInfo = [CGUserModel mj_objectWithKeyValues:dataDic];
+            
             self.wholeMemberNum = dataDic[@"member_num"];
             NSDateFormatter *format = [[NSDateFormatter alloc] init];
             [format setDateFormat:@"yyyy-MM-dd"];
             NSDate *date = [NSDate dateWithTimeIntervalSince1970:[dataDic[@"end_time"] integerValue]];
             self.endTimeStr = [format stringFromDate:date];
+            
             [titleDic removeAllObjects];
             [self createCellContents];
             [self.topView setMineTopModel:userInfo];

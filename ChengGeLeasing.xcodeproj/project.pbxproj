@@ -396,6 +396,7 @@
 		F4F453C5202C6DC300F4A417 /* YWFilePreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4F453C2202C6DC200F4A417 /* YWFilePreviewView.xib */; };
 		F4F453C6202C6DC300F4A417 /* YWFilePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F453C4202C6DC300F4A417 /* YWFilePreviewView.m */; };
 		F4F453CC202D473100F4A417 /* CGFileOpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F453CB202D473100F4A417 /* CGFileOpenViewController.m */; };
+		F70057CD206F635C00E46CE4 /* CGEnterpriseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F70057CC206F635C00E46CE4 /* CGEnterpriseModel.m */; };
 		F700DDFB206DC77A00B485FD /* Order.m in Sources */ = {isa = PBXBuildFile; fileRef = F700DD9D206DC77400B485FD /* Order.m */; };
 		F700DDFC206DC77A00B485FD /* APAuthV2Info.m in Sources */ = {isa = PBXBuildFile; fileRef = F700DD9E206DC77500B485FD /* APAuthV2Info.m */; };
 		F700DDFD206DC77A00B485FD /* openssl_wrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = F700DDA0206DC77600B485FD /* openssl_wrapper.m */; };
@@ -1208,6 +1209,8 @@
 		F4F453C4202C6DC300F4A417 /* YWFilePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWFilePreviewView.m; sourceTree = "<group>"; };
 		F4F453CA202D473100F4A417 /* CGFileOpenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGFileOpenViewController.h; sourceTree = "<group>"; };
 		F4F453CB202D473100F4A417 /* CGFileOpenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGFileOpenViewController.m; sourceTree = "<group>"; };
+		F70057CB206F635C00E46CE4 /* CGEnterpriseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGEnterpriseModel.h; sourceTree = "<group>"; };
+		F70057CC206F635C00E46CE4 /* CGEnterpriseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGEnterpriseModel.m; sourceTree = "<group>"; };
 		F700DD9D206DC77400B485FD /* Order.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Order.m; sourceTree = "<group>"; };
 		F700DD9E206DC77500B485FD /* APAuthV2Info.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APAuthV2Info.m; sourceTree = "<group>"; };
 		F700DDA0206DC77600B485FD /* openssl_wrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = openssl_wrapper.m; sourceTree = "<group>"; };
@@ -3673,6 +3676,8 @@
 				F789974D206CCD2A0014CBC0 /* CGRenewModel.m */,
 				F789975C206CF1810014CBC0 /* CGOrderListModel.h */,
 				F789975D206CF1810014CBC0 /* CGOrderListModel.m */,
+				F70057CB206F635C00E46CE4 /* CGEnterpriseModel.h */,
+				F70057CC206F635C00E46CE4 /* CGEnterpriseModel.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -4105,6 +4110,7 @@
 				F4EBDCE61FF0AF5D00B59067 /* CGMTableView.m in Sources */,
 				F7DB1FAA20624D16008FC53D /* CGLevelUpVC.m in Sources */,
 				F470FF6E1FDE76F20045C0D7 /* SWCellScrollView.m in Sources */,
+				F70057CD206F635C00E46CE4 /* CGEnterpriseModel.m in Sources */,
 				F4281B0F1FDA5AE000A38C96 /* ZLCamera.m in Sources */,
 				F700DDFD206DC77A00B485FD /* openssl_wrapper.m in Sources */,
 				F4281B281FDA5AE000A38C96 /* ZLPhotoPickerGroupTableViewCell.m in Sources */,

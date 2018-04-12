@@ -21,4 +21,6 @@
  */
 @property (nonatomic, strong) NSString *endTime;
 
+@property (nonatomic, strong) NSString *account_id;
+
 @end

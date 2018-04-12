@@ -11,6 +11,7 @@
 #import "CGMemberInfoVC.h"
 #import "CGPayOrderVC.h"
 #import "CGRemoveVC.h"
+#import "CGEnterpriseModel.h"
 
 static NSString *const currentTitle = @"VIP企业账户管理";
 static NSString *const accountIDText = @"账户ID";
@@ -22,13 +23,20 @@ static NSString *const transforAccountText = @"移交账户";
 
 
 @interface CGEntManagerVC ()
+// 弹窗工具
 @property (nonatomic, strong) KLCPopup *popup;
 // account id
 @property (nonatomic, strong) NSString *accountid;
 // endDate
 @property (nonatomic, strong) NSString *endDateStr;
-
+// 账户数量
 @property (nonatomic, strong) NSString *accountNum;
+
+/**
+ 管理信息 模型
+ */
+@property (nonatomic, strong) CGEnterpriseModel *model;
+
 @end
 
 @implementation CGEntManagerVC
@@ -122,28 +130,55 @@ static NSString *const transforAccountText = @"移交账户";
     if (indexPath.row == 1)
     {
         // change account name
-        [self jumpChangeNameWindow];
+        if ([self.model.is_admin isEqualToString:@"1"] || [self.model.is_owner isEqualToString:@"1"])
+        {
+            [self jumpChangeNameWindow];
+        }
+        else
+        {
+            [MBProgressHUD showError:@"权限不足" toView:self.view];
+        }
     }
     else if (indexPath.row == 3)
     {
-        CGMemberInfoVC *vc = [CGMemberInfoVC new];
-        vc.account_id = self.accountid;
-        vc.endDate = self.endDateStr;
-        vc.wholeSeatNum = self.accountNum;
-        [self.navigationController pushViewController:vc animated:YES];
+        if ([self.model.is_admin isEqualToString:@"1"] || [self.model.is_owner isEqualToString:@"1"])
+        {
+            CGMemberInfoVC *vc = [CGMemberInfoVC new];
+            vc.model = self.model;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else
+        {
+            [MBProgressHUD showError:@"权限不足" toView:self.view];
+        }
     }
     else if (indexPath.row == 4)
     {
-        CGPayOrderVC *vc = [CGPayOrderVC new];
-        vc.wholeSeats = self.accountNum;
-        vc.endTime = self.endDateStr;
-        [self.navigationController pushViewController:vc animated:YES];
+        if ([self.model.is_admin isEqualToString:@"1"] || [self.model.is_owner isEqualToString:@"1"])
+        {
+            CGPayOrderVC *vc = [CGPayOrderVC new];
+            vc.wholeSeats = self.model.account_num;
+            vc.endTime = self.model.end_date;
+            vc.model = self.model;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else
+        {
+            [MBProgressHUD showError:@"权限不足" toView:self.view];
+        }
     }
     else if (indexPath.row == 5)
     {
-        CGRemoveVC *vc = [CGRemoveVC new];
-        vc.account_id = self.accountid;
-        [self.navigationController pushViewController:vc animated:YES];
+        if ([self.model.is_owner isEqualToString:@"1"])
+        {
+            CGRemoveVC *vc = [CGRemoveVC new];
+            vc.account_id = self.model.account_id;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else
+        {
+            [MBProgressHUD showError:@"权限不足" toView:self.view];
+        }
     }
 }
 
@@ -192,11 +227,12 @@ static NSString *const transforAccountText = @"移交账户";
                            if ([code isEqualToString:SUCCESS])
                            {
                                NSDictionary *dict = [json objectForKey:@"data"];
-                               self.accountid = dict[@"account_id"];
-                               self.endDateStr = dict[@"end_date"];
-                               self.accountNum = dict[@"account_num"];
-                               NSString *numInfo = [NSString stringWithFormat:@"%@/%@",dict[@"group_num"],dict[@"account_num"]];
-                               NSArray *dataArr = @[dict[@"account_id"],dict[@"account_name"],dict[@"end_date"],numInfo];
+                               self.model = [CGEnterpriseModel mj_objectWithKeyValues:dict];
+//                               self.accountid = dict[@"account_id"];
+//                               self.endDateStr = dict[@"end_date"];
+//                               self.accountNum = dict[@"account_num"];
+                               NSString *numInfo = [NSString stringWithFormat:@"%@/%@",self.model.group_num,self.model.account_num];
+                               NSArray *dataArr = @[self.model.account_id,self.model.account_name,self.model.end_date,numInfo];
                                [self prepareForDataWithDataArr:dataArr];
                                [self.tableView reloadData];
                            }

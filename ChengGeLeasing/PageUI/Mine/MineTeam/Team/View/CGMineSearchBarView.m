@@ -43,6 +43,7 @@
         UITextField *searchTextField = [searchBar valueForKey:@"_searchField"];
         [searchTextField setTextColor:COLOR3];
         [searchTextField setFont:FONT15];
+        [searchTextField setTintColor:COLOR9];
         [searchTextField setValue:COLOR9 forKeyPath:@"_placeholderLabel.textColor"];
         [searchTextField setValue:FONT14 forKeyPath:@"_placeholderLabel.font"];
         [searchTextField.layer setCornerRadius:20];

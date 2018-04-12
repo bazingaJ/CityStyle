@@ -40,6 +40,12 @@
     [self.searchView.searchBar resignFirstResponder];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.searchView.searchBar becomeFirstResponder];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 10;
 }
@@ -151,17 +157,17 @@
 }
 
 #pragma mark - cell 上的邀请按钮点击
-- (void)invateBtnClick:(UIButton *)button
+- (void)invateBtnClick:(UIButton *)button model:(CGContactModel *)model
 {
     
     CGContactCell *cell = (CGContactCell *)button.superview.superview;
     NSIndexPath *index = [self.tableView indexPathForCell:cell];
-    CGTeamMemberModel *model = self.dataArr[index.row];
+    CGTeamMemberModel *model1 = self.dataArr[index.row];
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     param[@"app"] = @"ucenter";
     param[@"act"] = @"addGroupMember";
     param[@"business_id"] = self.account_id;
-    param[@"member"] = model.ID;
+    param[@"member"] = model1.ID;
     [MBProgressHUD showSimple:self.view];
     [HttpRequestEx postWithURL:SERVICE_URL
                         params:param
@@ -246,6 +252,7 @@
     if(!_searchView) {
         _searchView = [[CGMineSearchBarView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-60, 45)];
         [_searchView setDelegate:self];
+        _searchView.searchBar.keyboardType = UIKeyboardTypeNumberPad;
         self.navigationItem.titleView = _searchView;
     }
     return _searchView;

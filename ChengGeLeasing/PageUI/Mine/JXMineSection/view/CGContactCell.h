@@ -12,7 +12,7 @@
 
 @protocol JXContactDelegate <NSObject>
 
-- (void)invateBtnClick:(UIButton *)button;
+- (void)invateBtnClick:(UIButton *)button model:(CGContactModel *)model;
 
 @end
 
