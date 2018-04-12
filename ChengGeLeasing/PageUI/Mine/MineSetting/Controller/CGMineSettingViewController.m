@@ -9,6 +9,7 @@
 #import "CGMineSettingViewController.h"
 #import "CGMineSettingCell.h"
 #import "CGMineUpdatePwdViewController.h"
+#import "CGAboutUsViewController.h"
 
 @interface CGMineSettingViewController () {
     NSMutableArray *titleArr;
@@ -74,16 +75,18 @@
         }
         case 1: {
             //关于
-            NSString *about_url = [CGURLManager manager].about_url;
-            if(IsStringEmpty(about_url)) {
-                [MBProgressHUD showError:@"关于地址不能为空" toView:self.view];
-                return;
-            }
-            
-            CGWKWebViewController *webView = [[CGWKWebViewController alloc] init];
-            [webView setTitle:@"关于"];
-            [webView setUrl:about_url];
+            CGAboutUsViewController *webView = [[CGAboutUsViewController alloc] init];
             [self.navigationController pushViewController:webView animated:YES];
+//            NSString *about_url = [CGURLManager manager].about_url;
+//            if(IsStringEmpty(about_url)) {
+//                [MBProgressHUD showError:@"关于地址不能为空" toView:self.view];
+//                return;
+//            }
+//
+//            CGWKWebViewController *webView = [[CGWKWebViewController alloc] init];
+//            [webView setTitle:@"关于"];
+//            [webView setUrl:about_url];
+//            [self.navigationController pushViewController:webView animated:YES];
             
             break;
         }

@@ -24,4 +24,8 @@
  */
 @property (nonatomic, copy) void(^callBack)(CGTeamXiangmuModel *xiangmuModel);
 
+@property (nonatomic, strong) NSString *endTime;
+
+@property (nonatomic, strong) NSString *account_id;
+
 @end

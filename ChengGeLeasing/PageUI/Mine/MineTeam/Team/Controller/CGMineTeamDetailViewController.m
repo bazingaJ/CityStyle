@@ -21,6 +21,10 @@
 #import "CGMineHandoverViewController.h"
 #import "CGRentDefineVC.h"
 #import "CGUpdateView.h"
+#import "CGUpgradeVersionVC.h"
+#import "CGBuySeatVC.h"
+#import "CGBuySeatView.h"
+#import "CGAddVipMemberViewController.h"
 
 @interface CGMineTeamDetailViewController () {
     NSMutableDictionary *titleDic;
@@ -47,7 +51,7 @@
     [self setBottomH:45];
     [super viewDidLoad];
     
-    self.title = @"项目及团队管理";
+    self.title = @"项目管理";
     
     //设置模拟成员
     CGTeamMemberModel *model = [CGTeamMemberModel new];
@@ -74,7 +78,7 @@
     [titleArr2 addObject:@[@"区域",@"0"]];
     [titleArr2 addObject:@[@"铺位",@"1"]];
     [titleArr2 addObject:@[@"业态",@"2"]];
-    [titleArr2 addObject:@[@"租金定义",@"3"]];
+//    [titleArr2 addObject:@[@"租金定义",@"3"]];
     [titleDic setValue:titleArr2 forKey:@"2"];
     
     //创建“解散项目”
@@ -92,28 +96,7 @@
     [btnFunc setTag:self.type];
     [btnFunc addTarget:self action:@selector(btnFuncClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnFunc];
-    if ([HelperManager CreateInstance].isFree)
-    {
-        CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"添加更多项目\n小伙伴一起合作"];
-        view.clickCallBack = ^(NSInteger tIndex) {
-            [self.popup dismiss:YES];
-            if (tIndex == 0)
-            {
-                return ;
-            }
-            else
-            {
-                [MBProgressHUD showMessage:@"确定删除" toView:self.view];
-            }
-        };
-        self.popup = [KLCPopup popupWithContentView:view
-                                           showType:KLCPopupShowTypeGrowIn
-                                        dismissType:KLCPopupDismissTypeGrowOut
-                                           maskType:KLCPopupMaskTypeDimmed
-                           dismissOnBackgroundTouch:NO
-                              dismissOnContentTouch:NO];
-        [self.popup show];
-    }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -254,7 +237,7 @@
     }
     
     if(indexPath.section==0) {
-        //设置模拟成员
+        //设置添加按钮模型
         CGTeamMemberModel *model = [CGTeamMemberModel new];
         model.name = @"";
         model.avatar = @"mine_member_add";
@@ -262,6 +245,7 @@
         
         if(self.dataArr.count>2)
         {
+            // 设置移除按钮模型
             CGTeamMemberModel *model2 = [CGTeamMemberModel new];
             model2.name = @"";
             model2.avatar = @"mine_member_delete";
@@ -270,7 +254,8 @@
         NSInteger itemNum = [self.dataArr count];
         NSInteger rowNum = itemNum/5;
         NSInteger colNum = itemNum%5;
-        if(colNum>0) {
+        if(colNum>0)
+        {
             rowNum += 1;
         }
         CGFloat tWidth = (SCREEN_WIDTH-20)/5;
@@ -631,95 +616,182 @@
     NSLog(@"团队成员：%zd",btnSender.tag);
     
     switch (btnSender.tag) {
-        case 1: {
+        case 1:
+        {
             //删除成员
             
-            CGTeamMemberDeleteViewController *deleteView = [[CGTeamMemberDeleteViewController alloc] init];
-            deleteView.pro_id = self.pro_id;
-            deleteView.callBack = ^{
-                NSLog(@"删除回调成功");
-                
-                [self.tableView.mj_header beginRefreshing];
-            };
-            [self.navigationController pushViewController:deleteView animated:YES];
+            if ([HelperManager CreateInstance].isFree)
+            {
+                CGTeamMemberDeleteViewController *deleteView = [[CGTeamMemberDeleteViewController alloc] init];
+                deleteView.pro_id = self.pro_id;
+                deleteView.callBack = ^{
+                    NSLog(@"删除回调成功");
+                    
+                    [self.tableView.mj_header beginRefreshing];
+                };
+                [self.navigationController pushViewController:deleteView animated:YES];
+            }
+            else
+            {
+                // 添加成员
+                CGAddVipMemberViewController *vc = [[CGAddVipMemberViewController alloc] init];
+                vc.pro_id = self.pro_id;
+                vc.isAdd = @"2";
+                vc.selectdArr = self.allArr;
+                vc.account_id = self.account_id;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+            
+            
+            
+            
             
             break;
         }
         case 2: {
             //添加成员
+            // 判断是否能够继续创建新的项目 与本地存储的 免费或者vip账户进行比对
+            if ([HelperManager CreateInstance].isFree)
+            {
+                if (self.allArr.count >= [FREE_USERNUM integerValue])
+                {
+                    CGUpdateView *view = [[CGUpdateView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 345) contentStr:@"添加更多项目小伙伴一起合作"];
+                    view.clickCallBack = ^(NSInteger tIndex) {
+                        [self.popup dismiss:YES];
+                        if (tIndex == 0)
+                        {
+                            return ;
+                        }
+                        else
+                        {
+                            CGUpgradeVersionVC *vc = [CGUpgradeVersionVC new];
+                            [self.navigationController pushViewController:vc animated:YES];
+                        }
+                    };
+                    self.popup = [KLCPopup popupWithContentView:view
+                                                       showType:KLCPopupShowTypeGrowIn
+                                                    dismissType:KLCPopupDismissTypeGrowOut
+                                                       maskType:KLCPopupMaskTypeDimmed
+                                       dismissOnBackgroundTouch:NO
+                                          dismissOnContentTouch:NO];
+                    [self.popup show];
+                    return ;
+                }
+                UIAlertController *alertController = [[UIAlertController alloc] init];
+                [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+                [alertController addAction:[UIAlertAction actionWithTitle:@"从手机通讯录添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    NSLog(@"从手机通讯录添加");
+                    
+                    //通讯录添加成员
+                    CGTeamMemberContactAddViewController *bookView = [[CGTeamMemberContactAddViewController alloc] init];
+                    bookView.pro_id = self.pro_id;
+                    bookView.selecteArr = self.allArr;
+                    bookView.callBack = ^(NSMutableArray *memberArr) {
+                        NSLog(@"回调成功");
+                        
+                        //移除添加、删除
+                        if(self.dataArr.count>=3) {
+                            [self.dataArr removeLastObject];
+                            [self.dataArr removeLastObject];
+                        }
+                        
+                        //添加新成员
+                        for (int i=0; i<memberArr.count; i++)
+                        {
+                            CGTeamMemberModel *model = [memberArr objectAtIndex:i];
+                            if(self.dataArr.count>8) continue;
+                            [self.dataArr addObject:model];
+                        }
+                        
+                        //刷新单元格
+                        [self.tableView beginUpdates];
+                        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:0];
+                        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+                        [self.tableView endUpdates];
+                        
+                    };
+                    [self.navigationController pushViewController:bookView animated:YES];
+                    
+                }]];
+                [alertController addAction:[UIAlertAction actionWithTitle:@"输入手机号添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    NSLog(@"输入手机号添加");
+                    
+                    //手机号码添加
+                    CGTeamMemberMobileAddViewController *mobileView = [[CGTeamMemberMobileAddViewController alloc] init];
+                    mobileView.pro_id = self.pro_id;
+                    //把已选的客户带过去
+                    mobileView.selecteArr = self.allArr;
+                    mobileView.callBack = ^(NSMutableArray *memberArr) {
+                        NSLog(@"回调成功");
+                        
+                        //移除添加、删除
+                        if(self.dataArr.count>=3) {
+                            [self.dataArr removeLastObject];
+                            [self.dataArr removeLastObject];
+                        }
+                        
+                        //添加新成员
+                        for (int i=0; i<memberArr.count; i++)
+                        {
+                            CGTeamMemberModel *model = [memberArr objectAtIndex:i];
+                            if(self.dataArr.count>8) continue;
+                            [self.dataArr addObject:model];
+                        }
+                        
+                        //刷新单元格
+                        [self.tableView beginUpdates];
+                        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:0];
+                        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+                        [self.tableView endUpdates];
+                        
+                    };
+                    [self.navigationController pushViewController:mobileView animated:YES];
+                    
+                }]];
+                [self presentViewController:alertController animated:YES completion:nil];
+            }
+            else
+            {
+                // VIP账户的 数量如果是0 意思就是 不限制数量
+                if ([VIP_USERNUM integerValue] != 0)
+                {
+                    if (self.allArr.count >= [VIP_USERNUM integerValue])
+                    {
+                        CGBuySeatView *view = [[CGBuySeatView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 260) contentStr:@"请购买席位\n邀请小伙伴一起合作"];
+                        view.clickCallBack = ^(NSInteger tIndex) {
+                            [self.popup dismiss:YES];
+                            if (tIndex == 0 || tIndex == 1)
+                            {
+                                return ;
+                            }
+                            else
+                            {
+                                CGBuySeatVC *vc = [CGBuySeatVC new];
+                                vc.endTime = self.endTime;
+                                [self.navigationController pushViewController:vc animated:YES];
+                            }
+                        };
+                        self.popup = [KLCPopup popupWithContentView:view
+                                                           showType:KLCPopupShowTypeGrowIn
+                                                        dismissType:KLCPopupDismissTypeGrowOut
+                                                           maskType:KLCPopupMaskTypeDimmed
+                                           dismissOnBackgroundTouch:NO
+                                              dismissOnContentTouch:NO];
+                        [self.popup show];
+                        return ;
+                    }
+                }
+                
+                // 添加成员
+                CGAddVipMemberViewController *vc = [[CGAddVipMemberViewController alloc] init];
+                vc.pro_id = self.pro_id;
+                vc.account_id = self.account_id;
+                vc.isAdd = @"1";
+                vc.selectdArr = self.allArr;
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }
             
-            UIAlertController *alertController = [[UIAlertController alloc] init];
-            [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-            [alertController addAction:[UIAlertAction actionWithTitle:@"从手机通讯录添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                NSLog(@"从手机通讯录添加");
-                
-                //通讯录添加成员
-                CGTeamMemberContactAddViewController *bookView = [[CGTeamMemberContactAddViewController alloc] init];
-                bookView.pro_id = self.pro_id;
-                bookView.selecteArr = self.allArr;
-                bookView.callBack = ^(NSMutableArray *memberArr) {
-                    NSLog(@"回调成功");
-                    
-                    //移除添加、删除
-                    if(self.dataArr.count>=3) {
-                        [self.dataArr removeLastObject];
-                        [self.dataArr removeLastObject];
-                    }
-                    
-                    //添加新成员
-                    for (int i=0; i<memberArr.count; i++)
-                    {
-                        CGTeamMemberModel *model = [memberArr objectAtIndex:i];
-                        if(self.dataArr.count>8) continue;
-                        [self.dataArr addObject:model];
-                    }
-                    
-                    //刷新单元格
-                    [self.tableView beginUpdates];
-                    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:0];
-                    [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-                    [self.tableView endUpdates];
-                    
-                };
-                [self.navigationController pushViewController:bookView animated:YES];
-                
-            }]];
-            [alertController addAction:[UIAlertAction actionWithTitle:@"输入手机号添加" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                NSLog(@"输入手机号添加");
-                
-                //手机号码添加
-                CGTeamMemberMobileAddViewController *mobileView = [[CGTeamMemberMobileAddViewController alloc] init];
-                mobileView.pro_id = self.pro_id;
-                //把已选的客户带过去
-                mobileView.selecteArr = self.allArr;
-                mobileView.callBack = ^(NSMutableArray *memberArr) {
-                    NSLog(@"回调成功");
-                    
-                    //移除添加、删除
-                    if(self.dataArr.count>=3) {
-                        [self.dataArr removeLastObject];
-                        [self.dataArr removeLastObject];
-                    }
-                    
-                    //添加新成员
-                    for (int i=0; i<memberArr.count; i++)
-                    {
-                        CGTeamMemberModel *model = [memberArr objectAtIndex:i];
-                        if(self.dataArr.count>8) continue;
-                        [self.dataArr addObject:model];
-                    }
-    
-                    //刷新单元格
-                    [self.tableView beginUpdates];
-                    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:0];
-                    [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-                    [self.tableView endUpdates];
-                    
-                };
-                [self.navigationController pushViewController:mobileView animated:YES];
-                
-            }]];
-            [self presentViewController:alertController animated:YES completion:nil];
 
             
             break;

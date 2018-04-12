@@ -141,7 +141,14 @@ static NSString *cellIdentifier = @"CGMemberCell1";
     }
     return nil;
 }
-
+// prevent multiple cells from showing utilty buttons simultaneously
+- (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell {
+    return YES;
+}
+// prevent cell(s) from displaying left/right utility buttons
+- (BOOL)swipeableTableViewCell:(SWTableViewCell *)cell canSwipeToState:(SWCellState)state {
+    return YES;
+}
 /**
  *  滑动删除委托代理
  */
@@ -402,10 +409,12 @@ static NSString *cellIdentifier = @"CGMemberCell1";
             return;
         }
     }
+    
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     param[@"app"] = @"ucenter";
     param[@"act"] = @"removeGroupMember";
     param[@"members"] = model.group_mem_id;
+    param[@"business_id"] = self.model.account_id;
     [MBProgressHUD showSimple:self.view];
     [HttpRequestEx postWithURL:SERVICE_URL
                         params:param

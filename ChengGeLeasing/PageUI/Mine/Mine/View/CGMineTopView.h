@@ -18,6 +18,10 @@ extern const CGFloat JXMineHeaderViewHeight;
 
 - (void)showXuFeiWindow;
 
+- (void)showUpdateWindow;
+
+
+
 @end
 
 @interface CGMineTopView : UIView

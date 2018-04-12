@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8001CF8F460F305BB3D10AA4F4DE1873"
+               BlueprintIdentifier = "302B44987DF56E7C80AE5138F040641D"
                BlueprintName = "RegexKitLite"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "libRegexKitLite.a">

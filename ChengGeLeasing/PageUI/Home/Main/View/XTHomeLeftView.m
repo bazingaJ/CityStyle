@@ -185,6 +185,11 @@
     }
     if(!model) return;
     
+    if ([model.is_vip_creat isEqualToString:@"1"] && [HelperManager CreateInstance].isFree)
+    {
+        [MBProgressHUD showMessage:@"会员已过期，没有权限操作" toView:self];
+        return;
+    }
     if(self.didClickItem) {
         self.didClickItem(self, model,indexPath.row);
     }
@@ -205,7 +210,7 @@
         CGTeamXiangmuModel *model = [self.dataArr objectAtIndex:i];
         if(!model) continue;
         
-        [itemArr addObject:model.id];
+        [itemArr addObject:model.user_id];
     }
     NSString *idsStr = [itemArr componentsJoinedByString:@","];
     NSLog(@"当前排序：%@",idsStr);

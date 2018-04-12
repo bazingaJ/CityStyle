@@ -73,7 +73,7 @@ static const CGFloat bottomBtnHeight = 45.f;
     
     if (!cell)
     {
-        cell = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CGMemberCell class]) owner:nil options:nil]objectAtIndex:1];
+        cell = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CGMemberCell class]) owner:nil options:nil]objectAtIndex:0];
     }
     CGMemberModel *model = self.dataArr[indexPath.row];
     cell.remove_model = model;
@@ -109,7 +109,7 @@ static const CGFloat bottomBtnHeight = 45.f;
         cell.removeBtn.selected = NO;
     }
     CGMemberCell *currentCell = [tableView cellForRowAtIndexPath:indexPath];
-    currentCell.removeBtn.selected = YES;
+    currentCell.choiceBtn.selected = YES;
     self.beforeIndex = indexPath;
     
 }
@@ -136,7 +136,7 @@ static const CGFloat bottomBtnHeight = 45.f;
                                [dataArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                                   
                                    CGMemberModel *model = (CGMemberModel *)obj;
-                                   if ([model.is_owner isEqualToString:@"2"] && [model.type isEqualToString:@"1"]  && ![[HelperManager CreateInstance].user_id isEqualToString:model.member_id])
+                                   if ([model.is_owner isEqualToString:@"2"])
                                    {
                                        [self.dataArr addObject:model];
                                    }

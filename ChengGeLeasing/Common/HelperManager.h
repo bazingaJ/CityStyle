@@ -59,6 +59,10 @@
  */
 @property (nonatomic, strong) NSString *token;
 /**
+ *  企业id
+ */
+@property (nonatomic, strong) NSString *account_id;
+/**
  *  清除账号
  */
 - (void)clearAcc;

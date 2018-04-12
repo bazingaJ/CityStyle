@@ -591,6 +591,7 @@
                         
                         NSString *date = [selectDate stringWithFormat:@"yyyy-MM-dd"];
                         self.model.start_time =date;
+                        self.model.end_time = @"";
                         [self.tableView reloadData];
                     }];
                     datepicker.dateLabelColor = MAIN_COLOR;//年-月-日-时-分 颜色
@@ -604,8 +605,21 @@
                 {
                     //时间
                     WSDatePickerView *datepicker = [[WSDatePickerView alloc] initWithDateStyle:DateStyleShowYearMonthDay CompleteBlock:^(NSDate *selectDate) {
-                        
+                        // 开始时间
+                        NSString *beginStr = [self.model.start_time stringByReplacingOccurrencesOfString:@"-" withString:@""];
+                        NSInteger beginNum = [beginStr integerValue];
+
+                        // 结束时间 校验
                         NSString *date = [selectDate stringWithFormat:@"yyyy-MM-dd"];
+                        NSString *dateStr = [date stringByReplacingOccurrencesOfString:@"-" withString:@""];
+                        NSInteger dateNum = [dateStr integerValue];
+
+                        if (beginNum >= dateNum)
+                        {
+                            [MBProgressHUD showError:@"结束时间不能小于或等于开始时间" toView:self.view];
+                            return ;
+                        }
+                        
                         self.model.end_time =date;
                         [self.tableView reloadData];
                     }];

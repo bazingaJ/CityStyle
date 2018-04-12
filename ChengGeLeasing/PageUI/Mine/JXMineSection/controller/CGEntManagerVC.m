@@ -254,7 +254,7 @@ static NSString *const transforAccountText = @"移交账户";
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     param[@"app"] = @"ucenter";
     param[@"act"] = @"editAccountInfo";
-    param[@"account_id"] = self.accountid;
+    param[@"account_id"] = self.model.account_id;
     param[@"account_name"] = accountName;
     [MBProgressHUD showSimple:self.view];
     [HttpRequestEx postWithURL:SERVICE_URL

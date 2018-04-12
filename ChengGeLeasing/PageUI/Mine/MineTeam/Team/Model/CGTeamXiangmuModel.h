@@ -16,7 +16,7 @@
 /**
  *  项目ID
  */
-@property (nonatomic, strong) NSString *id;
+@property (nonatomic, strong) NSString *user_id;
 /**
  *  首字母
  */
@@ -110,6 +110,11 @@
  *  租金定义
  */
 @property (nonatomic, strong) NSDictionary *rent;
+
+/**
+ 是否是VIP会员时期创建
+ */
+@property (nonatomic, strong) NSString *is_vip_creat;
 
 
 @end

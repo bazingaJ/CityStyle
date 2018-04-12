@@ -19,17 +19,20 @@
 @implementation CGMineTeamViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
+    [super viewDidLoad];
     self.title = @"项目及团队管理";
     
     CGMineTeamListViewController *teamView1 = [[CGMineTeamListViewController alloc] init];
+    teamView1.endDateTime = self.endDataTime;
     teamView1.type = 1;
+    teamView1.account_id = self.account_id;
     CGMineTeamListViewController *teamView2 = [[CGMineTeamListViewController alloc] init];
     teamView2.type = 2;
+    teamView2.account_id = self.account_id;
     CGMineTeamListViewController *teamView3 = [[CGMineTeamListViewController alloc] init];
     teamView3.type = 3;
+    teamView3.account_id = self.account_id;
     CGMineTeamCustomerFormatViewController *chubeiView = [[CGMineTeamCustomerFormatViewController alloc] init];
     
     NSArray *controllers = @[teamView1,teamView2,teamView3,chubeiView];

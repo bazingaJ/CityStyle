@@ -56,4 +56,19 @@
  */
 @property (nonatomic, strong) NSString *group_mem_id;
 
+/**
+ 项目中就有的成员  1.之前就存在  2.之前不存在
+ */
+@property (nonatomic, strong) NSString *isBefore;
+
+/**
+ 是否是刚刚新加的  1.是的  2.不是的
+ */
+@property (nonatomic, strong) NSString *isNewAdd;
+
+/**
+ 是否在项目里面
+ */
+@property (nonatomic, strong) NSString *isIn;
+
 @end

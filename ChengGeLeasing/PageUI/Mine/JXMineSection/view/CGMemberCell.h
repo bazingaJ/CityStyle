@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *name;
 @property (weak, nonatomic) IBOutlet UILabel *updateTimeLab;
 @property (weak, nonatomic) IBOutlet UILabel *positionLab;
+@property (weak, nonatomic) IBOutlet UIButton *choiceBtn;
 @property (nonatomic, strong) CGMemberModel *model;
 
 @property (weak, nonatomic) IBOutlet UIButton *headImg;
@@ -22,5 +23,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *memberTel;
 @property (weak, nonatomic) IBOutlet UIButton *removeBtn;
 @property (nonatomic, strong) CGMemberModel*remove_model;
+
+
+@property (nonatomic, strong) CGMemberModel *operationModel;
 
 @end

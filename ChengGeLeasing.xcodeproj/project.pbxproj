@@ -437,6 +437,14 @@
 		F7B36D73206A3E8000EEDF56 /* CGMemberContactVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F7B36D72206A3E8000EEDF56 /* CGMemberContactVC.m */; };
 		F7B36D77206A459300EEDF56 /* CGContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F7B36D75206A459300EEDF56 /* CGContactCell.m */; };
 		F7B36D78206A459300EEDF56 /* CGContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7B36D76206A459300EEDF56 /* CGContactCell.xib */; };
+		F7BB38F72072560A008665E9 /* CGAddVipMemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7BB38F62072560A008665E9 /* CGAddVipMemberViewController.m */; };
+		F7C2C9032079E4A900CC528C /* CGPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7C2C9022079E4A900CC528C /* CGPlayerViewController.m */; };
+		F7C2C9052079E79F00CC528C /* CGPlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7C2C9042079E79F00CC528C /* CGPlayerViewController.xib */; };
+		F7C2C9092079F76200CC528C /* CGPlayLocalVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7C2C9072079F76200CC528C /* CGPlayLocalVideoViewController.m */; };
+		F7C2C90A2079F76200CC528C /* CGPlayLocalVideoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7C2C9082079F76200CC528C /* CGPlayLocalVideoViewController.xib */; };
+		F7CC97E4207477D8004CF822 /* CGAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CC97E2207477D8004CF822 /* CGAboutUsViewController.m */; };
+		F7CC97E5207477D8004CF822 /* CGAboutUsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7CC97E3207477D8004CF822 /* CGAboutUsViewController.xib */; };
+		F7CC97ED20747E0E004CF822 /* CGAboutWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CC97EC20747E0E004CF822 /* CGAboutWebViewController.m */; };
 		F7DB1F45205F6298008FC53D /* jcore-ios-1.1.5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7DB1F43205F6297008FC53D /* jcore-ios-1.1.5.a */; };
 		F7DB1F9B20620A17008FC53D /* CGUpgradeVersionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F7DB1F9A20620A17008FC53D /* CGUpgradeVersionVC.m */; };
 		F7DB1F9E20622BC6008FC53D /* JXTool.m in Sources */ = {isa = PBXBuildFile; fileRef = F7DB1F9D20622BC6008FC53D /* JXTool.m */; };
@@ -1355,6 +1363,19 @@
 		F7B36D74206A459300EEDF56 /* CGContactCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGContactCell.h; sourceTree = "<group>"; };
 		F7B36D75206A459300EEDF56 /* CGContactCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGContactCell.m; sourceTree = "<group>"; };
 		F7B36D76206A459300EEDF56 /* CGContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CGContactCell.xib; sourceTree = "<group>"; };
+		F7BB38F52072560A008665E9 /* CGAddVipMemberViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGAddVipMemberViewController.h; sourceTree = "<group>"; };
+		F7BB38F62072560A008665E9 /* CGAddVipMemberViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGAddVipMemberViewController.m; sourceTree = "<group>"; };
+		F7C2C9012079E4A900CC528C /* CGPlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGPlayerViewController.h; sourceTree = "<group>"; };
+		F7C2C9022079E4A900CC528C /* CGPlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGPlayerViewController.m; sourceTree = "<group>"; };
+		F7C2C9042079E79F00CC528C /* CGPlayerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CGPlayerViewController.xib; sourceTree = "<group>"; };
+		F7C2C9062079F76200CC528C /* CGPlayLocalVideoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGPlayLocalVideoViewController.h; sourceTree = "<group>"; };
+		F7C2C9072079F76200CC528C /* CGPlayLocalVideoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGPlayLocalVideoViewController.m; sourceTree = "<group>"; };
+		F7C2C9082079F76200CC528C /* CGPlayLocalVideoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CGPlayLocalVideoViewController.xib; sourceTree = "<group>"; };
+		F7CC97E1207477D8004CF822 /* CGAboutUsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGAboutUsViewController.h; sourceTree = "<group>"; };
+		F7CC97E2207477D8004CF822 /* CGAboutUsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGAboutUsViewController.m; sourceTree = "<group>"; };
+		F7CC97E3207477D8004CF822 /* CGAboutUsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CGAboutUsViewController.xib; sourceTree = "<group>"; };
+		F7CC97EB20747E0E004CF822 /* CGAboutWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGAboutWebViewController.h; sourceTree = "<group>"; };
+		F7CC97EC20747E0E004CF822 /* CGAboutWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGAboutWebViewController.m; sourceTree = "<group>"; };
 		F7DB1F3B205F6212008FC53D /* libSocialWeChat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSocialWeChat.a; sourceTree = "<group>"; };
 		F7DB1F3D205F621D008FC53D /* libSocialSina.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSocialSina.a; sourceTree = "<group>"; };
 		F7DB1F3F205F6227008FC53D /* libSocialUniqueId.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSocialUniqueId.a; sourceTree = "<group>"; };
@@ -1848,10 +1869,10 @@
 		F4281AAE1FDA5ADF00A38C96 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F4281AAF1FDA5ADF00A38C96 /* ZLPhotoPickerBrowserPhoto.m */,
 				F4281AB01FDA5ADF00A38C96 /* ZLPhotoRect.h */,
 				F4281AB11FDA5ADF00A38C96 /* ZLPhotoRect.m */,
 				F4281AB21FDA5ADF00A38C96 /* ZLPhotoPickerBrowserPhoto.h */,
+				F4281AAF1FDA5ADF00A38C96 /* ZLPhotoPickerBrowserPhoto.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1860,9 +1881,9 @@
 			isa = PBXGroup;
 			children = (
 				F4281AB41FDA5ADF00A38C96 /* ZLPhotoPickerBrowserViewController.h */,
-				F4281AB51FDA5ADF00A38C96 /* ZLPhotoPickerBrowserViewController+SignlePhotoBrowser.m */,
 				F4281AB61FDA5ADF00A38C96 /* ZLPhotoPickerBrowserViewController.m */,
 				F4281AB71FDA5ADF00A38C96 /* ZLPhotoPickerBrowserViewController+SignlePhotoBrowser.h */,
+				F4281AB51FDA5ADF00A38C96 /* ZLPhotoPickerBrowserViewController+SignlePhotoBrowser.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -1871,13 +1892,13 @@
 			isa = PBXGroup;
 			children = (
 				F4281AB91FDA5ADF00A38C96 /* ZLPhotoPickerCustomToolBarView.h */,
-				F4281ABA1FDA5ADF00A38C96 /* ZLPhotoPickerBrowserPhotoImageView.m */,
-				F4281ABB1FDA5ADF00A38C96 /* ZLPhotoPickerBrowserPhotoView.m */,
-				F4281ABC1FDA5ADF00A38C96 /* ZLPhotoPickerBrowserPhotoScrollView.h */,
 				F4281ABD1FDA5ADF00A38C96 /* ZLPhotoPickerCustomToolBarView.m */,
-				F4281ABE1FDA5ADF00A38C96 /* ZLPhotoPickerBrowserPhotoImageView.h */,
+				F4281ABC1FDA5ADF00A38C96 /* ZLPhotoPickerBrowserPhotoScrollView.h */,
 				F4281ABF1FDA5ADF00A38C96 /* ZLPhotoPickerBrowserPhotoScrollView.m */,
+				F4281ABE1FDA5ADF00A38C96 /* ZLPhotoPickerBrowserPhotoImageView.h */,
+				F4281ABA1FDA5ADF00A38C96 /* ZLPhotoPickerBrowserPhotoImageView.m */,
 				F4281AC01FDA5ADF00A38C96 /* ZLPhotoPickerBrowserPhotoView.h */,
+				F4281ABB1FDA5ADF00A38C96 /* ZLPhotoPickerBrowserPhotoView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1895,10 +1916,10 @@
 		F4281AC31FDA5ADF00A38C96 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				F4281AC71FDA5ADF00A38C96 /* UIImage+ZLPhotoLib.h */,
 				F4281AC41FDA5ADF00A38C96 /* UIImage+ZLPhotoLib.m */,
 				F4281AC51FDA5ADF00A38C96 /* UIView+ZLExtension.h */,
 				F4281AC61FDA5ADF00A38C96 /* UIView+ZLExtension.m */,
-				F4281AC71FDA5ADF00A38C96 /* UIImage+ZLPhotoLib.h */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1960,16 +1981,16 @@
 		F4281ADD1FDA5ADF00A38C96 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F4281ADE1FDA5ADF00A38C96 /* ZLPhotoPickerCollectionView.m */,
 				F4281ADF1FDA5ADF00A38C96 /* ZLPhotoPickerFooterCollectionReusableView.h */,
-				F4281AE01FDA5ADF00A38C96 /* ZLPhotoPickerCollectionViewCell.m */,
-				F4281AE11FDA5ADF00A38C96 /* ZLPhotoPickerGroupTableViewCell.h */,
-				F4281AE21FDA5ADF00A38C96 /* ZLPhotoPickerImageView.h */,
-				F4281AE31FDA5ADF00A38C96 /* ZLPhotoPickerCollectionView.h */,
-				F4281AE41FDA5ADF00A38C96 /* ZLPhotoPickerCollectionViewCell.h */,
 				F4281AE51FDA5ADF00A38C96 /* ZLPhotoPickerFooterCollectionReusableView.m */,
-				F4281AE61FDA5ADF00A38C96 /* ZLPhotoPickerImageView.m */,
+				F4281AE11FDA5ADF00A38C96 /* ZLPhotoPickerGroupTableViewCell.h */,
 				F4281AE71FDA5ADF00A38C96 /* ZLPhotoPickerGroupTableViewCell.m */,
+				F4281AE21FDA5ADF00A38C96 /* ZLPhotoPickerImageView.h */,
+				F4281AE61FDA5ADF00A38C96 /* ZLPhotoPickerImageView.m */,
+				F4281AE31FDA5ADF00A38C96 /* ZLPhotoPickerCollectionView.h */,
+				F4281ADE1FDA5ADF00A38C96 /* ZLPhotoPickerCollectionView.m */,
+				F4281AE41FDA5ADF00A38C96 /* ZLPhotoPickerCollectionViewCell.h */,
+				F4281AE01FDA5ADF00A38C96 /* ZLPhotoPickerCollectionViewCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2148,6 +2169,12 @@
 				F4F453C2202C6DC200F4A417 /* YWFilePreviewView.xib */,
 				F4F453CA202D473100F4A417 /* CGFileOpenViewController.h */,
 				F4F453CB202D473100F4A417 /* CGFileOpenViewController.m */,
+				F7C2C9012079E4A900CC528C /* CGPlayerViewController.h */,
+				F7C2C9022079E4A900CC528C /* CGPlayerViewController.m */,
+				F7C2C9042079E79F00CC528C /* CGPlayerViewController.xib */,
+				F7C2C9062079F76200CC528C /* CGPlayLocalVideoViewController.h */,
+				F7C2C9072079F76200CC528C /* CGPlayLocalVideoViewController.m */,
+				F7C2C9082079F76200CC528C /* CGPlayLocalVideoViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2363,8 +2390,8 @@
 				F43AED031FEA8DA80037C120 /* CGRegionalDistributionViewController.m */,
 				F43AED041FEA8DA80037C120 /* CGHomeViewController+Version.h */,
 				F43AED001FEA8DA80037C120 /* CGHomeViewController+Version.m */,
-				F43AED011FEA8DA80037C120 /* CGWKWebViewController.m */,
 				F43AED061FEA8DA80037C120 /* CGWKWebViewController.h */,
+				F43AED011FEA8DA80037C120 /* CGWKWebViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2648,6 +2675,8 @@
 				F452C0B4201AD4EA0066C778 /* CGCropImageViewController.m */,
 				F79719572064A08D004085F8 /* CGRentDefineVC.h */,
 				F79719582064A08D004085F8 /* CGRentDefineVC.m */,
+				F7BB38F52072560A008665E9 /* CGAddVipMemberViewController.h */,
+				F7BB38F62072560A008665E9 /* CGAddVipMemberViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2943,6 +2972,11 @@
 			children = (
 				F470FF491FDE58290045C0D7 /* CGMineSettingViewController.h */,
 				F470FF4A1FDE58290045C0D7 /* CGMineSettingViewController.m */,
+				F7CC97E1207477D8004CF822 /* CGAboutUsViewController.h */,
+				F7CC97E2207477D8004CF822 /* CGAboutUsViewController.m */,
+				F7CC97E3207477D8004CF822 /* CGAboutUsViewController.xib */,
+				F7CC97EB20747E0E004CF822 /* CGAboutWebViewController.h */,
+				F7CC97EC20747E0E004CF822 /* CGAboutWebViewController.m */,
 				F470FF801FDE85530045C0D7 /* CGMineUpdatePwdViewController.h */,
 				F470FF811FDE85530045C0D7 /* CGMineUpdatePwdViewController.m */,
 			);
@@ -3863,6 +3897,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F797194A2063AB2D004085F8 /* CGPayOrderCell.xib in Resources */,
+				F7CC97E5207477D8004CF822 /* CGAboutUsViewController.xib in Resources */,
 				F7DB1FAF2062520E008FC53D /* CGLevelUpCell.xib in Resources */,
 				F4281B191FDA5AE000A38C96 /* ZLPhotoLib.bundle in Resources */,
 				F466C9F11FDA4EB700C2710C /* LaunchScreen.storyboard in Resources */,
@@ -3870,6 +3905,7 @@
 				F4F453C5202C6DC300F4A417 /* YWFilePreviewView.xib in Resources */,
 				F4281B061FDA5AE000A38C96 /* MBProgressHUD.bundle in Resources */,
 				F4281AF01FDA5ADF00A38C96 /* address.plist in Resources */,
+				F7C2C9052079E79F00CC528C /* CGPlayerViewController.xib in Resources */,
 				F466C9EE1FDA4EB700C2710C /* Assets.xcassets in Resources */,
 				F7B36D78206A459300EEDF56 /* CGContactCell.xib in Resources */,
 				F4281B081FDA5AE000A38C96 /* icon_chose_bottom@2x.png in Resources */,
@@ -3877,6 +3913,7 @@
 				F789975A206CDFC70014CBC0 /* AlipaySDK.bundle in Resources */,
 				F44AB4881FDA6079009A3DE0 /* Hiragino Sans GB W3.otf in Resources */,
 				252615961FEB888B0050F122 /* WSDatePickerView.xib in Resources */,
+				F7C2C90A2079F76200CC528C /* CGPlayLocalVideoViewController.xib in Resources */,
 				F46CFD471FE0C28E0076B32E /* LTPickerView.xib in Resources */,
 				F797193F20637AE7004085F8 /* CGMemberCell.xib in Resources */,
 				F4281AF81FDA5ADF00A38C96 /* UMSocialSDKPromptResources.bundle in Resources */,
@@ -3913,11 +3950,13 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-ChengGeLeasing/Pods-ChengGeLeasing-resources.sh",
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
+				"${PODS_ROOT}/ZFPlayer/ZFPlayer/ZFPlayer.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZFPlayer.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4055,6 +4094,7 @@
 				F46CFD841FE121730076B32E /* CGMineTeamXiangmuCell.m in Sources */,
 				F79719492063AB2D004085F8 /* CGPayOrderCell.m in Sources */,
 				F47F25691FE2A93E00486A05 /* CGFindModel.m in Sources */,
+				F7BB38F72072560A008665E9 /* CGAddVipMemberViewController.m in Sources */,
 				F44AB4931FDA60B2009A3DE0 /* AppDelegate+Extension.m in Sources */,
 				F4EBB5041FEA196E00DB88AC /* CGLeaseMattersCell.m in Sources */,
 				F46CFDFC1FE250350076B32E /* CGTeamBunkCell.m in Sources */,
@@ -4163,6 +4203,7 @@
 				F466C9E61FDA4EB700C2710C /* AppDelegate.m in Sources */,
 				F4281B021FDA5AE000A38C96 /* Base64Util.m in Sources */,
 				F46CFD7E1FE11FE10076B32E /* CGMineTeamViewController.m in Sources */,
+				F7CC97E4207477D8004CF822 /* CGAboutUsViewController.m in Sources */,
 				F7DB1FB220634952008FC53D /* CGEntManagerVC.m in Sources */,
 				F48CCBEE1FF3B6DF003C500C /* CGLocalVideoListViewController.m in Sources */,
 				F485B2531FE7D3A200F29196 /* CGMineAuthMemberModel.m in Sources */,
@@ -4236,6 +4277,7 @@
 				F4F453CC202D473100F4A417 /* CGFileOpenViewController.m in Sources */,
 				F43AED7D1FEA8DA90037C120 /* CGHomeCollectionViewCell.m in Sources */,
 				F4281AEF1FDA5ADF00A38C96 /* AddressPickView.m in Sources */,
+				F7CC97ED20747E0E004CF822 /* CGAboutWebViewController.m in Sources */,
 				F4EBB51F1FEA54AC00DB88AC /* CGContractListCell.m in Sources */,
 				F4281A4B1FDA5A8A00A38C96 /* HelperManager.m in Sources */,
 				F46CFDC61FE215AA0076B32E /* CGMineSearchBarView.m in Sources */,
@@ -4258,6 +4300,7 @@
 				F7DB1FA420623298008FC53D /* CGVersionCell.m in Sources */,
 				F4EBB4B91FE93B4D00DB88AC /* CGFindHardwareModel.m in Sources */,
 				F43AED571FEA8DA90037C120 /* CGPerformanceRankModel.m in Sources */,
+				F7C2C9032079E4A900CC528C /* CGPlayerViewController.m in Sources */,
 				F470FF4B1FDE58290045C0D7 /* CGMineSettingViewController.m in Sources */,
 				F46CFD8D1FE1280E0076B32E /* CGMineTeamCustomerFormatViewController.m in Sources */,
 				F43AED851FEA8DA90037C120 /* CGShopDetailsViewController.m in Sources */,
@@ -4291,6 +4334,7 @@
 				F43AED701FEA8DA90037C120 /* CGOperationDynamicView.m in Sources */,
 				F46CFDC91FE21D420076B32E /* CGMineTeamNameEditViewController.m in Sources */,
 				F4281A5D1FDA5AB400A38C96 /* UIButton+CountDown.m in Sources */,
+				F7C2C9092079F76200CC528C /* CGPlayLocalVideoViewController.m in Sources */,
 				F48CCBB61FF39C06003C500C /* CGNetdiscCell.m in Sources */,
 				F4EBB5131FEA37EF00DB88AC /* CGBusinessMattersDetailViewController.m in Sources */,
 				2526157A1FEB494F0050F122 /* CGUnitSelectionCollectionViewCell.m in Sources */,
@@ -4491,7 +4535,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = ChengGeLeasing/ChengGeLeasing.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Jiangsu LOHAS Moblie Technology Co.,Ltd. (SAYTR6S84T)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SAYTR6S84T;
@@ -4546,7 +4590,6 @@
 					"$(inherited)",
 					"-ObjC",
 					"-l\"AFNetworking\"",
-					"-l\"FDFullscreenPopGesture\"",
 					"-l\"FLAnimatedImage\"",
 					"-l\"KLCPopup\"",
 					"-l\"MBProgressHUD\"",
@@ -4605,7 +4648,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = ChengGeLeasing/ChengGeLeasing.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Jiangsu LOHAS Moblie Technology Co.,Ltd. (SAYTR6S84T)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SAYTR6S84T;
@@ -4660,7 +4703,6 @@
 					"$(inherited)",
 					"-ObjC",
 					"-l\"AFNetworking\"",
-					"-l\"FDFullscreenPopGesture\"",
 					"-l\"FLAnimatedImage\"",
 					"-l\"KLCPopup\"",
 					"-l\"MBProgressHUD\"",

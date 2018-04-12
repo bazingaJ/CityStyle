@@ -138,6 +138,14 @@ static HelperManager *_createInstance;
     return token;
 }
 /**
+ *  企业id
+ */
+- (NSString *)account_id {
+    NSDictionary *userDic = [self getUserDefaultInfo];
+    NSString *account_id = [userDic objectForKey:@"business_id"];
+    return account_id;
+}
+/**
  *  清除账号
  */
 - (void)clearAcc {

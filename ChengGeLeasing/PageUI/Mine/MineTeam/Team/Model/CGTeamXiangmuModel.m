@@ -10,7 +10,10 @@
 #import "CGTeamMemberModel.h"
 
 @implementation CGTeamXiangmuModel
-
++ (NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{@"user_id":@"id"};
+}
 /**
  *  团队成员列表
  */

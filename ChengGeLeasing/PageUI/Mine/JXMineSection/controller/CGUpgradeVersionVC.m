@@ -54,7 +54,7 @@ static NSString *const cellItem5 = @"网盘文件数";
 
 - (void)prepareForData
 {
-    
+    [self getVipConfigInfo];
     self.dataArr = [NSMutableArray array];
     [self.dataArr addObject:@[@"",versionText1,versionText2]];
     [self.dataArr addObject:@[cellItem1,[self changeZeroNumToString:FREE_PRONUM],[self changeZeroNumToString:VIP_PRONUM]]];
@@ -134,42 +134,91 @@ static NSString *const cellItem5 = @"网盘文件数";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-// 在首页获取过一次 所以直接在准备数据中 设置
-- (void)requestVipConfig
+/**
+ 获取VIP配置信息
+ */
+- (void)getVipConfigInfo
 {
     
-//    NSMutableDictionary *param = [NSMutableDictionary dictionary];
-//    param[@"app"] = @"ucenter";
-//    param[@"act"] = @"getVipConfig";
-//    [MBProgressHUD showSimple:self.view];
-//    [HttpRequestEx postWithURL:SERVICE_URL
-//                        params:param
-//                       success:^(id json) {
-//                           [MBProgressHUD hideHUDForView:self.view animated:YES];
-//                           NSString *code = [json objectForKey:@"code"];
-//                           NSString *msg  = [json objectForKey:@"msg"];
-//                           if ([code isEqualToString:SUCCESS])
-//                           {
-//                               NSDictionary *dict = [json objectForKey:@"data"];
-//
-//                           }
-//                           else
-//                           {
-//                               [MBProgressHUD showError:msg toView:self.view];
-//                           }
-//                       }
-//                       failure:^(NSError *error) {
-//                           [MBProgressHUD hideHUDForView:self.view animated:YES];
-//                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
-//                       }];
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"getVipConfig";
+    
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               NSDictionary *dict = [json objectForKey:@"data"];
+                               NSArray *listArr = dict[@"list"];
+                               
+                               NSDictionary *dic1 = [listArr firstObject];
+                               if ([dic1[@"vip_id"] isEqualToString:@"1"])
+                               {
+                                   [self saveFreeConfig:dic1];
+                               }
+                               else
+                               {
+                                   [self saveVipConfig:dic1];
+                               }
+                               NSDictionary *dic2 = [listArr lastObject];
+                               if ([dic2[@"vip_id"] isEqualToString:@"1"])
+                               {
+                                   [self saveFreeConfig:dic2];
+                               }
+                               else
+                               {
+                                   [self saveVipConfig:dic2];
+                               }
+                               
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
+}
+- (void)saveFreeConfig:(NSDictionary *)dict
+{
+    NSUserDefaults *us = [NSUserDefaults standardUserDefaults];
+    [us setObject:dict[@"cate_num"] forKey:@"free_cate_num"];
+    [us setObject:dict[@"name"] forKey:@"free_name"];
+    [us setObject:dict[@"pos_num"] forKey:@"free_pos_num"];
+    [us setObject:dict[@"price"] forKey:@"free_price"];
+    [us setObject:dict[@"pro_num"] forKey:@"free_pro_num"];
+    [us setObject:dict[@"sky_drive_num"] forKey:@"free_sky_drive_num"];
+    [us setObject:dict[@"user_num"] forKey:@"free_user_num"];
+    [us setObject:dict[@"vip_id"] forKey:@"free_vip_id"];
+    [us synchronize];
 }
 
+- (void)saveVipConfig:(NSDictionary *)dict
+{
+    NSUserDefaults *us = [NSUserDefaults standardUserDefaults];
+    [us setObject:dict[@"cate_num"] forKey:@"vip_cate_num"];
+    [us setObject:dict[@"name"] forKey:@"vip_name"];
+    [us setObject:dict[@"pos_num"] forKey:@"vip_pos_num"];
+    [us setObject:dict[@"price"] forKey:@"vip_price"];
+    [us setObject:dict[@"pro_num"] forKey:@"vip_pro_num"];
+    [us setObject:dict[@"sky_drive_num"] forKey:@"vip_sky_drive_num"];
+    [us setObject:dict[@"user_num"] forKey:@"vip_user_num"];
+    [us setObject:dict[@"vip_id"] forKey:@"vip_vip_id"];
+    [us synchronize];
+}
 - (CGVersionHeaderV *)topView
 {
     if (!_topView)
     {
         _topView = [[CGVersionHeaderV alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, headerViewHeight)];
-        
+        // ￥99 / 人 / 月
+        _topView.midText = [NSString stringWithFormat:@"￥%@ / 人 / 月",VIP_PRICE];
     }
     return _topView;
 }

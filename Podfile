@@ -9,7 +9,7 @@ target 'ChengGeLeasing' do
     pod 'SDCycleScrollView', '~> 1.65'
     pod 'KLCPopup', '~> 1.0'
     pod 'XHToast', '~> 1.4.0'
-    pod 'FDFullscreenPopGesture', '~> 1.1'
+#    pod 'FDFullscreenPopGesture', '~> 1.1'
     pod 'XHLaunchAd', '~> 3.9.1'
     pod 'RDVTabBarController', '~> 1.1.9'
     pod 'UIImage-Helpers', '~> 0.0.3'
@@ -17,4 +17,7 @@ target 'ChengGeLeasing' do
     pod 'Masonry'
     pod 'IQKeyboardManager'
     pod 'WechatOpenSDK'
+    pod 'ZFPlayer'
+    pod 'ZFDownload'
+    pod 'YTKKeyValueStore'
 end

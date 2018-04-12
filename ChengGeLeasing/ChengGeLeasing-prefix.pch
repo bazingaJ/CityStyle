@@ -79,11 +79,18 @@
 #define MESSAGE_ERROR @"数据返回错误"
 
 //API正式接口
-//#define SERVICE_URL @"http://apiv2.chengge.net"
+#define SERVICE_URL @"http://apiv2.chengge.net"
 //API测试接口
-#define SERVICE_URL @"http://api.chengge.renxixi.com"
+//#define SERVICE_URL @"http://api.chengge.renxixi.com"
 
 // 支付宝支付测试接口
-#define ALIPAY_URL @"http://service.chengge.renxixi.com/pay/alipayPreOrder.do"
-#define WECHATPAY_URL @"http://service.chengge.renxixi.com/pay/wxPreOrder.do"
+//#define ALIPAY_URL @"http://service.chengge.renxixi.com/pay/alipayPreOrder.do"
+//#define WECHATPAY_URL @"http://service.chengge.renxixi.com/pay/wxPreOrder.do"
+
+// 支付宝支付正式接口
+#define ALIPAY_URL @"http://service.chengge.net/pay/alipayPreOrder.do"
+#define WECHATPAY_URL @"http://service.chengge.net/pay/wxPreOrder.do"
+
+
+
 #endif /* ChengGeLeasing_prefix_pch */

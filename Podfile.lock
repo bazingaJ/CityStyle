@@ -14,8 +14,23 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - FDFullscreenPopGesture (1.1)
+  - ASIHTTPRequest (1.8.2):
+    - ASIHTTPRequest/ASIWebPageRequest (= 1.8.2)
+    - ASIHTTPRequest/CloudFiles (= 1.8.2)
+    - ASIHTTPRequest/Core (= 1.8.2)
+    - ASIHTTPRequest/S3 (= 1.8.2)
+  - ASIHTTPRequest/ASIWebPageRequest (1.8.2):
+    - ASIHTTPRequest/Core
+  - ASIHTTPRequest/CloudFiles (1.8.2):
+    - ASIHTTPRequest/Core
+  - ASIHTTPRequest/Core (1.8.2):
+    - Reachability
+  - ASIHTTPRequest/S3 (1.8.2):
+    - ASIHTTPRequest/Core
   - FLAnimatedImage (1.0.12)
+  - FMDB (2.7.2):
+    - FMDB/standard (= 2.7.2)
+  - FMDB/standard (2.7.2)
   - IQKeyboardManager (5.0.7)
   - KLCPopup (1.0)
   - Masonry (1.1.0)
@@ -23,6 +38,7 @@ PODS:
   - MJExtension (3.0.13)
   - MJRefresh (3.1.15.1)
   - RDVTabBarController (1.1.9)
+  - Reachability (3.2)
   - RegexKitLite (4.0)
   - SDCycleScrollView (1.65):
     - SDWebImage (~> 3.7)
@@ -34,11 +50,16 @@ PODS:
   - XHLaunchAd (3.9.1):
     - FLAnimatedImage (~> 1.0.12)
   - XHToast (1.4.0)
+  - YTKKeyValueStore (0.1.2):
+    - FMDB (~> 2.0)
+  - ZFDownload (1.0.2):
+    - ASIHTTPRequest
+  - ZFPlayer (2.1.6):
+    - Masonry
   - zhPopupController (1.0.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
-  - FDFullscreenPopGesture (~> 1.1)
   - IQKeyboardManager
   - KLCPopup (~> 1.0)
   - Masonry
@@ -53,12 +74,16 @@ DEPENDENCIES:
   - WechatOpenSDK
   - XHLaunchAd (~> 3.9.1)
   - XHToast (~> 1.4.0)
+  - YTKKeyValueStore
+  - ZFDownload
+  - ZFPlayer
   - zhPopupController (~> 1.0.2)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
+  ASIHTTPRequest: ec013992946676b7978dcbde6396d57312d21db4
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
   IQKeyboardManager: 0bfa4607d39924116b5c0c8b55b5d789288b5cba
   KLCPopup: 76c5a19227977f1e53d85236f9ef42257c168d98
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -66,6 +91,7 @@ SPEC CHECKSUMS:
   MJExtension: 5932755f451458eefa24239358817f8d291240c7
   MJRefresh: 5f8552bc25ca8751c010f621c1098dbdaacbccd6
   RDVTabBarController: 67794f7a7a37f8e32f046f85ac67d06ab92d624a
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   RegexKitLite: c0e4c12e6e7de0769f3a3ed679f0f61604170661
   SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
@@ -73,8 +99,11 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 491d965d79335070328571d3e79f714549e79a5e
   XHLaunchAd: f452a6758e46ca6fbaf8b19eef4865003ec710e7
   XHToast: 3b354766d56d9df8fef8e64387bbd25c90d71a86
+  YTKKeyValueStore: 4d002941540dd5108fa23009b71e0f2f937f7a0f
+  ZFDownload: a52f94ebb080833b8a8ceb19a409f2941343fe7f
+  ZFPlayer: 833cb3974b619bfd01a0ec1ebaabfe6f629e85b4
   zhPopupController: 411af38e63764130e4ae4ba5cde12c776dc84824
 
-PODFILE CHECKSUM: 2fa70fb78ed80e775480e598772fa2c2cd993d6f
+PODFILE CHECKSUM: 2075ffe38853fa5b60bcdf04abcb73db9f1f0714
 
 COCOAPODS: 1.4.0

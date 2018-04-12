@@ -203,7 +203,7 @@
         [self.zh_popupController dismiss];
         
         //本地项目存储
-        [self setXiangmuID:model.id proName:model.name];
+        [self setXiangmuID:model.user_id proName:model.name];
         
         //设置当前左侧按钮名称
         [_navLeftBtn setTitle:[HelperManager CreateInstance].proName forState:UIControlStateNormal];

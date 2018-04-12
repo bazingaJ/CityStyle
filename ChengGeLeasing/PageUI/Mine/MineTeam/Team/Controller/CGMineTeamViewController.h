@@ -10,4 +10,8 @@
 
 @interface CGMineTeamViewController : BaseViewController
 
+@property (nonatomic, strong) NSString *endDataTime;
+
+@property (nonatomic, strong) NSString *account_id;
+
 @end

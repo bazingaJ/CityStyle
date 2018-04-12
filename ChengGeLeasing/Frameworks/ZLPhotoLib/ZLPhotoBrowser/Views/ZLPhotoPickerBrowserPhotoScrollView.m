@@ -78,7 +78,7 @@
     if (gesture.state == UIGestureRecognizerStateBegan) {
         
         if (!self.sheet) {
-            self.sheet = [[UIActionSheet alloc] initWithTitle:@"提示" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"保存到相册" otherButtonTitles:nil, nil];
+            self.sheet = [[UIActionSheet alloc] initWithTitle:@"提示" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"保存到相册", nil];
         }
         
         [self.sheet showInView:self];
@@ -308,7 +308,7 @@
         minScale = MIN(xScale, yScale);
     }
     
-    self.maximumZoomScale = xScale * 2;
+    self.maximumZoomScale = xScale * 12;
     self.minimumZoomScale = xScale;
     
     self.zoomScale = self.minimumZoomScale;

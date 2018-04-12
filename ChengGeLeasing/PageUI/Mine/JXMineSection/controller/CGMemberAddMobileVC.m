@@ -252,7 +252,6 @@
     if(!_searchView) {
         _searchView = [[CGMineSearchBarView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-60, 45)];
         [_searchView setDelegate:self];
-        _searchView.searchBar.keyboardType = UIKeyboardTypeNumberPad;
         self.navigationItem.titleView = _searchView;
     }
     return _searchView;

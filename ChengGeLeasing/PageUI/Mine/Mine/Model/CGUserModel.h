@@ -58,4 +58,9 @@
  */
 @property (nonatomic, strong) NSString *is_over;
 
+/**
+ 企业ID
+ */
+@property (nonatomic, strong) NSString *business_id;
+
 @end

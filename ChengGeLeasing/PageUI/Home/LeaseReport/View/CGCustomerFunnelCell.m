@@ -57,13 +57,13 @@
     lbMsg3.font = FONT14;
     lbMsg3.textColor = COLOR9;
     NSString * sign_group_name;
-    if (IsStringEmpty(model.sign_group_name))
+    if (IsStringEmpty(model.group_name))
     {
         sign_group_name = @"暂无";
     }
     else
     {
-        sign_group_name = model.sign_group_name;
+        sign_group_name = model.group_name;
     }
     lbMsg3.text =[NSString stringWithFormat:@"意向区域:%@",sign_group_name];
     [self.contentView addSubview:lbMsg3];

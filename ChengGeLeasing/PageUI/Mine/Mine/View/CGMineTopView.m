@@ -268,9 +268,12 @@ static NSString *const timingPhotoText = @"timing";
 // cover button click method
 - (void)upgradeBtnClick
 {
-    UIViewController *vc = [JXTool currentViewController];
-    CGUpgradeVersionVC *updateVC = [CGUpgradeVersionVC new];
-    [vc.navigationController pushViewController:updateVC animated:YES];
+    
+    if ([self.delegate respondsToSelector:@selector(showUpdateWindow)])
+    {
+        [self.delegate showUpdateWindow];
+    }
+    
 }
 
 @end

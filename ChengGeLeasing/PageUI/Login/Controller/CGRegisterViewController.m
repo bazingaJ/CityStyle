@@ -289,6 +289,7 @@
     [HttpRequestEx postWithURL:SERVICE_URL params:param success:^(id json) {
         NSString *msg = [json objectForKey:@"msg"];
         NSString *code = [json objectForKey:@"code"];
+        NSLog(@"----短信测试数据%@",json);
         if([code isEqualToString:SUCCESS]) {
             [MBProgressHUD showSuccess:@"发送成功" toView:self.view];
             

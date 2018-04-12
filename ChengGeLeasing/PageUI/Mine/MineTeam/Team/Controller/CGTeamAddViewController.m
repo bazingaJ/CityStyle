@@ -40,7 +40,6 @@
     [self setBottomH:45];
     [self setHiddenHeaderRefresh:YES];
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
     self.title = @"新建项目";
     
@@ -241,7 +240,7 @@
                     [btnFunc addSubview:imgView];
                     
                     //创建“删除”按钮
-                    UIButton *btnDel = [[UIButton alloc] initWithFrame:CGRectMake(imgView.centerX+18, imgView.centerY-32, 15, 15)];
+                    UIButton *btnDel = [[UIButton alloc] initWithFrame:CGRectMake(imgView.centerX+18, imgView.centerY-32, 20, 20)];
                     [btnDel setImage:[UIImage imageNamed:@"mine_member_quchu"] forState:UIControlStateNormal];
                     [btnDel setTag:btnFunc.tag];
                     [btnDel addTouch:^{
@@ -478,8 +477,7 @@
     //获取Image
     UIImage *photoImg = [info objectForKey:UIImagePickerControllerOriginalImage];
     [self.btnFunc setImage:photoImg forState:UIControlStateNormal];
-    
-    imgData = UIImagePNGRepresentation(photoImg);
+    imgData = UIImageJPEGRepresentation(photoImg, 0.5);
     
 }
 
@@ -530,6 +528,7 @@
     [param setValue:@"setNewProject" forKey:@"act"];
     [param setValue:xiangmuName forKey:@"name"];
     [param setValue:memberIds forKey:@"member"];
+    [param setValue:self.account_id forKey:@"business_id"];
     [HttpRequestEx postWithImageURL:SERVICE_URL params:param imgArr:imageArr success:^(id json) {
         [MBProgressHUD hideHUD:self.view];
         NSString *msg = [json objectForKey:@"msg"];

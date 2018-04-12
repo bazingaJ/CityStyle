@@ -19,7 +19,13 @@
 #import "CGFileOpenViewController.h"
 #import "CGUpdateView.h"
 #import "CGUpgradeVersionVC.h"
+// 网络视频未下载跳这个控制器
+#import "CGPlayerViewController.h"
+// 已经下载过的视频跳转这个控制器
+#import "CGPlayLocalVideoViewController.h"
+#import <ZFDownload/ZFDownloadManager.h>
 
+#define  DownloadManager  [ZFDownloadManager sharedDownloadManager]
 
 @interface CGNetdiscViewController () <ZLPhotoPickerBrowserViewControllerDelegate>
 
@@ -28,6 +34,7 @@
     BOOL is_authority;
 }
 @property (nonatomic, strong) NSString *my_sky_num;
+@property (atomic, strong ) NSMutableArray *downloadObjectArr;
 @end
 
 @implementation CGNetdiscViewController
@@ -41,10 +48,20 @@
     //获取我的权限
     [self getMyAuth];
     
-    
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self initData];
+}
 
+- (void)initData
+{
+    [DownloadManager startLoad];
+    self.downloadObjectArr = @[].mutableCopy;
+    self.downloadObjectArr = [NSMutableArray arrayWithArray:DownloadManager.finishedlist];
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 70;
@@ -108,10 +125,33 @@
         [pickerBrowser showPickerVc:self];
         
     }else if(typeV==2) {
+        NSString *name = [urlStringUTF8 lastPathComponent];
+        for (int i = 0 ; i < self.downloadObjectArr.count; i ++)
+        {
+            ZFFileModel *filemodel = self.downloadObjectArr[i];
+            // 如果本地的存在已经下载的视频文件名 就直接跳转本地播放的视频播放器
+            if ([filemodel.fileName isEqualToString:name])
+            {
+                NSLog(@"视频已下载，放心观看");
+                CGPlayLocalVideoViewController *movie = [CGPlayLocalVideoViewController new];
+                NSString *path                   = FILE_PATH(filemodel.fileName);
+                NSURL *videoURL                  = [NSURL fileURLWithPath:path];
+                movie.videoURL                   = videoURL;
+                movie.title                      = model.name;
+                [self.navigationController pushViewController:movie animated:YES];
+                return;
+            }
+        }
+        NSLog(@"视频未下载，缓冲观看");
+        
+        // 不存在视频的文件名 跳转第一次播放视频的缓冲视频播放器
         //视频
-        MPMoviePlayerViewController *mPMoviePlayerViewController = [[MPMoviePlayerViewController alloc]initWithContentURL:[NSURL URLWithString:urlStringUTF8]];
-        mPMoviePlayerViewController.view.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        [self presentViewController:mPMoviePlayerViewController animated:YES completion:nil];
+        CGPlayerViewController *movie = [CGPlayerViewController new];
+        movie.title = model.name;
+        movie.videoURL = [NSURL URLWithString:urlStringUTF8];
+        [self.navigationController pushViewController:movie animated:YES];
+        
+        
     }else{
         
         //1.创建会话管理者
@@ -183,6 +223,8 @@
     }
 
 }
+
+
 
 - (NSArray *)rightButtons {
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
@@ -284,8 +326,24 @@
                 NSString *code = json[@"code"];
                 NSString *msg = json[@"msg"];
                 if ([code isEqualToString:SUCCESS]) {
-                    [MBProgressHUD showSuccess:@"删除成功" toView:self.view];
+                    
                     [self.tableView.mj_header beginRefreshing];
+                    
+                    NSString *urlStringUTF8 = [model.url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                    // 删除本地缓存文件
+                    NSString *name = [urlStringUTF8 lastPathComponent];
+                    for (int i = 0 ; i < self.downloadObjectArr.count; i ++)
+                    {
+                        ZFFileModel *filemodel = self.downloadObjectArr[i];
+                        // 如果本地的存在已经下载的视频文件名 就直接跳转本地播放的视频播放器
+                        if ([filemodel.fileName isEqualToString:name])
+                        {
+                            
+                            [DownloadManager deleteFinishFile:filemodel];
+                            [MBProgressHUD showSuccess:@"删除成功" toView:self.view];
+                        }
+                    }
+                    
                 }else{
                     [MBProgressHUD showError:msg toView:self.view];
                 }
@@ -447,7 +505,9 @@
 }
 
 //获取相机返回的图片
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    
     [self dismissViewControllerAnimated:YES completion:nil];
     
 //    if (@available(iOS 11.0, *)) {
@@ -536,7 +596,7 @@
         if ([code isEqualToString:SUCCESS])
         {
             self.my_sky_num = dataDic[@"my_sky_num"];
-            NSLog(@"我创建的云盘文件%@",self.my_sky_num);
+            NSLog(@"云盘数据%@",dataDic);
             NSArray *listArr =dataDic[@"list"];
             [self.dataArr removeAllObjects];
             self.dataArr = [CGNetdiscModel mj_objectArrayWithKeyValuesArray:listArr];

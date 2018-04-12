@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CGPlayerViewController">
+            <connections>
+                <outlet property="playerFatherView" destination="qD9-ig-ha0" id="kng-Dj-sbb"/>
+                <outlet property="view" destination="xT2-k0-5ER" id="w5T-0G-gxw"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="xT2-k0-5ER">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qD9-ig-ha0">
+                    <rect key="frame" x="0.0" y="228" width="375" height="211"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="qD9-ig-ha0" secondAttribute="height" multiplier="16:9" id="uXi-RL-Ei7"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="dKK-91-Ldb" firstAttribute="trailing" secondItem="qD9-ig-ha0" secondAttribute="trailing" id="8kH-Xh-EXW"/>
+                <constraint firstItem="qD9-ig-ha0" firstAttribute="centerY" secondItem="xT2-k0-5ER" secondAttribute="centerY" id="JM3-hu-ls1"/>
+                <constraint firstItem="qD9-ig-ha0" firstAttribute="leading" secondItem="dKK-91-Ldb" secondAttribute="leading" id="td6-EC-6ij"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="dKK-91-Ldb"/>
+            <point key="canvasLocation" x="3" y="-234"/>
+        </view>
+    </objects>
+</document>

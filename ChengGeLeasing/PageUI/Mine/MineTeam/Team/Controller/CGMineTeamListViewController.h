@@ -15,6 +15,11 @@
  *  类型:1我创建的 2我加入的 3我曾经加入的 
  */
 @property (nonatomic, assign) NSInteger type;
+
+@property (nonatomic, strong) NSString *endDateTime;
+
+@property (nonatomic, strong) NSString *account_id;
+
 /**
  *  刷新项目列表
  */

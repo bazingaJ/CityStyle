@@ -18,6 +18,7 @@
 #import "CGEntManagerVC.h"
 #import "CGXuFeiView.h"
 #import "CGRenewPayVC.h"
+#import "CGUpgradeVersionVC.h"
 
 /**
  Word
@@ -84,12 +85,9 @@ static NSString *const cellTitleText5 = @"设置";
     [self setLeftButtonItemHidden:YES];
     [self setHiddenHeaderRefresh:YES];
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
     //创建“顶部视图”
     self.tableView.tableHeaderView = [self topView];
-    
-    
     
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"mine"])
     {
@@ -100,7 +98,7 @@ static NSString *const cellTitleText5 = @"设置";
         [[[UIApplication sharedApplication] keyWindow]addSubview:spotlightVie];
         
     }
-    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshMyInfo:) name:@"refreshMyInfo" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -109,6 +107,22 @@ static NSString *const cellTitleText5 = @"设置";
     //获取用户信息
     [self getUserInfo];
     [self.tableView reloadData];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self getVipConfigInfo];
+    });
+    
+    
+}
+
+- (void)refreshMyInfo:(NSNotification *)noti
+{
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        //获取用户信息
+        [self getUserInfo];
+        [self.tableView reloadData];
+    });
 }
 
 - (void)createCellContents
@@ -184,6 +198,7 @@ static NSString *const cellTitleText5 = @"设置";
         [view removeFromSuperview];
     }
 
+    
     CGUserModel *userInfo = [CGUserModel new];
     [cell setMineCellModel:userInfo indexPath:indexPath titleDic:titleDic];
 
@@ -201,6 +216,8 @@ static NSString *const cellTitleText5 = @"设置";
             {
                 //项目及团队管理
                 CGMineTeamViewController *teamView = [[CGMineTeamViewController alloc] init];
+                teamView.endDataTime = self.endTimeStr;
+                teamView.account_id = userInfo.business_id;
                 [self.navigationController pushViewController:teamView animated:YES];
             }
                 break;
@@ -328,6 +345,11 @@ static NSString *const cellTitleText5 = @"设置";
             NSDate *date = [NSDate dateWithTimeIntervalSince1970:[dataDic[@"end_time"] integerValue]];
             self.endTimeStr = [format stringFromDate:date];
             
+            //预先清除
+            [[HelperManager CreateInstance] clearAcc];
+            //设置本地缓存
+            [self setUserDefaultInfo:dataDic];
+            
             [titleDic removeAllObjects];
             [self createCellContents];
             [self.topView setMineTopModel:userInfo];
@@ -337,11 +359,89 @@ static NSString *const cellTitleText5 = @"设置";
         NSLog(@"%@",[error description]);
     }];
 }
+/**
+ 获取VIP配置信息
+ */
+- (void)getVipConfigInfo
+{
+    
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"getVipConfig";
+    
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               NSDictionary *dict = [json objectForKey:@"data"];
+                               NSArray *listArr = dict[@"list"];
+                               
+                               NSDictionary *dic1 = [listArr firstObject];
+                               if ([dic1[@"vip_id"] isEqualToString:@"1"])
+                               {
+                                   [self saveFreeConfig:dic1];
+                               }
+                               else
+                               {
+                                   [self saveVipConfig:dic1];
+                               }
+                               NSDictionary *dic2 = [listArr lastObject];
+                               if ([dic2[@"vip_id"] isEqualToString:@"1"])
+                               {
+                                   [self saveFreeConfig:dic2];
+                               }
+                               else
+                               {
+                                   [self saveVipConfig:dic2];
+                               }
+                               
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
+}
+- (void)saveFreeConfig:(NSDictionary *)dict
+{
+    NSUserDefaults *us = [NSUserDefaults standardUserDefaults];
+    [us setObject:dict[@"cate_num"] forKey:@"free_cate_num"];
+    [us setObject:dict[@"name"] forKey:@"free_name"];
+    [us setObject:dict[@"pos_num"] forKey:@"free_pos_num"];
+    [us setObject:dict[@"price"] forKey:@"free_price"];
+    [us setObject:dict[@"pro_num"] forKey:@"free_pro_num"];
+    [us setObject:dict[@"sky_drive_num"] forKey:@"free_sky_drive_num"];
+    [us setObject:dict[@"user_num"] forKey:@"free_user_num"];
+    [us setObject:dict[@"vip_id"] forKey:@"free_vip_id"];
+    [us synchronize];
+}
 
+- (void)saveVipConfig:(NSDictionary *)dict
+{
+    NSUserDefaults *us = [NSUserDefaults standardUserDefaults];
+    [us setObject:dict[@"cate_num"] forKey:@"vip_cate_num"];
+    [us setObject:dict[@"name"] forKey:@"vip_name"];
+    [us setObject:dict[@"pos_num"] forKey:@"vip_pos_num"];
+    [us setObject:dict[@"price"] forKey:@"vip_price"];
+    [us setObject:dict[@"pro_num"] forKey:@"vip_pro_num"];
+    [us setObject:dict[@"sky_drive_num"] forKey:@"vip_sky_drive_num"];
+    [us setObject:dict[@"user_num"] forKey:@"vip_user_num"];
+    [us setObject:dict[@"vip_id"] forKey:@"vip_vip_id"];
+    [us synchronize];
+}
 // 点击VIP标志和剩余时间 弹出弹窗
 - (void)showXuFeiWindow
 {
     
+    //    会员已过期，没有权限操作
     NSArray *endTimeArr = [self.endTimeStr componentsSeparatedByString:@"-"];
     NSString *wholeStr = [NSString stringWithFormat:@"您的VIP企业版\n将于%@年%@月%@日到期\n请尽快续费。",endTimeArr[0],endTimeArr[1],endTimeArr[2]];
     CGXuFeiView *view = [[CGXuFeiView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-300)/2, 0, 275, 240) contentStr:wholeStr];
@@ -365,7 +465,28 @@ static NSString *const cellTitleText5 = @"设置";
                        dismissOnBackgroundTouch:NO
                           dismissOnContentTouch:NO];
     [self.popup show];
+    
+
 }
 
+- (void)showUpdateWindow
+{
+    
+    // 判断是否是曾经的vip 还是 从来都不是vip
+    if (userInfo.business_id == nil || [userInfo.business_id isEqualToString:@""])  // 从来不是
+    {
+        CGUpgradeVersionVC *updateVC = [CGUpgradeVersionVC new];
+        [self.navigationController pushViewController:updateVC animated:YES];
+    }
+    else  // 曾经是vip
+    {
+        
+        CGRenewPayVC *vc = [CGRenewPayVC new];
+        vc.wholeSeats = self.wholeMemberNum;
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }
+    
+}
 
 @end

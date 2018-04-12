@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -70,8 +70,18 @@
                             <constraint firstAttribute="height" constant="0.5" id="BMc-Ua-3TX"/>
                         </constraints>
                     </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pak-5p-blm">
+                        <rect key="frame" x="275" y="25" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="rEu-TU-zWy"/>
+                            <constraint firstAttribute="height" constant="30" id="zKj-hr-ZFy"/>
+                        </constraints>
+                        <state key="normal" image="mine_icon_normal"/>
+                        <state key="selected" image="select"/>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="trailing" secondItem="pak-5p-blm" secondAttribute="trailing" constant="15" id="3B6-V6-Vx4"/>
                     <constraint firstItem="4Bz-TE-JCC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="7XD-5z-Y3h"/>
                     <constraint firstAttribute="bottom" secondItem="c49-vI-DLh" secondAttribute="bottom" id="CsZ-8T-vEk"/>
                     <constraint firstItem="1Hh-bR-HII" firstAttribute="top" secondItem="4Bz-TE-JCC" secondAttribute="top" constant="-10" id="Q3U-cs-4gG"/>
@@ -83,11 +93,13 @@
                     <constraint firstItem="4yG-Kv-HmU" firstAttribute="leading" secondItem="4Bz-TE-JCC" secondAttribute="trailing" constant="15" id="a8Z-az-HX1"/>
                     <constraint firstAttribute="trailing" secondItem="c49-vI-DLh" secondAttribute="trailing" id="jSJ-Lc-G3H"/>
                     <constraint firstItem="1Hh-bR-HII" firstAttribute="leading" secondItem="4Bz-TE-JCC" secondAttribute="trailing" constant="15" id="xrN-R4-mlh"/>
+                    <constraint firstItem="pak-5p-blm" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="yW8-1N-hcB"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
                 <outlet property="avatarImg" destination="4Bz-TE-JCC" id="OQ5-be-Q6i"/>
+                <outlet property="choiceBtn" destination="pak-5p-blm" id="S9K-NL-7UP"/>
                 <outlet property="name" destination="1Hh-bR-HII" id="cyO-kx-dFC"/>
                 <outlet property="positionLab" destination="zav-pN-bNa" id="zvp-c6-U5N"/>
                 <outlet property="updateTimeLab" destination="4yG-Kv-HmU" id="Lec-Ex-mMA"/>
@@ -144,12 +156,22 @@
                         <state key="normal" image="mine_icon_normal"/>
                         <state key="selected" image="select"/>
                     </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BdZ-wh-jEY">
+                        <rect key="frame" x="0.0" y="79" width="375" height="0.5"/>
+                        <color key="backgroundColor" red="0.89411764705882346" green="0.89411764705882346" blue="0.89411764705882346" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="wFJ-iB-IBA"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="BdZ-wh-jEY" secondAttribute="bottom" id="8dX-dt-vkV"/>
                     <constraint firstItem="XHE-RP-gKl" firstAttribute="bottom" secondItem="Kdy-b9-Y6v" secondAttribute="bottom" id="IB7-uZ-fzg"/>
                     <constraint firstItem="RoK-SH-GKr" firstAttribute="leading" secondItem="Kdy-b9-Y6v" secondAttribute="trailing" constant="15" id="RWA-Op-kJg"/>
+                    <constraint firstItem="BdZ-wh-jEY" firstAttribute="leading" secondItem="mFP-tG-SfN" secondAttribute="leading" id="TY5-Mm-rOK"/>
                     <constraint firstItem="Kdy-b9-Y6v" firstAttribute="centerY" secondItem="mFP-tG-SfN" secondAttribute="centerY" id="Uom-gP-ZtI"/>
                     <constraint firstAttribute="trailing" secondItem="YyD-ef-JiV" secondAttribute="trailing" constant="15" id="cqY-we-mPE"/>
+                    <constraint firstAttribute="trailing" secondItem="BdZ-wh-jEY" secondAttribute="trailing" id="dU8-Ao-0Hp"/>
                     <constraint firstItem="Kdy-b9-Y6v" firstAttribute="leading" secondItem="mFP-tG-SfN" secondAttribute="leading" constant="15" id="fkl-5s-isF"/>
                     <constraint firstItem="RoK-SH-GKr" firstAttribute="top" secondItem="Kdy-b9-Y6v" secondAttribute="top" id="jYe-Fb-O1s"/>
                     <constraint firstItem="XHE-RP-gKl" firstAttribute="leading" secondItem="Kdy-b9-Y6v" secondAttribute="trailing" constant="15" id="loh-P0-UW6"/>
@@ -160,7 +182,7 @@
                 <outlet property="headImg" destination="Kdy-b9-Y6v" id="sxi-OL-QHa"/>
                 <outlet property="memberName" destination="RoK-SH-GKr" id="fvR-OW-E8Q"/>
                 <outlet property="memberTel" destination="XHE-RP-gKl" id="c6J-8T-hiX"/>
-                <outlet property="removeBtn" destination="YyD-ef-JiV" id="3bt-Gm-1OR"/>
+                <outlet property="removeBtn" destination="YyD-ef-JiV" id="aQp-Yo-yxD"/>
             </connections>
             <point key="canvasLocation" x="-223" y="-55"/>
         </tableViewCell>

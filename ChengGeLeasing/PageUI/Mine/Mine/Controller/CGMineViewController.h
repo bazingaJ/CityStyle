@@ -10,6 +10,7 @@
 #import "CGMineTopView.h"
 #import "ZLPhotoPickerBrowserViewController.h"
 
-@interface CGMineViewController : BaseTableViewController<CGMineTopViewDelegate,ZLPhotoPickerBrowserViewControllerDelegate>
+@interface CGMineViewController : BaseTableViewController<CGMineTopViewDelegate,
+                                                          ZLPhotoPickerBrowserViewControllerDelegate>
 
 @end

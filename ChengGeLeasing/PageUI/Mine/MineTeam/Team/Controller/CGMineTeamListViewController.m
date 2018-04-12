@@ -11,6 +11,8 @@
 #import "CGTeamAddViewController.h"
 #import "CGUpdateView.h"
 #import "CGUpgradeVersionVC.h"
+#import "CGXuFeiView.h"
+#import "CGRenewPayVC.h"
 
 @interface CGMineTeamListViewController ()
 @property (nonatomic, strong) KLCPopup *popup;
@@ -98,10 +100,18 @@
     }
     if(!model) return;
     
+    if ([model.is_vip_creat isEqualToString:@"1"] && [HelperManager CreateInstance].isFree)
+    {
+        [MBProgressHUD showMessage:@"会员已过期，没有权限操作" toView:self.view];
+        return;
+    }
+    
     //团队详情
     CGMineTeamDetailViewController *detailView = [[CGMineTeamDetailViewController alloc] init];
     detailView.type = self.type;
-    detailView.pro_id = model.id;
+    detailView.pro_id = model.user_id;
+    detailView.endTime = self.endDateTime;
+    detailView.account_id = self.account_id;
     detailView.callBack = ^(CGTeamXiangmuModel *xiangmuModel) {
         NSLog(@"详情页回调成功");
         
@@ -164,7 +174,7 @@
         NSMutableDictionary *param = [NSMutableDictionary dictionary];
         [param setValue:@"ucenter" forKey:@"app"];
         [param setValue:@"dropPosRel" forKey:@"act"];
-        [param setValue:model.id forKey:@"id"];
+        [param setValue:model.user_id forKey:@"id"];
         [HttpRequestEx postWithURL:SERVICE_URL params:param success:^(id json) {
             NSString *msg = [json objectForKey:@"msg"];
             NSString *code = [json objectForKey:@"code"];
@@ -203,6 +213,8 @@
     
     //登录验证
     if(![[HelperManager CreateInstance] isLogin:NO completion:nil]) return;
+    
+//    self.mypronum = [[NSUserDefaults standardUserDefaults] objectForKey:@"my_pro_num"];
     
     // 判断是否能够继续创建新的项目 与本地存储的 免费或者vip账户进行比对
     if ([HelperManager CreateInstance].isFree)
@@ -268,6 +280,7 @@
     }
     
     CGTeamAddViewController *addView = [[CGTeamAddViewController alloc] init];
+    addView.account_id = self.account_id;
     addView.callBack = ^{
         [self.tableView.mj_header beginRefreshing];
     };
@@ -287,13 +300,9 @@
     [HttpRequestEx postWithURL:SERVICE_URL params:param success:^(id json) {
         NSString *code = [json objectForKey:@"code"];
         if([code isEqualToString:SUCCESS]) {
+            NSLog(@"===%@",json);
             NSDictionary *dataDic = [json objectForKey:@"data"];
-            if (self.type == 1)
-            {
-                self.mypronum = dataDic[@"count"];
-            }
-            
-            
+            self.mypronum = dataDic[@"my_pro_num"];
             if([dataDic isKindOfClass:[NSDictionary class]]) {
                 NSArray *dataArr = [dataDic objectForKey:@"list"];
                 if([dataArr isKindOfClass:[NSArray class]]) {

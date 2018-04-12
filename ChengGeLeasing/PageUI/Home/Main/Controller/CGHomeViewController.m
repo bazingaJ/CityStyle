@@ -305,7 +305,7 @@
         [self.zh_popupController dismiss];
         
         //本地项目存储
-        [self setXiangmuID:model.id proName:model.name];
+        [self setXiangmuID:model.user_id proName:model.name];
         
         //设置当前左侧按钮名称
         [_navLeftBtn setTitle:[HelperManager CreateInstance].proName forState:UIControlStateNormal];
@@ -386,6 +386,11 @@
         addView.callBack = ^{
             [self.tableView.mj_header beginRefreshing];
         };
+        if (![[HelperManager CreateInstance].account_id isEqualToString:@""] || [HelperManager CreateInstance].account_id != nil)
+        {
+            addView.account_id = [HelperManager CreateInstance].account_id;
+        }
+        
         [self.navigationController pushViewController:addView animated:YES];
         
     };
@@ -424,11 +429,11 @@
 -(void)CGHomeCellProjectNetworkLocation {
     
     //登陆验证
-    if (![[HelperManager CreateInstance]isLogin:NO completion:nil]) return;
+//    if (![[HelperManager CreateInstance]isLogin:NO completion:nil]) return;
     
     //网盘
-    CGNetdiscViewController *netdiscView = [[CGNetdiscViewController alloc]init];
-    [self.navigationController pushViewController:netdiscView animated:YES];
+//    CGNetdiscViewController *netdiscView = [[CGNetdiscViewController alloc]init];
+//    [self.navigationController pushViewController:netdiscView animated:YES];
     
 }
 
@@ -599,6 +604,10 @@
             NSDictionary *dataDic = [json objectForKey:@"data"];
             
             self.my_pro_num = dataDic[@"my_pro_num"];
+            NSUserDefaults *us = [NSUserDefaults standardUserDefaults];
+            [us setObject:self.my_pro_num forKey:@"my_pro_num"];
+            [us synchronize];
+            
             
             if(dataDic && [dataDic count]>0) {
                 NSArray *dataList = [dataDic objectForKey:@"list"];

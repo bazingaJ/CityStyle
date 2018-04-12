@@ -27,7 +27,7 @@ static NSInteger const KPhotoShowMaxCount = 9;
 static CGFloat const ZLPickerColletionViewPadding = 10;
 
 // ScrollView拉伸的比例
-static CGFloat const ZLPickerScrollViewMaxZoomScale = 3.0;
+static CGFloat const ZLPickerScrollViewMaxZoomScale = 12.0;
 static CGFloat const ZLPickerScrollViewMinZoomScale = 1.0;
 
 // 进度条的宽度/高度

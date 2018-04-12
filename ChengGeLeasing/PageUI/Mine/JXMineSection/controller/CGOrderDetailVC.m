@@ -114,6 +114,8 @@ static NSString *cellIdentifier = @"CGOrderDeteailIdentifier";
     return nil;
 }
 
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     

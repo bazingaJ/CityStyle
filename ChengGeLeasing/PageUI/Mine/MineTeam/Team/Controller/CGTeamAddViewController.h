@@ -15,4 +15,6 @@
  */
 @property (nonatomic, copy) void(^callBack)();
 
+@property (nonatomic, strong) NSString *account_id;
+
 @end

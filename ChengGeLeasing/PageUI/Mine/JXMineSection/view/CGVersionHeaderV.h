@@ -10,4 +10,8 @@
 
 @interface CGVersionHeaderV : UIView
 
+@property (nonatomic, strong) NSString *midText;
+
+@property (nonatomic, strong) UILabel *introduceLab;
+
 @end

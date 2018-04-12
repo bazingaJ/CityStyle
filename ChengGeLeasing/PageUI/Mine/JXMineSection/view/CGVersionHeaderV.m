@@ -34,13 +34,13 @@ static NSString *const introduceDownText = @"适用于各规模团队和企业";
             make.top.right.bottom.left.mas_equalTo(self);
         }];
         
-        UILabel *introduceLab = [[UILabel alloc] init];
-        introduceLab.text = introduceMidText;
-        introduceLab.textColor = WHITE_COLOR;
-        introduceLab.font = [UIFont systemFontOfSize:30];
-        introduceLab.textAlignment = NSTextAlignmentCenter;
-        [self addSubview:introduceLab];
-        [introduceLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        self.introduceLab = [[UILabel alloc] init];
+        self.introduceLab.text = _midText;
+        self.introduceLab.textColor = WHITE_COLOR;
+        self.introduceLab.font = [UIFont systemFontOfSize:30];
+        self.introduceLab.textAlignment = NSTextAlignmentCenter;
+        [self addSubview:self.introduceLab];
+        [self.introduceLab mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.mas_equalTo(self.mas_centerX);
             make.centerY.mas_equalTo(self.mas_centerY);
         }];
@@ -52,8 +52,8 @@ static NSString *const introduceDownText = @"适用于各规模团队和企业";
         introduceLabUp.textAlignment = NSTextAlignmentCenter;
         [self addSubview:introduceLabUp];
         [introduceLabUp mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.mas_equalTo(introduceLab);
-            make.bottom.mas_equalTo(introduceLab.mas_top).offset(-15);
+            make.centerX.mas_equalTo(self.introduceLab);
+            make.bottom.mas_equalTo(self.introduceLab.mas_top).offset(-15);
         }];
         
         UILabel *introduceLabDown = [[UILabel alloc] init];
@@ -63,11 +63,19 @@ static NSString *const introduceDownText = @"适用于各规模团队和企业";
         introduceLabDown.textAlignment = NSTextAlignmentCenter;
         [self addSubview:introduceLabDown];
         [introduceLabDown mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.mas_equalTo(introduceLab);
-            make.top.mas_equalTo(introduceLab.mas_bottom).offset(15);
+            make.centerX.mas_equalTo(self.introduceLab);
+            make.top.mas_equalTo(self.introduceLab.mas_bottom).offset(15);
         }];
     }
     return self;
+}
+
+- (void)setMidText:(NSString *)midText
+{
+    
+    _midText = midText;
+    self.introduceLab.text = _midText;
+    
 }
 
 @end

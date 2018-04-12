@@ -53,6 +53,7 @@ static const CGFloat bottomHeight = 45;
 {
     [super viewWillAppear:animated];
     [self.tableView.mj_header beginRefreshing];
+    [self getVipConfigInfo];
 }
 
 - (void)prepareForData
@@ -257,6 +258,85 @@ static const CGFloat bottomHeight = 45;
                            [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
                        }];
     
+}
+
+/**
+ 获取VIP配置信息
+ */
+- (void)getVipConfigInfo
+{
+    
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"app"] = @"ucenter";
+    param[@"act"] = @"getVipConfig";
+    
+    [HttpRequestEx postWithURL:SERVICE_URL
+                        params:param
+                       success:^(id json) {
+                           
+                           NSString *code = [json objectForKey:@"code"];
+                           NSString *msg  = [json objectForKey:@"msg"];
+                           if ([code isEqualToString:SUCCESS])
+                           {
+                               NSDictionary *dict = [json objectForKey:@"data"];
+                               NSArray *listArr = dict[@"list"];
+                               
+                               NSDictionary *dic1 = [listArr firstObject];
+                               if ([dic1[@"vip_id"] isEqualToString:@"1"])
+                               {
+                                   [self saveFreeConfig:dic1];
+                               }
+                               else
+                               {
+                                   [self saveVipConfig:dic1];
+                               }
+                               NSDictionary *dic2 = [listArr lastObject];
+                               if ([dic2[@"vip_id"] isEqualToString:@"1"])
+                               {
+                                   [self saveFreeConfig:dic2];
+                               }
+                               else
+                               {
+                                   [self saveVipConfig:dic2];
+                               }
+                               
+                           }
+                           else
+                           {
+                               [MBProgressHUD showError:msg toView:self.view];
+                           }
+                       }
+                       failure:^(NSError *error) {
+                           
+                           [MBProgressHUD showError:@"与服务器连接失败" toView:self.view];
+                       }];
+}
+- (void)saveFreeConfig:(NSDictionary *)dict
+{
+    NSUserDefaults *us = [NSUserDefaults standardUserDefaults];
+    [us setObject:dict[@"cate_num"] forKey:@"free_cate_num"];
+    [us setObject:dict[@"name"] forKey:@"free_name"];
+    [us setObject:dict[@"pos_num"] forKey:@"free_pos_num"];
+    [us setObject:dict[@"price"] forKey:@"free_price"];
+    [us setObject:dict[@"pro_num"] forKey:@"free_pro_num"];
+    [us setObject:dict[@"sky_drive_num"] forKey:@"free_sky_drive_num"];
+    [us setObject:dict[@"user_num"] forKey:@"free_user_num"];
+    [us setObject:dict[@"vip_id"] forKey:@"free_vip_id"];
+    [us synchronize];
+}
+
+- (void)saveVipConfig:(NSDictionary *)dict
+{
+    NSUserDefaults *us = [NSUserDefaults standardUserDefaults];
+    [us setObject:dict[@"cate_num"] forKey:@"vip_cate_num"];
+    [us setObject:dict[@"name"] forKey:@"vip_name"];
+    [us setObject:dict[@"pos_num"] forKey:@"vip_pos_num"];
+    [us setObject:dict[@"price"] forKey:@"vip_price"];
+    [us setObject:dict[@"pro_num"] forKey:@"vip_pro_num"];
+    [us setObject:dict[@"sky_drive_num"] forKey:@"vip_sky_drive_num"];
+    [us setObject:dict[@"user_num"] forKey:@"vip_user_num"];
+    [us setObject:dict[@"vip_id"] forKey:@"vip_vip_id"];
+    [us synchronize];
 }
 
 - (void)didReceiveMemoryWarning

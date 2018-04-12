@@ -8,10 +8,11 @@
 
 #import "AppDelegate+JPUSH.h"
 #import "CGMineMessageViewController.h"
+#import "CGMineViewController.h"
 
 static NSString *appKey = @"d010fda114e55d4a05164c1e";
 static NSString *channel = @"App Store";
-static BOOL isProduction = FALSE;
+static BOOL isProduction = YES;
 
 @implementation AppDelegate (JPUSH)
 
@@ -65,14 +66,21 @@ static BOOL isProduction = FALSE;
 /**
  *  自定义消息接收方法
  */
+
 - (void)networkDidReceiveMessage:(NSNotification *)notification {
     NSDictionary * userInfo = [notification userInfo];
     NSString *content = [userInfo valueForKey:@"content"];
     NSDictionary *extras = [userInfo valueForKey:@"extras"];
     NSString *customizeField1 = [extras valueForKey:@"customizeField1"]; //服务端传递的Extras附加字段，key是自己定义的
-    
+    NSLog(@"----自定义消息是%@",userInfo);
     //创建“本地通知”
     [self addLocalNotification:userInfo];
+    UIViewController *vc = [JXTool currentViewController];
+    
+//    if ([vc isKindOfClass:[CGMineViewController class]])
+//    {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"refreshMyInfo" object:nil];
+//    }
     
 //    [JPUSHService setLocalNotification:[NSDate dateWithTimeIntervalSinceNow:10] alertBody:@"收到了自定义信息" badge:1 alertAction:@"adada" identifierKey:nil userInfo:nil soundName:nil];
     
