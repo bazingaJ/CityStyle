@@ -44,7 +44,7 @@ static const void *strLaunchSrcKey = &strLaunchSrcKey;
     
     [WXApi registerApp:WetChatAppID];
     
-    // 配置IQ键盘插件
+    // 配置IQ键盘插件º
     IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
     manager.enable =YES;// 控制整个功能是否启用。
     manager.shouldResignOnTouchOutside =YES;//控制点击背景是否收起键盘

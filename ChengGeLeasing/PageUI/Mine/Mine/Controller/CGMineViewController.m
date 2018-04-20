@@ -91,11 +91,11 @@ static NSString *const cellTitleText5 = @"设置";
     
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"mine"])
     {
-        [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"mine"];
-        CGSpotlightView *spotlightVie = [[CGSpotlightView alloc]initWithFrame:self.view.bounds];
-        spotlightVie.dataArr =[self.spotlightArr mutableCopy];
-        [self.view addSubview:spotlightVie];
-        [[[UIApplication sharedApplication] keyWindow]addSubview:spotlightVie];
+//        [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"mine"];
+//        CGSpotlightView *spotlightVie = [[CGSpotlightView alloc]initWithFrame:self.view.bounds];
+//        spotlightVie.dataArr =[self.spotlightArr mutableCopy];
+//        [self.view addSubview:spotlightVie];
+//        [[[UIApplication sharedApplication] keyWindow]addSubview:spotlightVie];
         
     }
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshMyInfo:) name:@"refreshMyInfo" object:nil];
@@ -137,36 +137,48 @@ static NSString *const cellTitleText5 = @"设置";
     [titleArr1 addObject:@[@"mine_icon_message",cellTitleText3,@"1"]];
     [titleDic setObject:titleArr1 forKey:@"0"];
     
-    
-    if (![[HelperManager CreateInstance] isLogin:NO completion:nil])
+    // 根据版本号 判断是否显示
+    NSString *versionCode = [CGURLManager manager].auth_ios;
+    if ([versionCode isEqualToString:APP_Version])
     {
+        
         NSMutableArray *titleArr3 = [NSMutableArray array];
         [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
         [titleDic setObject:titleArr3 forKey:@"1"];
     }
     else
     {
-        if ([HelperManager CreateInstance].isFree)
+        if (![[HelperManager CreateInstance] isLogin:NO completion:nil])
         {
-            //区块三
             NSMutableArray *titleArr3 = [NSMutableArray array];
             [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
             [titleDic setObject:titleArr3 forKey:@"1"];
-            
         }
         else
         {
-            //区块二
-            NSMutableArray *titleArr2 = [NSMutableArray array];
-            [titleArr2 addObject:@[@"VIPaccout",cellTitleText4,@"0"]];
-            [titleDic setObject:titleArr2 forKey:@"1"];
-            
-            //区块三
-            NSMutableArray *titleArr3 = [NSMutableArray array];
-            [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
-            [titleDic setObject:titleArr3 forKey:@"2"];
+            if ([HelperManager CreateInstance].isFree)
+            {
+                //区块三
+                NSMutableArray *titleArr3 = [NSMutableArray array];
+                [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
+                [titleDic setObject:titleArr3 forKey:@"1"];
+                
+            }
+            else
+            {
+                //区块二
+                NSMutableArray *titleArr2 = [NSMutableArray array];
+                [titleArr2 addObject:@[@"VIPaccout",cellTitleText4,@"0"]];
+                [titleDic setObject:titleArr2 forKey:@"1"];
+                
+                //区块三
+                NSMutableArray *titleArr3 = [NSMutableArray array];
+                [titleArr3 addObject:@[@"mine_icon_setting",cellTitleText5,@"0"]];
+                [titleDic setObject:titleArr3 forKey:@"2"];
+            }
         }
     }
+    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -242,7 +254,8 @@ static NSString *const cellTitleText5 = @"设置";
     }
     else if (indexPath.section == 1)
     {
-        if ([HelperManager CreateInstance].isFree)
+        NSString *versionCode = [CGURLManager manager].auth_ios;
+        if ([versionCode isEqualToString:APP_Version])
         {
             //设置
             CGMineSettingViewController *settingView = [[CGMineSettingViewController alloc] init];
@@ -250,10 +263,20 @@ static NSString *const cellTitleText5 = @"设置";
         }
         else
         {
-            // VIP企业账户管理
-            CGEntManagerVC *vc = [CGEntManagerVC new];
-            [self.navigationController pushViewController:vc animated:YES];
+            if ([HelperManager CreateInstance].isFree)
+            {
+                //设置
+                CGMineSettingViewController *settingView = [[CGMineSettingViewController alloc] init];
+                [self.navigationController pushViewController:settingView animated:YES];
+            }
+            else
+            {
+                // VIP企业账户管理
+                CGEntManagerVC *vc = [CGEntManagerVC new];
+                [self.navigationController pushViewController:vc animated:YES];
+            }
         }
+        
     }
     else
     {
@@ -441,6 +464,14 @@ static NSString *const cellTitleText5 = @"设置";
 - (void)showXuFeiWindow
 {
     
+    NSString *versionCode = [CGURLManager manager].auth_ios;
+    if ([versionCode isEqualToString:APP_Version])
+    {
+        
+        return;
+    }
+    
+    
     //    会员已过期，没有权限操作
     NSArray *endTimeArr = [self.endTimeStr componentsSeparatedByString:@"-"];
     NSString *wholeStr = [NSString stringWithFormat:@"您的VIP企业版\n将于%@年%@月%@日到期\n请尽快续费。",endTimeArr[0],endTimeArr[1],endTimeArr[2]];
@@ -471,6 +502,12 @@ static NSString *const cellTitleText5 = @"设置";
 
 - (void)showUpdateWindow
 {
+    NSString *versionCode = [CGURLManager manager].auth_ios;
+    if ([versionCode isEqualToString:APP_Version])
+    {
+        
+        return;
+    }
     
     // 判断是否是曾经的vip 还是 从来都不是vip
     if (userInfo.business_id == nil || [userInfo.business_id isEqualToString:@""])  // 从来不是

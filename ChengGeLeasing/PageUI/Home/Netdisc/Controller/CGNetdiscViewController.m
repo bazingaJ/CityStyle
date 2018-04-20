@@ -367,6 +367,7 @@
 - (void)btnFuncClick:(UIButton *)btnSender {
     NSLog(@"上传文件");
     
+    
     // 判断是否能够继续创建新的项目 与本地存储的 免费或者vip账户进行比对
     if ([HelperManager CreateInstance].isFree)
     {

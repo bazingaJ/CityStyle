@@ -105,22 +105,35 @@ static NSString *const timingPhotoText = @"timing";
 
 - (void)createAccoutSign
 {
+    
     if ([[HelperManager CreateInstance] isLogin:NO completion:nil])
     {
-        [self.freeView removeFromSuperview];
-        self.freeView = nil;
-        [self.vipView removeFromSuperview];
-        self.vipView = nil;
-        if ([HelperManager CreateInstance].isFree)
+        // 根据版本号 判断是否显示
+        NSString *versionCode = [CGURLManager manager].auth_ios;
+        if ([versionCode isEqualToString:APP_Version])
         {
-            // 创建免费账户标志
-            [self createFreeAccountSignButton];
+            
+            return;
         }
         else
         {
-            // 创建企业版账户标志
-            [self createEnterpriesSignButton];
+            [self.freeView removeFromSuperview];
+            self.freeView = nil;
+            [self.vipView removeFromSuperview];
+            self.vipView = nil;
+            
+            if ([HelperManager CreateInstance].isFree)
+            {
+                // 创建免费账户标志
+                [self createFreeAccountSignButton];
+            }
+            else
+            {
+                // 创建企业版账户标志
+                [self createEnterpriesSignButton];
+            }
         }
+        
     }
 }
 #pragma mark - 创建免费版账户识别标志
